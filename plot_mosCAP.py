@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 from math import *
 from sympy import *
 global Y,deriv,dydx,count
@@ -27,8 +28,8 @@ Cox=1.726*10**(-2)
 No=10**15
 Po=10**24
 
-def func( Y ): 
-    global Vgb,Vfb,q,Es,Cox,Po,No,St,NA,ND
+def func(Vgb, Y ): 
+    global Vfb,q,Es,Cox,Po,No,St,NA,ND
     #print("I am inside func  " , Y)
     try: 
       	  p=long(Vfb + Y + (sqrt(2*q*Es)/Cox) *(sqrt( Po*St*( e**(-Y/St )-1) +( NA-ND  )*Y + No*St*( e**(Y/St )-1) )  ) -Vgb)
@@ -48,19 +49,19 @@ def derivFunc( Y ):
 
   
 # Function to find the root 
-def newtonRaphson( Y ): 
+def newtonRaphson( Vgb, Y ): 
     global count
-    global Vgb,Vfb,q,Es,Cox,Po,No,St,NA,ND,h
+    global Vfb,q,Es,Cox,Po,No,St,NA,ND,h
     if derivFunc(Y)!=0:
-    	h = (func(Y) )/ (derivFunc(Y)) 
+    	h = (func(Vgb,Y) )/ (derivFunc(Y)) 
     	print("h is ",h)
 
     while abs(h) >= 0.01: 
         count=count+1
 	try:
-      	    h = func(Y)/derivFunc(Y)
+      	    h = func(Vgb,Y)/derivFunc(Y)
             print("the value of deriv is ",derivFunc(Y))
-	    print("the value of funct is ",func(Y))
+	    print("the value of funct is ",func(Vgb,Y))
 	    Y = Y - h    
         except ZeroDivisionError:
             print("Error! - derivative zero for x = ", Y)
@@ -70,15 +71,33 @@ def newtonRaphson( Y ):
     print("The value of the root is : ", 
                              "%.4f"% Y)
     print("the no of iterations is ",count) 
-   
-
-
-t= Symbol('t')    
-f=Vfb + t + (sqrt(2*q*Es)/Cox) *(sqrt( Po*St*( e**(-t/St )-1) +( NA-ND  )*t + No*St*( e**(t/St )-1) )  ) -Vgb
-deriv= Derivative(f, t)
+    return Y
 
 
 #print(deriv.doit())
-dydx=deriv.doit()
+#dydx=deriv.doit()
 #deriv.doit()
-newtonRaphson(x0) 
+Y_list=[]
+V_list=[]
+i=0
+r=[]
+for i in range(-10,15):
+	r.append(i/10.0)
+for Vgb in r:
+	t= Symbol('t')    
+	f=Vfb + t + (sqrt(2*q*Es)/Cox) *(sqrt( Po*St*( e**(-t/St )-1) +( NA-ND  )*t + No*St*( e**(t/St )-1) )  ) -Vgb
+	deriv= Derivative(f, t)
+	val=newtonRaphson(Vgb,x0)  
+	print("the val is : ",val)
+	Y_list.append(val)
+	V_list.append(Vgb)
+
+plt.plot(V_list, Y_list)
+
+plt.xlabel('Vgb value') 
+plt.ylabel('SHI value')
+
+plt.title('Vgb VS SHI graph') 
+  
+plt.show()   
+
