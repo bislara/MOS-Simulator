@@ -15,8 +15,9 @@ global Vgb,Vfb,q,Es,Cox,Po,No,St,NA,ND
 # St= int(input("Enter the value of St "))
 # NA= int(input("Enter the value of NA "))
 # ND= int(input("Enter the value of ND "))
-x0 = float(input("enter the initial value : "))
-Vgb=-0.5
+#x0 = float(input("enter the initial value : "))
+Vgb=0.5
+
 Vfb=-1
 NA=10**24
 ND=10**15
@@ -26,6 +27,12 @@ Es=1.05*10**(-10)
 Cox=1.726*10**(-2)
 No=10**15
 Po=10**24
+
+gm=(sqrt(2*q*Es*NA))/(Cox)
+f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )
+n=0.826+0.026*6
+x0= min(f,n)
+print("X0 is ",x0)
 
 def func( Y ): 
     global Vgb,Vfb,q,Es,Cox,Po,No,St,NA,ND

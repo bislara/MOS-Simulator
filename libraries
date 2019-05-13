@@ -37,7 +37,6 @@ A Set is an unordered collection data type that is iterable, mutable, and has no
 
 
 
-
 LIST
 L = [1, "a" , "string" , 1+2] 
 But the most powerful thing is that list need not be always homogenous. A single list can contain strings, integers, as well as objects. Lists can also be used for implementing stacks and queues. Lists are mutable, i.e., they can be altered once declared.
