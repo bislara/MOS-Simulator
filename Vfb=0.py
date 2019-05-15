@@ -1,8 +1,6 @@
 import matplotlib.pyplot as plt
 from math import *
 from sympy import *
-import csv
-
 global Y,deriv,dydx,count
 count=0
 h=5
@@ -23,8 +21,8 @@ global Vgb,Vfb,q,Es,Cox,Po,No,St,NA,ND
 #intial values 
 x0=0
 Vgb=-1
-Vfb=-1
-NA=5*10**23
+Vfb=0
+NA=5*10**25
 ND=0
 St=0.0259
 q=1.6*10**(-19)
@@ -38,8 +36,8 @@ tox=2*10**(-9)
 
 #Cox=1.668*10**(-2)
 
-No=2.78*10**8
-Po=5*10**23
+No=2.78*10**6
+Po=5*10**25
 #ni=1.26*10**13=sqrt(No*Po)
 #PHI(f)=0.59266= PHI(t)*ln(NA/ni)
 #2*PHI(f)= 1.1852
@@ -137,22 +135,8 @@ for Vgb in r:
 	V1_list.append(Vgb)
 
 
-x2 = []
-y2 = []
 
-with open('Dataset.csv','r') as csvfile:
-    plots = csv.reader(csvfile, delimiter=',')
-    for row in plots:
-        x2.append(row[0])
-        y2.append(row[1])
-
-
-# plotting_graph
-plt.ylim(0.7,1.1) 
-plt.xlim(0,1.5) 
-
-plt.plot(x2,y2,color ='b', label='from excel!')
-
+# plotting graph
 plt.plot(V_list, Y_list,color ='r',label="tox=2nm")
 
 plt.plot(V1_list, Y1_list,color ='g',label="tox=2.5nm")
