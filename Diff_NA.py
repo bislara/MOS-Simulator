@@ -8,18 +8,6 @@ count=0
 h=5
 global Vgb,Vfb,q,Es,Cox,Po,No,St,NA,ND
 
-# Vgb= int(input("Enter the value of Vgb "))
-# Vfb= int(input("Enter the value of Vfb "))
-# q= int(input("Enter the value of q "))
-# Es= int(input("Enter the value of Es "))
-# Cox= int(input("Enter the value of Cox "))
-# Po= int(input("Enter the value of Po "))
-# No= int(input("Enter the value of No "))
-# St= int(input("Enter the value of St "))
-# NA= int(input("Enter the value of NA "))
-# ND= int(input("Enter the value of ND "))
-#x0 = float(input("enter the initial value : "))
-
 #intial values 
 x0=0
 Vgb=-1

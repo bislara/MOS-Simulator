@@ -8,17 +8,6 @@ count=0
 h=5
 global Vgb,Vfb,q,Es,Cox,Po,No,St,NA,ND
 
-# Vgb= int(input("Enter the value of Vgb "))
-# Vfb= int(input("Enter the value of Vfb "))
-# q= int(input("Enter the value of q "))
-# Es= int(input("Enter the value of Es "))
-# Cox= int(input("Enter the value of Cox "))
-# Po= int(input("Enter the value of Po "))
-# No= int(input("Enter the value of No "))
-# St= int(input("Enter the value of St "))
-# NA= int(input("Enter the value of NA "))
-# ND= int(input("Enter the value of ND "))
-#x0 = float(input("enter the initial value : "))
 
 #intial values 
 x0=0
@@ -34,7 +23,7 @@ Es=11.7*8.854*10**(-12)
 kox=3.9
 Eo=8.854*10**(-12)
 Eox=kox*Eo
-tox=2*10**(-9)
+tox=2.5*10**(-9)
 
 Ni=1.18*10**16
 #Cox=1.668*10**(-2)
@@ -46,10 +35,6 @@ Ni=1.18*10**16
 
 Y_list=[]
 V_list=[]
-Y1_list=[]
-V1_list=[]
-Y2_list=[]
-V2_list=[]
 
 i=0
 r=[]
@@ -107,7 +92,7 @@ for i in range(0,15):
 
 #loop for newton Raphson method and using diff intial value for diff Vgb
 for Vgb in r:
-	NA=5*10**20
+	NA=5*10**23
 	No=(Ni**2)/NA
 	Po=NA
 	Cox=Eox/tox
@@ -124,57 +109,26 @@ for Vgb in r:
 	Y_list.append(val)
 	V_list.append(Vgb)
 
-#loop for a different value of NA
-for Vgb in r:
-	Cox=Eox/tox
-	NA=5*10**23
-	No=(Ni**2)/NA
-	Po=NA
-	gm=(sqrt(2*q*Es*NA))/(Cox)
-	f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2
-	n=0.826+0.026*6
-	x0= min(f,n)
-	print("Cox value is ",Cox)
-	#print("x0 value is ",x0)	
-	t= Symbol('t')    
-	f=Vfb + t + (sqrt(2*q*Es)/Cox) *(sqrt( Po*St*( e**(-t/St )-1) +( NA-ND  )*t + No*St*( e**(t/St )-1) )  ) -Vgb
-	deriv= Derivative(f, t)
-	val=newtonRaphson(Vgb,x0)  
-	#print("the val is : ",val)
-	Y1_list.append(val)
-	V1_list.append(Vgb)
+x2 = []
+y2 = []
 
-
-for Vgb in r:
-	NA=5*10**17
-	No=(Ni**2)/NA
-	Po=NA
-	Cox=Eox/tox
-	gm=(sqrt(2*q*Es*NA))/(Cox)
-	f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2
-	n=0.826+0.026*6
-	x0= min(f,n)
-	print("Cox value is ",Cox)
-	#print("x0 value is ",x0)	
-	t= Symbol('t')    
-	f=Vfb + t + (sqrt(2*q*Es)/Cox) *(sqrt( Po*St*( e**(-t/St )-1) +( NA-ND  )*t + No*St*( e**(t/St )-1) )  ) -Vgb
-	deriv= Derivative(f, t)
-	val=newtonRaphson(Vgb,x0)  
-	#print("the val is : ",val)
-	Y2_list.append(val)
-	V2_list.append(Vgb)
-
+with open('Dataset/Final_Dataset.csv','r') as csvfile:
+    plots = csv.reader(csvfile, delimiter=',')
+    for row in plots:
+        x2.append(row[0])
+        y2.append(row[1])
 
 
 # plotting_graph
 plt.ylim(0.6,1.2) 
 plt.xlim(0,1.5) 
 
-plt.plot(V1_list, Y1_list,color ='g',label="NA=5*10^23")
+plt.plot(V_list, Y_list,color ='r',label="NA=5*10^23")
 
-plt.plot(V_list, Y_list,color ='r',label="NA=5*10^20")
+plt.plot(x2,y2,color ='b', label='from excel!')
 
-plt.plot(V2_list, Y2_list,color ='b',label="NA=5*10^17")
+
+
 
 
 plt.xlabel('Vgb value') 

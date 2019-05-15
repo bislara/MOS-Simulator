@@ -8,23 +8,11 @@ count=0
 h=5
 global Vgb,Vfb,q,Es,Cox,Po,No,St,NA,ND
 
-# Vgb= int(input("Enter the value of Vgb "))
-# Vfb= int(input("Enter the value of Vfb "))
-# q= int(input("Enter the value of q "))
-# Es= int(input("Enter the value of Es "))
-# Cox= int(input("Enter the value of Cox "))
-# Po= int(input("Enter the value of Po "))
-# No= int(input("Enter the value of No "))
-# St= int(input("Enter the value of St "))
-# NA= int(input("Enter the value of NA "))
-# ND= int(input("Enter the value of ND "))
-#x0 = float(input("enter the initial value : "))
-
 #intial values 
 x0=0
 Vgb=-1
 Vfb=-1
-NA=0
+NA=5*10**23
 ND=0
 St=0.0259
 q=1.6*10**(-19)
@@ -36,10 +24,10 @@ Eo=8.854*10**(-12)
 Eox=kox*Eo
 tox=2*10**(-9)
 
-Ni=1.18*10**16
 #Cox=1.668*10**(-2)
 
-
+No=2.78*10**8
+Po=5*10**23
 #ni=1.26*10**13=sqrt(No*Po)
 #PHI(f)=0.59266= PHI(t)*ln(NA/ni)
 #2*PHI(f)= 1.1852
@@ -102,14 +90,11 @@ def newtonRaphson( Vgb, Y ):
     return Y
 
 
-for i in range(0,15):
-	r.append(i/10.0)
+for i in range(0,150):
+	r.append(i/100.0)
 
 #loop for newton Raphson method and using diff intial value for diff Vgb
 for Vgb in r:
-	NA=5*10**20
-	No=(Ni**2)/NA
-	Po=NA
 	Cox=Eox/tox
 	gm=(sqrt(2*q*Es*NA))/(Cox)
 	f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  
@@ -124,12 +109,10 @@ for Vgb in r:
 	Y_list.append(val)
 	V_list.append(Vgb)
 
-#loop for a different value of NA
+#loop for a different value of Tox
 for Vgb in r:
+	tox=2.5*10**(-9)
 	Cox=Eox/tox
-	NA=5*10**23
-	No=(Ni**2)/NA
-	Po=NA
 	gm=(sqrt(2*q*Es*NA))/(Cox)
 	f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2
 	n=0.826+0.026*6
@@ -146,9 +129,7 @@ for Vgb in r:
 
 
 for Vgb in r:
-	NA=5*10**17
-	No=(Ni**2)/NA
-	Po=NA
+	tox=1.5*10**(-9)
 	Cox=Eox/tox
 	gm=(sqrt(2*q*Es*NA))/(Cox)
 	f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2
@@ -167,15 +148,14 @@ for Vgb in r:
 
 
 # plotting_graph
-plt.ylim(0.6,1.2) 
+plt.ylim(0.7,1.2) 
 plt.xlim(0,1.5) 
 
-plt.plot(V1_list, Y1_list,color ='g',label="NA=5*10^23")
+plt.plot(V2_list, Y2_list,color ='b',label="tox=1.5nm")
 
-plt.plot(V_list, Y_list,color ='r',label="NA=5*10^20")
+plt.plot(V_list, Y_list,color ='r',label="tox=2nm")
 
-plt.plot(V2_list, Y2_list,color ='b',label="NA=5*10^17")
-
+plt.plot(V1_list, Y1_list,color ='g',label="tox=2.5nm")
 
 plt.xlabel('Vgb value') 
 plt.ylabel('SHI value')

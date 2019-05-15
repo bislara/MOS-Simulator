@@ -48,7 +48,7 @@ for Vgb in r:
 	Y1_list.append(min(f,n))
 	V1_list.append(Vgb)
 	
-plt.plot(V1_list, Y1_list,color ='green')
+plt.plot(V1_list, Y1_list,color ='red')
 plt.ylim(-1,2) 
 plt.xlim(-1,1) 
 
