@@ -8,20 +8,6 @@ count=0
 h=5
 global Vgb,Vfb,q,Es,Cox,Po,No,St,NA,ND
 
-
-# Vgb=float(input("Enter the value of Vgb "))
-# Vfb=float(input("Enter the value of Vfb "))
-# q=  float(input("Enter the value of q "))
-# Es= float(input("Enter the value of Es "))
-# Cox=float(input("Enter the value of Cox "))
-# Po= float(input("Enter the value of Po "))
-# No= float(input("Enter the value of No "))
-# St= float(input("Enter the value of St "))
-# NA= float(input("Enter the value of NA "))
-# ND= float(input("Enter the value of ND "))
-#x0 = float(input("enter the initial value : "))
-Fi_g=float(input("enter the gate material vol :"))
-
 #intial values 
 x0=0
 Vgb=-1
@@ -37,11 +23,9 @@ kox=3.9
 Eo=8.854*10**(-12)
 Eox=kox*Eo
 tox=2*10**(-9)
-#Fi_g=0.56
 
 Ni=1.18*10**16
 #Cox=1.668*10**(-2)
-
 
 
 #ni=1.26*10**13=sqrt(No*Po)
@@ -115,7 +99,7 @@ for Vgb in r:
 	No=(Ni**2)/NA
 	Po=NA
 	SiF=St*log((NA)/(Ni))
-	Vfb=-Fi_g-SiF
+	Vfb=-0.56-SiF
 	Cox=Eox/tox
 	gm=(sqrt(2*q*Es*NA))/(Cox)
 	f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  
@@ -136,7 +120,7 @@ for Vgb in r:
 	No=(Ni**2)/NA
 	Po=NA
 	SiF=St*log((NA)/(Ni))
-	Vfb=-Fi_g-SiF
+	Vfb=-0.56-SiF
 	gm=(sqrt(2*q*Es*NA))/(Cox)
 	f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2
 	n=0.826+0.026*6
@@ -156,7 +140,7 @@ for Vgb in r:
 	No=(Ni**2)/NA
 	Po=NA
 	SiF=St*log((NA)/(Ni))
-	Vfb=-Fi_g-SiF
+	Vfb=-0.56-SiF
 	Cox=Eox/tox
 	gm=(sqrt(2*q*Es*NA))/(Cox)
 	f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2
@@ -173,8 +157,8 @@ for Vgb in r:
 
 
 # plotting_graph
-plt.ylim(0,1.2)
-plt.xlim(0,1.5)
+plt.ylim(0.5,1.2)
+plt.xlim(0,1.5) 
 
 plt.plot(V1_list, Y1_list,color ='g',label="NA=5*10^23")
 

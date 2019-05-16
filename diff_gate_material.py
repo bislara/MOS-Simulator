@@ -8,27 +8,32 @@ count=0
 h=5
 global Vgb,Vfb,q,Es,Cox,Po,No,St,NA,ND
 
-
-# Vgb=float(input("Enter the value of Vgb "))
-# Vfb=float(input("Enter the value of Vfb "))
-# q=  float(input("Enter the value of q "))
-# Es= float(input("Enter the value of Es "))
-# Cox=float(input("Enter the value of Cox "))
-# Po= float(input("Enter the value of Po "))
-# No= float(input("Enter the value of No "))
-# St= float(input("Enter the value of St "))
-# NA= float(input("Enter the value of NA "))
-# ND= float(input("Enter the value of ND "))
+# Vgb= int(input("Enter the value of Vgb "))
+# Vfb= int(input("Enter the value of Vfb "))
+# q= int(input("Enter the value of q "))
+# Es= int(input("Enter the value of Es "))
+# Cox= int(input("Enter the value of Cox "))
+# Po= int(input("Enter the value of Po "))
+# No= int(input("Enter the value of No "))
+# St= int(input("Enter the value of St "))
+# NA= int(input("Enter the value of NA "))
+# ND= int(input("Enter the value of ND "))
 #x0 = float(input("enter the initial value : "))
-Fi_g=float(input("enter the gate material vol :"))
 
 #intial values 
 x0=0
 Vgb=-1
-Vfb=0
-NA=0
 ND=0
+Ni=1.18*10**16
 St=0.0259
+
+NA=5*10**23
+No=(Ni**2)/NA
+Po=NA
+
+SiF=St*log((NA)/(Ni))
+#Vfb=-0.56-SiF
+
 q=1.6*10**(-19)
 #Es=1.05*10**(-10)
 Es=11.7*8.854*10**(-12)
@@ -37,12 +42,9 @@ kox=3.9
 Eo=8.854*10**(-12)
 Eox=kox*Eo
 tox=2*10**(-9)
-#Fi_g=0.56
+Cox=Eox/tox
 
-Ni=1.18*10**16
 #Cox=1.668*10**(-2)
-
-
 
 #ni=1.26*10**13=sqrt(No*Po)
 #PHI(f)=0.59266= PHI(t)*ln(NA/ni)
@@ -111,36 +113,29 @@ for i in range(0,15):
 
 #loop for newton Raphson method and using diff intial value for diff Vgb
 for Vgb in r:
-	NA=5*10**20
-	No=(Ni**2)/NA
-	Po=NA
-	SiF=St*log((NA)/(Ni))
-	Vfb=-Fi_g-SiF
-	Cox=Eox/tox
+	Vfb=-0.56-SiF
 	gm=(sqrt(2*q*Es*NA))/(Cox)
 	f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  
 	n=0.826+0.026*6
-	x0= min(f,n)	
+	x0= min(f,n)
+	print("Cox value is ",Cox)	
 	t= Symbol('t')    
 	f=Vfb + t + (sqrt(2*q*Es)/(Cox)) *(sqrt( Po*St*( e**(-t/St )-1) +( NA-ND  )*t + No*St*( e**(t/St )-1) )  ) -Vgb
 	deriv= Derivative(f, t)
 	val=newtonRaphson(Vgb,x0)  
-	#print("the val is : ",val)
+	print("the val is : ",val)
 	Y_list.append(val)
 	V_list.append(Vgb)
 
+
 #loop for a different value of NA
 for Vgb in r:
-	Cox=Eox/tox
-	NA=5*10**23
-	No=(Ni**2)/NA
-	Po=NA
-	SiF=St*log((NA)/(Ni))
-	Vfb=-Fi_g-SiF
+	Vfb=-1.35-SiF
 	gm=(sqrt(2*q*Es*NA))/(Cox)
 	f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2
 	n=0.826+0.026*6
 	x0= min(f,n)
+	print("Cox value is ",Cox)
 	#print("x0 value is ",x0)	
 	t= Symbol('t')    
 	f=Vfb + t + (sqrt(2*q*Es)/Cox) *(sqrt( Po*St*( e**(-t/St )-1) +( NA-ND  )*t + No*St*( e**(t/St )-1) )  ) -Vgb
@@ -152,16 +147,12 @@ for Vgb in r:
 
 
 for Vgb in r:
-	NA=5*10**17
-	No=(Ni**2)/NA
-	Po=NA
-	SiF=St*log((NA)/(Ni))
-	Vfb=-Fi_g-SiF
-	Cox=Eox/tox
+	Vfb=-0.15-SiF
 	gm=(sqrt(2*q*Es*NA))/(Cox)
 	f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2
 	n=0.826+0.026*6
 	x0= min(f,n)
+	print("Cox value is ",Cox)
 	#print("x0 value is ",x0)	
 	t= Symbol('t')    
 	f=Vfb + t + (sqrt(2*q*Es)/Cox) *(sqrt( Po*St*( e**(-t/St )-1) +( NA-ND  )*t + No*St*( e**(t/St )-1) )  ) -Vgb
@@ -171,17 +162,16 @@ for Vgb in r:
 	Y2_list.append(val)
 	V2_list.append(Vgb)
 
-
+print("Vfb is :",Vfb)
 # plotting_graph
-plt.ylim(0,1.2)
-plt.xlim(0,1.5)
+plt.ylim(0.4,1.2) 
+plt.xlim(0,1.5) 
 
-plt.plot(V1_list, Y1_list,color ='g',label="NA=5*10^23")
+plt.plot(V1_list, Y1_list,color ='g',label="Mg")
 
-plt.plot(V_list, Y_list,color ='r',label="NA=5*10^20")
+plt.plot(V_list, Y_list,color ='r',label="Degenerate polySi")
 
-plt.plot(V2_list, Y2_list,color ='b',label="NA=5*10^17")
-
+plt.plot(V2_list, Y2_list,color ='b',label="Ni")
 
 plt.xlabel('Vgb value') 
 plt.ylabel('SHI value')
