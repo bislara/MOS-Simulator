@@ -16,7 +16,13 @@ def func(Vgb, Shi_s,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po):
 
 
 #funct to find derivative at a particular value
-def derivFunc( Shi_s,deriv,t ):
+def derivFunc( Shi_s,Vgb,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po ):
+    #main function with variable t
+    t= Symbol('t')    
+    f=Vfb + t + (sqrt(2*q*Es)/Cox) *(sqrt( Po*Phi_t*( e**(-t/Phi_t )-1) +( NA-ND  )*t + No*Phi_t*( e**(t/Phi_t )-1) )  ) -Vgb
+
+    deriv= Derivative(f, t)
+
     k= deriv.doit().subs({t:Shi_s}) #this puts the value of t as Shi_s in the derivative of the main function 
     if k==0:
 	return 1
@@ -27,7 +33,7 @@ def derivFunc( Shi_s,deriv,t ):
 
 
 # Newton_Raphson to find the root of the function
-def newtonRaphson( Vgb, Shi_s ,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po,deriv,t):
+def newtonRaphson( Vgb, Shi_s ,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po):
 
     err=1   	
     count=0
@@ -35,7 +41,7 @@ def newtonRaphson( Vgb, Shi_s ,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po,deriv,t):
     while abs(err) >= 0.001:
         count=count+1
 	try:
-      	    err = (func(Vgb,Shi_s,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po))/(derivFunc(Shi_s,deriv,t))
+      	    err = (func(Vgb,Shi_s,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po))/(derivFunc(Shi_s,Vgb,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po))
 	    Shi_s = Shi_s - err
 	    
         except ZeroDivisionError:
