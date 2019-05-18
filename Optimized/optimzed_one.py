@@ -33,38 +33,38 @@ while Condition == 1:
 	def tox_type(): 
 		global tox,NA,Phi_g
 		tox=[]
-		tox.append(float(input("Enter the value of oxide thickness in nm :")))
-		tox_no = input("Do you want to enter more value of Tox? 1/0 ")
+		tox.append(float(input("Enter the value of oxide thickness in nm :\n")))
+		tox_no = input("Do you want to enter more value of Tox? 1/0 \n")
 		while tox_no == 1: 
-			tox.append(float(input("Enter the value of oxide thickness in nm :")))
-			tox_no = input("Do you want to enter more value of Tox? 1/0")
-		NA= float(input("Enter the value of NA in m^3 :"))
-		Phi_g=float(input("Enter the value of the gate voltage :"))
+			tox.append(float(input("Enter the value of oxide thickness in nm :\n")))
+			tox_no = input("Do you want to enter more value of Tox? 1/0\n")
+		NA= float(input("Enter the value of NA in m^3 :\n"))
+		Phi_g=float(input("Enter the value of the gate voltage :\n"))
 		tox = [i * 10**(-9) for i in tox]
 		
 
 	def NA_type(): 
 		global tox,NA,Phi_g
 		NA=[]
-		NA.append(float(input("Enter the value of NA in per m^3 :")))
-		NA_no = input("Do you want to enter more value of NA? 1/0")
+		NA.append(float(input("Enter the value of NA in per m^3 :\n")))
+		NA_no = input("Do you want to enter more value of NA? 1/0\n")
 		while NA_no == 1: 
-			NA.append(float(input("Enter the value of NA in per m^3 :")))
-			NA_no = input("Do you want to enter more value of NA? 1/0")
-		tox= float(input("Enter the value of tox  in nm:"))
-		Phi_g=float(input("Enter the value of the gate voltage :"))
+			NA.append(float(input("Enter the value of NA in per m^3 :\n")))
+			NA_no = input("Do you want to enter more value of NA? 1/0\n")
+		tox= float(input("Enter the value of tox  in nm:\n"))
+		Phi_g=float(input("Enter the value of the gate voltage :\n"))
 		tox=tox*10**(-9)
 
 	def Phi_g_type():
 		global tox,NA,Phi_g
 		Phi_g=[]
-		Phi_g.append(float(input("Enter the value of Phi_m :")))
-		Phi_no = input("Do you want to enter more value of Phi_m? 1/0")
+		Phi_g.append(float(input("Enter the value of Phi_m :\n")))
+		Phi_no = input("Do you want to enter more value of Phi_m? 1/0\n")
 		while Phi_no == 1: 
-			Phi_g.append(float(input("Enter the value of Phi_m :")))
-			Phi_no = input("Do you want to enter more value of Phi_m? 1/0")
-		tox= float(input("Enter the value of tox  in nm:"))
-		NA=float(input("Enter the value of the NA in per m^3 :"))
+			Phi_g.append(float(input("Enter the value of Phi_m :\n")))
+			Phi_no = input("Do you want to enter more value of Phi_m? 1/0\n")
+		tox= float(input("Enter the value of tox  in nm:\n"))
+		NA=float(input("Enter the value of the NA in per m^3 :\n"))
 		tox=tox*10**(-9)
 		
 
@@ -85,15 +85,15 @@ while Condition == 1:
 
 
 	#user input
-	Vgb_1=float(input("Enter the value of starting value of Vgb :"))
-	Vgb_2=float(input("Enter the value of end value of Vgb :"))
+	Vgb_1=float(input("Enter the value of starting value of Vgb :\n"))
+	Vgb_2=float(input("Enter the value of end value of Vgb :\n"))
 
 	print("Which type of graph do you want? \n 1.Tox graph\n 2.NA graph\n 3.Phi_m graph ?\n")
 	plot_type = input("Enter the number :")
 	if plot_type!=0: 
 		cases(plot_type)
 
-	ND= float(input("Enter the value of ND :"))
+	ND= float(input("Enter the value of ND :\n"))
 
 
 
