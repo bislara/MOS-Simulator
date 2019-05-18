@@ -43,10 +43,8 @@ def newtonRaphson( Vgb, Shi_s ,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po):
 	try:
       	    err = (func(Vgb,Shi_s,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po))/(derivFunc(Shi_s,Vgb,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po))
 	    Shi_s = Shi_s - err
-	    
         except ZeroDivisionError:
             print("Error! - derivative zero for x = ", Shi_s)
-
 
 
     print("The value of the root is : ",

@@ -16,7 +16,6 @@ q=1.6*10**(-19)
 Eo=8.854*10**(-12)	
 ks=11.7			#ks for Si
 kox=3.9			#kox for SiO2
-Eo=8.854*10**(-12)	
 Ni=1.15*10**16		
 i=0
 plot_type=0
@@ -30,7 +29,7 @@ colours={1:'b',2:'g',3:'r',4:'c',5:'m',6:'y',7:'k'}
 
 #switch case functions
 def tox_type(): 
-	global tox,NA
+	global tox,NA,Phi_g
 	tox=[]
 	tox.append(float(input("Enter the value of oxide thickness in nm :")))
 	tox_no = input("Do you want to enter more value of Tox? 1/0 ")
@@ -38,11 +37,12 @@ def tox_type():
 		tox.append(float(input("Enter the value of oxide thickness in nm :")))
 		tox_no = input("Do you want to enter more value of Tox? 1/0")
 	NA= float(input("Enter the value of NA in m^3 :"))
+	Phi_g=float(input("Enter the value of the gate voltage :"))
 	tox = [i * 10**(-9) for i in tox]
-	NA= NA*10**(23)
+	
 
 def NA_type(): 
-	global tox,NA
+	global tox,NA,Phi_g
 	NA=[]
 	NA.append(float(input("Enter the value of NA in per m^3 :")))
 	NA_no = input("Do you want to enter more value of NA? 1/0")
@@ -50,12 +50,27 @@ def NA_type():
 		NA.append(float(input("Enter the value of NA in per m^3 :")))
 		NA_no = input("Do you want to enter more value of NA? 1/0")
 	tox= float(input("Enter the value of tox  in nm:"))
+	Phi_g=float(input("Enter the value of the gate voltage :"))
 	tox=tox*10**(-9)
+
+def Phi_g_type():
+	global tox,NA,Phi_g
+	Phi_g=[]
+	Phi_g.append(float(input("Enter the value of Phi_m :")))
+	Phi_no = input("Do you want to enter more value of Phi_m? 1/0")
+	while Phi_no == 1: 
+		Phi_g.append(float(input("Enter the value of Phi_m :")))
+		Phi_no = input("Do you want to enter more value of Phi_m? 1/0")
+	tox= float(input("Enter the value of tox  in nm:"))
+	NA=float(input("Enter the value of the NA in per m^3 :"))
+	tox=tox*10**(-9)
+	
 
 #conditions of switch case
 switcher={
 	1: tox_type,	   
-	2: NA_type	
+	2: NA_type,
+	3: Phi_g_type	
        }
 
 #switch case
@@ -70,9 +85,8 @@ def cases(argument):
 #user input
 Vgb_1=float(input("Enter the value of starting value of Vgb :"))
 Vgb_2=float(input("Enter the value of end value of Vgb :"))
-Phi_g=float(input("Enter the value of the gate voltage :"))
 
-print("Which type of graph do you want? \n 1.Tox graph\n 2.NA graph ?")
+print("Which type of graph do you want? \n 1.Tox graph\n 2.NA graph\n 3.Phi_m graph ?\n")
 plot_type = input("Enter the number :")
 if plot_type!=0: 
 	cases(plot_type)
@@ -92,7 +106,6 @@ Eox=kox*Eo		#permittivity
 for i in range(int(Vgb_1),int(Vgb_2*10)):
 	r.append(i/10.0)
  
-
 
 
 
@@ -140,6 +153,27 @@ elif plot_type==2 :
 		Y_list[i].append(val)
 		V_list[i].append(Vgb)
 
+	  plt.plot(V_list[i], Y_list[i],color =colours[colour_count],label="NA= "+str(i))
+	  colour_count=colour_count+1
+	
+
+elif plot_type==3: 
+	Cox=(Eox/tox)		#oxide_capacitance per unit area
+	No=(Ni**2)/NA
+	Po=NA
+	Shi_F=Phi_t*log((NA)/(Ni)) 	
+	gm=(sqrt(2*q*Es*NA))/(Cox)
+	n=2*Shi_F+Phi_t*6	
+	for i in Phi_g:
+	  Y_list[i]=[]
+	  V_list[i]=[]	#Fermi_energy
+	  Vfb=-i-Shi_F		#Flatband_voltage	
+	  for Vgb in r:
+		f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  
+		x0= min(f,n)
+		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po)  
+		Y_list[i].append(val)
+		V_list[i].append(Vgb)
 	  plt.plot(V_list[i], Y_list[i],color =colours[colour_count],label="NA= "+str(i))
 	  colour_count=colour_count+1
 	
