@@ -188,7 +188,7 @@ while Condition == 1:
 
 	#limiting the graph
 	plt.ylim(0,1.2)
-	plt.xlim(0,1.5)
+	plt.xlim(Vgb_1,Vgb_2)
 
 	#labelling the axes
 	plt.xlabel('Vgb value') 
