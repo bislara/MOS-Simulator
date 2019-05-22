@@ -46,7 +46,6 @@ Es=ks*Eo
 Eox=kox*Eo		
 
 
-
 #initial calculations for first graph
 #to take 0.1 steps in Vgb
 for i in range(-4,15):
@@ -122,6 +121,11 @@ def setValue(val):
 		Y_list[count].append(val)
 		V_list[count].append(Vgb)
 	colour_count=colour_count+1
+	
+	plt.axes()
+	plt.ylim(0,1.2) 
+	plt.xlim(-1,2) 
+		
 	graph_plot[count],= plt.plot(V_list[count], Y_list[count],color =colours[colour_count],label="tox=2nm")	
 	
 	#graph_plot[count].set_ydata(Y_list[count])
@@ -134,6 +138,9 @@ def setValue(val):
 axButton = plt.axes([0.92,0.6, 0.06, 0.06])
 btn = Button(axButton, ' NEXt ')
 
+
+#button on click callback function
+btn.on_clicked(setValue)
 
 
 #Sliders declaration
@@ -241,8 +248,6 @@ def val_update_Phi(val):
 	plt.draw          # redraw the plot
 
 
-#button on click callback function
-btn.on_clicked(setValue)
 
 #sliders on change function call
 slider1.on_changed(val_update_tox)
