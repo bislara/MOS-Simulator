@@ -7,7 +7,7 @@ from matplotlib.widgets import Slider,Button  # import the Slider widget
 print("Welcome !!!")
 #print("Enter all the values in the MKS system")
 
-global Phi_m,tox,NA,ND,r,count,Qox
+global Phi_m,tox,NA,ND,r,count
 
 
 #user input
@@ -30,7 +30,6 @@ tox=2*10**(-9)
 NA=5*10**23
 Phi_m=0.56
 ND=0
-Qox=10**(-5)
 
 
 #variable declaration
@@ -55,7 +54,7 @@ colours={1:'b',2:'g',3:'r',4:'c',5:'m',6:'y',7:'k'}
 
 # plotting_graph
 fig, ax = plt.subplots()
-plt.subplots_adjust(left=0.1, bottom=0.35)
+plt.subplots_adjust(left=0.1, bottom=0.3)
 
 plt.ylim(0,1.2) 
 plt.xlim(-1,2) 
@@ -74,12 +73,12 @@ plt.legend()
 
 
 #initial text
-txt= ax.text(-0.2, -0.2, 'Sliders', fontsize=18)		#xloc,yloc,txt,fontsize
+txt= ax.text(0.2, -0.2, 'slider ', fontsize=18)
 
 
 #button function for adding plots
 def setValue(val):
-	global count,colour_count,colours,txt,Qox
+	global count,colour_count,colours,Y_list,V_list,txt
 	count=count+1
 	print("count is ",count)
 	
@@ -91,9 +90,8 @@ def setValue(val):
 	No=(Ni**2)/NA
 	Shi_F=Phi_t*log((NA)/(Ni)) 	
 	n=2*Shi_F+Phi_t*6	
-	Cox=Eox/tox	
-	Vfb=-Phi_m-Shi_F-Qox/Cox	#ignoring the potential drop across the oxide layer
-	
+	Vfb=-Phi_m-Shi_F	#ignoring the potential drop across the oxide layer
+	Cox=Eox/tox
 	gm=(sqrt(2*q*Es*NA))/(Cox)
 	
 	for i in range(-5,15):
@@ -113,7 +111,7 @@ def setValue(val):
 	plt.xlim(-1,2) 
 	plt.xlabel('Vgb value') 
 	plt.ylabel('SHI value')
-	txt= plt.text(-0.3, -0.15, 'Slider '+str(count), fontsize=18)	#xloc,yloc,txt,fontsize
+	txt= plt.text(-0.3, -0.15, 'Slider '+str(count), fontsize=18)	
 	graph_plot[count],= plt.plot(V_list[count], Y_list[count],color =colours[colour_count],label="Curve "+str(count))	
 	plt.legend()
 
@@ -122,7 +120,7 @@ def setValue(val):
 
 #sliders Update functions of Tox
 def val_update_tox(val):
-    global tox,NA,Phi_m,count,Qox
+    global tox,NA,Phi_m,count,Y_list,V_list,graph_plot
 	
     if count!=0:
 	r=[]
@@ -133,8 +131,8 @@ def val_update_tox(val):
 	No=(Ni**2)/NA
 	Shi_F=Phi_t*log((NA)/(Ni)) 	
 	n=2*Shi_F+Phi_t*6	
-	Cox=Eox/tox			
-	Vfb=-Phi_m-Shi_F-Qox/Cox
+	Vfb=-Phi_m-Shi_F
+	Cox=Eox/tox		
 	gm=(sqrt(2*q*Es*NA))/(Cox)
 
 	for i in range(Vfb*10+1,20):
@@ -155,7 +153,7 @@ def val_update_tox(val):
 
 #sliders Update functions of NA
 def val_update_NA(val):
-    global tox,NA,Phi_m,count,Qox
+    global tox,NA,Phi_m,count,Y_list,V_list,graph_plot
 
     if count!=0:
 	Y_list[count]=[]
@@ -165,9 +163,9 @@ def val_update_NA(val):
 	Po=NA
 	No=(Ni**2)/NA
 	Shi_F=Phi_t*log((NA)/(Ni)) 	
-	n=2*Shi_F+Phi_t*6		
+	n=2*Shi_F+Phi_t*6	
+	Vfb=-Phi_m-Shi_F
 	Cox=Eox/tox
-	Vfb=-Phi_m-Shi_F-Qox/Cox
 	gm=(sqrt(2*q*Es*NA))/(Cox)
    	
 	for i in range(Vfb*10+1,20):
@@ -187,7 +185,7 @@ def val_update_NA(val):
 
 #sliders Update functions of Phi_m
 def val_update_Phi(val):
-    global tox,NA,Phi_m,count,Qox
+    global tox,NA,Phi_m,count,Y_list,V_list,graph_plot
 
     if count!=0:
 	print("Count inside Phi_m is ",count)
@@ -198,44 +196,9 @@ def val_update_Phi(val):
 	Po=NA
 	No=(Ni**2)/NA
 	Shi_F=Phi_t*log((NA)/(Ni)) 	
-	n=2*Shi_F+Phi_t*6		
+	n=2*Shi_F+Phi_t*6	
+	Vfb=-Phi_m-Shi_F
 	Cox=Eox/tox
-	Vfb=-Phi_m-Shi_F-Qox/Cox
-	gm=(sqrt(2*q*Es*NA))/(Cox)
-   	
-	for i in range(Vfb*10+1,20):
-		r.append(i/10.0)
-
-	for Vgb in r:
-		f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  	
-		x0= min(f,n)
-		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po)  
-		Y_list[count].append(val)
-		V_list[count].append(Vgb)
-	
-	graph_plot[count].set_ydata(Y_list[count])
-	graph_plot[count].set_xdata(V_list[count])
-	plt.draw          # redraw the plot
-
-
-
-#sliders Update functions of Qox
-def val_update_Qox(val):
-    global tox,NA,Phi_m,count,Qox
-
-    if count!=0:
-	print("Count inside Phi_m is ",count)
-	Y_list[count]=[]
-	V_list[count]=[]
-	r=[]
-	Qox=(slider4.val)*10**(-6)
-	Po=NA
-	No=(Ni**2)/NA
-	Shi_F=Phi_t*log((NA)/(Ni)) 	
-	n=2*Shi_F+Phi_t*6		
-	Cox=Eox/tox
-	print("Cox is ",Qox/Cox)
-	Vfb=-Phi_m-Shi_F-Qox/Cox
 	gm=(sqrt(2*q*Es*NA))/(Cox)
    	
 	for i in range(Vfb*10+1,20):
@@ -258,7 +221,7 @@ def val_update_Qox(val):
 
 
 #button_declaration
-axButton = plt.axes([0.92,0.6, 0.06, 0.06])		#xloc,yloc,width,heights
+axButton = plt.axes([0.92,0.6, 0.06, 0.06])
 btn = Button(axButton, ' ADD ')
 	
 
@@ -267,27 +230,24 @@ btn.on_clicked(setValue)
 
 
 #Sliders declaration
-axSlider1= plt.axes([0.1,0.20,0.55,0.02])		#xloc,yloc,width,height
+axSlider1= plt.axes([0.1,0.16,0.6,0.03])
 slider1 = Slider(ax=axSlider1,label='Tox',valmin=1*10**(-9),valmax=5*10**(-9),valinit=tox,valfmt='tox is '+'%1.11f'+ ' in m',color="green")
 
 
-axSlider2= plt.axes([0.1,0.15,0.55,0.02])		#xloc,yloc,width,height
+axSlider2= plt.axes([0.1,0.10,0.6,0.03])
 slider2 = Slider(axSlider2,'NA', valmin=1, valmax=20,valinit=NA/(10**23),valfmt='NA is '+'%1.2f'+ ' in 10**23 m^-3')
 
 
-axSlider3= plt.axes([0.1,0.10,0.55,0.02])		#xloc,yloc,width,height
+axSlider3= plt.axes([0.1,0.05,0.6,0.03])
 slider3 = Slider(axSlider3,'Phi_m', valmin=0.01, valmax=2,valinit=Phi_m,valfmt='Phi_m is '+'%1.2f',color="red")
 
 
-axSlider4= plt.axes([0.1,0.05,0.55,0.02])		#xloc,yloc,width,height
-slider4 = Slider(axSlider4,'Qox', valmin=0.01, valmax=100,valinit=Qox*10**6,valfmt='Qox is '+'%1.2f',color="yellow")
 
 
 #sliders on change function call
 slider1.on_changed(val_update_tox)
 slider2.on_changed(val_update_NA)
 slider3.on_changed(val_update_Phi)
-slider4.on_changed(val_update_Qox)
 
 plt.show()
 
