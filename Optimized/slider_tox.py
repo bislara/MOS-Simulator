@@ -81,7 +81,6 @@ plt.ylabel('SHI value')
 
 #2-D variable of graph
 graph_plot,= plt.plot(V_list, Y_list,color ='r',label="tox=2nm")	
-plt.legend()
 
 
 
@@ -90,7 +89,6 @@ plt.legend()
 axSlider1= plt.axes([0.1,0.16,0.6,0.03])
 slider1 = Slider(ax=axSlider1,label='Tox',valmin=1*10**(-9),valmax=5*10**(-9),valinit=tox,valfmt='tox is '+'%1.11f'+ ' in m',color="green")
 
-plt.title('Sliders')
 
 axSlider2= plt.axes([0.1,0.10,0.6,0.03])
 slider2 = Slider(axSlider2,'NA', valmin=1, valmax=20,valinit=NA/(10**23),valfmt='NA is '+'%1.2f'+ ' in 10**23 m^-3')
