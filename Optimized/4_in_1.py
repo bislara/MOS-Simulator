@@ -36,11 +36,28 @@ Qox=10**(-5)
 r=[]	
 Y_list={}
 V_list={}
+Y1_list={}
+V1_list={}
+Y2_list={}
+V2_list={}
+Y3_list={}
+V3_list={}
+
 
 count=0
 Y_list[count]=[]
 V_list[count]=[]
+Y1_list[count]=[]
+V1_list[count]=[]
+Y2_list[count]=[]
+V2_list[count]=[]
+Y3_list[count]=[]
+V3_list[count]=[]
+
 graph_plot={}
+graph_plot1={}
+graph_plot2={}
+graph_plot3={}
 
 Es=ks*Eo		
 Eox=kox*Eo		
@@ -51,40 +68,77 @@ colours={1:'b',2:'g',3:'r',4:'c',5:'m',6:'y',7:'k'}
 
 
 
-
 # plotting_graph
-fig, ax = plt.subplots()
-plt.subplots_adjust(left=0.1, bottom=0.35)
+fig,((ax1, ax2), (ax3, ax4))= plt.subplots(2,2,sharey=False)
+plt.subplots_adjust(left=0.05, bottom=0.30,right=0.95,top=0.95)
 
-plt.xlim(-1,2) 
-plt.ylim(0,0.05) 
+#1
+ax1.set_xlim(-1,2) 
+ax1.set_ylim(0,1.3) 
 
-plt.title('Vgb VS Q graph') 
+ax1.set_xlabel('Vgb value') 
+ax1.set_ylabel('SHI_S value')
+#2
+ax2.set_xlim(0,1.5) 
+ax2.set_ylim(0,-0.05) 
 
-plt.xlabel('Vgb value') 
-plt.ylabel('Q value')
+ax2.set_xlabel('SHI_S value') 
+ax2.set_ylabel('Q value')
+#3
+ax3.set_xlim(-1,2) 
+ax3.set_ylim(0,0.05) 
+
+ax3.set_xlabel('Vgb value') 
+ax3.set_ylabel('Q value')
+#4
+ax4.set_xlim(-1,1.5) 
+ax4.set_ylim(0,0.035) 
+
+ax4.set_xlabel('Vgb value') 
+ax4.set_ylabel('dQ/dVgb value')
+
 
 #2-D variable of graph
 graph_plot[count]=[]
 graph_plot[count],= plt.plot(V_list[count], Y_list[count],color ='r',label="")	
+
+graph_plot1[count]=[]
+graph_plot1[count],= plt.plot(V1_list[count], Y1_list[count],color ='r',label="")	
+
+graph_plot2[count]=[]
+graph_plot2[count],= plt.plot(V2_list[count], Y2_list[count],color ='r',label="")	
+
+graph_plot3[count]=[]
+graph_plot3[count],= plt.plot(V3_list[count], Y3_list[count],color ='r',label="")	
+
 
 plt.legend()
 
 
 
 #initial text
-txt= ax.text(-0.2, -0.2, 'Sliders', fontsize=18)		#xloc,yloc,txt,fontsize
+#txt= plt.text(-0.2, -0.2, 'Sliders', fontsize=18)		#xloc,yloc,txt,fontsize
 
 
 #button function for adding plots
 def setValue(val):
-	global count,colour_count,colours,txt,Qox
+	global count,colour_count,colours,Qox
 	count=count+1
 	print("count is ",count)
 	
 	Y_list[count]=[]
 	V_list[count]=[]
 	graph_plot[count]=[]
+	Y1_list[count]=[]
+	V1_list[count]=[]
+	graph_plot1[count]=[]
+	Y2_list[count]=[]
+	V2_list[count]=[]
+	graph_plot2[count]=[]
+	Y3_list[count]=[]
+	V3_list[count]=[]
+	graph_plot3[count]=[]
+
 	r=[]
 	Po=NA	
 	No=(Ni**2)/NA
@@ -92,7 +146,6 @@ def setValue(val):
 	n=2*Shi_F+Phi_t*6	
 	Cox=Eox/tox	
 	Vfb=-Phi_m-Shi_F-Qox/Cox	#ignoring the potential drop across the oxide layer
-	
 	gm=(sqrt(2*q*Es*NA))/(Cox)
 	
 	for i in drange(-0.5,1.5,0.05):
@@ -102,21 +155,45 @@ def setValue(val):
 		f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  
 		x0= min(f,n)	
 		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po) 
-		Qc = abs(charge_funct(NA,Phi_t,Es,q,val,Shi_F))
+		Qc = (charge_funct(NA,Phi_t,Es,q,val,Shi_F))
 		dq_dVgb=deriv_funct(val,Qc,NA,Phi_t,Es,q,Shi_F,Vgb,Vfb,ND,Cox,No,Po)
 		print("the der val is : ",dq_dVgb)
+		
 		V_list[count].append(Vgb)
-		Y_list[count].append(dq_dVgb)
+		Y_list[count].append(val)
+
+		V1_list[count].append(val)
+		Y1_list[count].append(Qc)
+
+		V2_list[count].append(Vgb)
+		Y2_list[count].append(abs(Qc))
+
+		V3_list[count].append(Vgb)
+		Y3_list[count].append(dq_dVgb)
+
 	colour_count=colour_count+1
-	txt.remove()	
-	plt.axes()
-	plt.xlim(-1,1.5) 
-	plt.ylim(0,0.035) 
-	plt.xlabel('Vgb value') 
-	plt.ylabel('Qc value')
-	txt= plt.text(-0.3, -0.15, 'Slider '+str(count), fontsize=18)	#xloc,yloc,txt,fontsize
-	graph_plot[count],= plt.plot(V_list[count], Y_list[count],color =colours[colour_count],label="Curve "+str(count))	
+	print("V1 is ",V_list,Y_list)
+
+	plt.axes(ax1)	
+	graph_plot[count],= plt.plot(V_list[count], Y_list[count],color =colours[colour_count],label="Curve "+str(count))			
 	plt.legend()
+
+	plt.axes(ax2)	
+	graph_plot1[count],= plt.plot(V1_list[count], Y1_list[count],color =colours[colour_count],label="Curve "+str(count))			
+	plt.legend()
+
+	plt.axes(ax3)	
+	graph_plot2[count],= plt.plot(V2_list[count], Y2_list[count],color =colours[colour_count],label="Curve "+str(count))			
+	plt.legend()
+
+	plt.axes(ax4)	
+	graph_plot3[count],= plt.plot(V3_list[count], Y3_list[count],color =colours[colour_count],label="Curve "+str(count))			
+	plt.legend()
+
+
+	#txt.remove()	
+	#txt= plt.text(-0.3, -0.15, 'Slider '+str(count), fontsize=18)	#xloc,yloc,txt,fontsize
+	
 
 
 
@@ -129,6 +206,13 @@ def val_update_tox(val):
 	r=[]
 	Y_list[count]=[]
 	V_list[count]=[]
+	Y1_list[count]=[]
+	V1_list[count]=[]
+	Y2_list[count]=[]
+	V2_list[count]=[]
+	Y3_list[count]=[]
+	V3_list[count]=[]
+
 	tox=slider1.val
 	Po=NA
 	No=(Ni**2)/NA
@@ -145,13 +229,31 @@ def val_update_tox(val):
 		f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  	
 		x0= min(f,n)
 		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po) 
-		Qc = abs(charge_funct(NA,Phi_t,Es,q,val,Shi_F))
+		Qc = (charge_funct(NA,Phi_t,Es,q,val,Shi_F))
 		dq_dVgb=deriv_funct(val,Qc,NA,Phi_t,Es,q,Shi_F,Vgb,Vfb,ND,Cox,No,Po)		
 		V_list[count].append(Vgb)
-		Y_list[count].append(dq_dVgb)
+		Y_list[count].append(val)
+
+		V1_list[count].append(val)
+		Y1_list[count].append(Qc)
+
+		V2_list[count].append(Vgb)
+		Y2_list[count].append(abs(Qc))
+
+		V3_list[count].append(Vgb)
+		Y3_list[count].append(dq_dVgb)
 
 	graph_plot[count].set_ydata(Y_list[count])
 	graph_plot[count].set_xdata(V_list[count])
+	plt.draw          # redraw the plot
+	graph_plot1[count].set_ydata(Y1_list[count])
+	graph_plot1[count].set_xdata(V1_list[count])
+	plt.draw          # redraw the plot
+	graph_plot2[count].set_ydata(Y2_list[count])
+	graph_plot2[count].set_xdata(V2_list[count])
+	plt.draw          # redraw the plot
+	graph_plot3[count].set_ydata(Y3_list[count])
+	graph_plot3[count].set_xdata(V3_list[count])
 	plt.draw          # redraw the plot
 
 
@@ -163,6 +265,13 @@ def val_update_NA(val):
     if count!=0:
 	Y_list[count]=[]
 	V_list[count]=[]
+	Y1_list[count]=[]
+	V1_list[count]=[]
+	Y2_list[count]=[]
+	V2_list[count]=[]
+	Y3_list[count]=[]
+	V3_list[count]=[]
+
 	r=[]
 	NA=(slider2.val)*10**23
 	Po=NA
@@ -180,13 +289,31 @@ def val_update_NA(val):
 		f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  	
 		x0= min(f,n)
 		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po) 
-		Qc = abs(charge_funct(NA,Phi_t,Es,q,val,Shi_F))
+		Qc = (charge_funct(NA,Phi_t,Es,q,val,Shi_F))
 		dq_dVgb=deriv_funct(val,Qc,NA,Phi_t,Es,q,Shi_F,Vgb,Vfb,ND,Cox,No,Po) 
 		V_list[count].append(Vgb)
-		Y_list[count].append(dq_dVgb)
-	
+		Y_list[count].append(val)
+
+		V1_list[count].append(val)
+		Y1_list[count].append(Qc)
+
+		V2_list[count].append(Vgb)
+		Y2_list[count].append(abs(Qc))
+
+		V3_list[count].append(Vgb)
+		Y3_list[count].append(dq_dVgb)
+
 	graph_plot[count].set_ydata(Y_list[count])
 	graph_plot[count].set_xdata(V_list[count])
+	plt.draw          # redraw the plot
+	graph_plot1[count].set_ydata(Y1_list[count])
+	graph_plot1[count].set_xdata(V1_list[count])
+	plt.draw          # redraw the plot
+	graph_plot2[count].set_ydata(Y2_list[count])
+	graph_plot2[count].set_xdata(V2_list[count])
+	plt.draw          # redraw the plot
+	graph_plot3[count].set_ydata(Y3_list[count])
+	graph_plot3[count].set_xdata(V3_list[count])
 	plt.draw          # redraw the plot
 
 
@@ -198,6 +325,13 @@ def val_update_Phi(val):
 	print("Count inside Phi_m is ",count)
 	Y_list[count]=[]
 	V_list[count]=[]
+	Y1_list[count]=[]
+	V1_list[count]=[]
+	Y2_list[count]=[]
+	V2_list[count]=[]
+	Y3_list[count]=[]
+	V3_list[count]=[]
+
 	r=[]
 	Phi_m=slider3.val
 	Po=NA
@@ -215,13 +349,31 @@ def val_update_Phi(val):
 		f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  	
 		x0= min(f,n)
 		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po) 
-		Qc = abs(charge_funct(NA,Phi_t,Es,q,val,Shi_F)) 
+		Qc = (charge_funct(NA,Phi_t,Es,q,val,Shi_F)) 
 		dq_dVgb=deriv_funct(val,Qc,NA,Phi_t,Es,q,Shi_F,Vgb,Vfb,ND,Cox,No,Po)
 		V_list[count].append(Vgb)
-		Y_list[count].append(dq_dVgb)
-	
+		Y_list[count].append(val)
+
+		V1_list[count].append(val)
+		Y1_list[count].append(Qc)
+
+		V2_list[count].append(Vgb)
+		Y2_list[count].append(abs(Qc))
+
+		V3_list[count].append(Vgb)
+		Y3_list[count].append(dq_dVgb)
+
 	graph_plot[count].set_ydata(Y_list[count])
 	graph_plot[count].set_xdata(V_list[count])
+	plt.draw          # redraw the plot
+	graph_plot1[count].set_ydata(Y1_list[count])
+	graph_plot1[count].set_xdata(V1_list[count])
+	plt.draw          # redraw the plot
+	graph_plot2[count].set_ydata(Y2_list[count])
+	graph_plot2[count].set_xdata(V2_list[count])
+	plt.draw          # redraw the plot
+	graph_plot3[count].set_ydata(Y3_list[count])
+	graph_plot3[count].set_xdata(V3_list[count])
 	plt.draw          # redraw the plot
 
 
@@ -234,6 +386,13 @@ def val_update_Qox(val):
 	print("Count inside Phi_m is ",count)
 	Y_list[count]=[]
 	V_list[count]=[]
+	Y1_list[count]=[]
+	V1_list[count]=[]
+	Y2_list[count]=[]
+	V2_list[count]=[]
+	Y3_list[count]=[]
+	V3_list[count]=[]
+
 	r=[]
 	Qox=(slider4.val)*10**(-6)
 	Po=NA
@@ -252,22 +411,37 @@ def val_update_Qox(val):
 		f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  	
 		x0= min(f,n)
 		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po) 
-		Qc = abs(charge_funct(NA,Phi_t,Es,q,val,Shi_F)) 
+		Qc = (charge_funct(NA,Phi_t,Es,q,val,Shi_F)) 
 		dq_dVgb=deriv_funct(val,Qc,NA,Phi_t,Es,q,Shi_F,Vgb,Vfb,ND,Cox,No,Po)
 		V_list[count].append(Vgb)
-		Y_list[count].append(dq_dVgb)
-	
+		Y_list[count].append(val)
+
+		V1_list[count].append(val)
+		Y1_list[count].append(Qc)
+
+		V2_list[count].append(Vgb)
+		Y2_list[count].append(abs(Qc))
+
+		V3_list[count].append(Vgb)
+		Y3_list[count].append(dq_dVgb)
+
 	graph_plot[count].set_ydata(Y_list[count])
 	graph_plot[count].set_xdata(V_list[count])
+	plt.draw          # redraw the plot
+	graph_plot1[count].set_ydata(Y1_list[count])
+	graph_plot1[count].set_xdata(V1_list[count])
+	plt.draw          # redraw the plot
+	graph_plot2[count].set_ydata(Y2_list[count])
+	graph_plot2[count].set_xdata(V2_list[count])
+	plt.draw          # redraw the plot
+	graph_plot3[count].set_ydata(Y3_list[count])
+	graph_plot3[count].set_xdata(V3_list[count])
 	plt.draw          # redraw the plot
 
 
 
-
-
-
 #button_declaration
-axButton = plt.axes([0.92,0.6, 0.06, 0.06])		#xloc,yloc,width,heights
+axButton = plt.axes([0.83,0.10, 0.06, 0.06])		#xloc,yloc,width,heights
 btn = Button(axButton, ' ADD ')
 	
 

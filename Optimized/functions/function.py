@@ -2,7 +2,10 @@ from math import *
 from sympy import *
 
 
-
+def drange(start, stop, step):
+    while start < stop:
+            yield start
+            start += step
 
 #funct to return the value of funct at a particuar value
 def func(Vgb, Shi_s,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po):	    
