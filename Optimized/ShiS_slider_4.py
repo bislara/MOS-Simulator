@@ -280,7 +280,7 @@ slider3 = Slider(axSlider3,'Phi_m', valmin=0.01, valmax=2,valinit=Phi_m,valfmt='
 
 
 axSlider4= plt.axes([0.1,0.05,0.55,0.02])		#xloc,yloc,width,height
-slider4 = Slider(axSlider4,'Qox', valmin=0.01, valmax=100,valinit=Qox*10**6,valfmt='Qox is '+'%1.2f',color="yellow")
+slider4 = Slider(axSlider4,'Qox', valmin=0.01, valmax=100,valinit=Qox*10**6,valfmt='Qox is '+'%1.2f'+'*10^(-6)',color="yellow")
 
 
 #sliders on change function call

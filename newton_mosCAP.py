@@ -16,11 +16,11 @@ global Vgb,Vfb,q,Es,Cox,Po,No,St,NA,ND
 # NA= int(input("Enter the value of NA "))
 # ND= int(input("Enter the value of ND "))
 #x0 = float(input("enter the initial value : "))
-Vgb=0.5
+Vgb=1
 
 Vfb=-1
 NA=10**24
-ND=10**15
+ND=0
 St=0.026
 q=1.6*10**(-19)
 Es=1.05*10**(-10)
@@ -38,8 +38,8 @@ def func( Y ):
     global Vgb,Vfb,q,Es,Cox,Po,No,St,NA,ND
     #print("I am inside func  " , Y)
     try: 
-      	  p=long(Vfb + Y + (sqrt(2*q*Es)/Cox) *(sqrt( Po*St*( e**(-Y/St )-1) +( NA-ND  )*Y + No*St*( e**(Y/St )-1) )  ) -Vgb)
-      	  return p
+      	  p=long((sqrt(2*q*Es)) *(sqrt( Po*St*( e**(-Y/St )-1) +( NA-ND  )*Y + No*St*( e**(Y/St )-1) )  ) -Vgb)
+      	  return abs(p)
     except ZeroDivisionError:
           print("Error!!!!!!!!!!!", Y)
     	  return 0    
@@ -51,7 +51,7 @@ def derivFunc( Y ):
     if k==0:
 	return 1
     else:  
-	return k
+	return abs(k)
 
   
 # Function to find the root 
@@ -81,7 +81,7 @@ def newtonRaphson( Y ):
 
 
 t= Symbol('t')    
-f=Vfb + t + (sqrt(2*q*Es)/Cox) *(sqrt( Po*St*( e**(-t/St )-1) +( NA-ND  )*t + No*St*( e**(t/St )-1) )  ) -Vgb
+f=-(sqrt(2*q*Es)) *(sqrt( Po*St*( e**(-t/St )-1) +( NA-ND  )*t + No*St*( e**(t/St )-1) )  ) -Vgb
 deriv= Derivative(f, t)
 
 

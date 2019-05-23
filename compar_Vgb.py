@@ -83,12 +83,13 @@ def newtonRaphson( Vgb, Y ):
       
     #print("The value of the root is : ", 
      #                        "%.4f"% Y)
-    print("the no of iterations is ",count) 
+    print("the no of iterations is ",count)
+    count=0 
     return Y
 
 
-for i in range(0,15):
-	r.append(i/10.0)
+for i in range(0,150):
+	r.append(i/100.0)
 
 #loop for newton Raphson method and using diff intial value for diff Vgb
 for Vgb in r:

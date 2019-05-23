@@ -17,7 +17,7 @@ global Vgb,Vfb,q,Es,Cox,Po,No,St,NA,ND
 # No= int(input("Enter the value of No "))
 # St= int(input("Enter the value of St "))
 # NA= int(input("Enter the value of NA "))
-# ND= int(input("Enter the value of ND "))
+# ND= int(input("Enter the value of ND "))	
 #x0 = float(input("enter the initial value : "))
 
 #intial values 

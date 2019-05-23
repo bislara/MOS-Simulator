@@ -7,19 +7,20 @@ global Y,deriv,dydx,count
 count=0
 h=5
 global Vgb,Vfb,q,Es,Cox,Po,No,St,NA,ND
-
+t= Symbol('t')    
 
 # Vgb=float(input("Enter the value of Vgb "))
 # Vfb=float(input("Enter the value of Vfb "))
 # q=  float(input("Enter the value of q "))
 # Es= float(input("Enter the value of Es "))
-# Cox=float(input("Enter the value of Cox "))
+# tox=float(input("Enter the value of tox "))
 # Po= float(input("Enter the value of Po "))
 # No= float(input("Enter the value of No "))
 # St= float(input("Enter the value of St "))
 # NA= float(input("Enter the value of NA "))
 # ND= float(input("Enter the value of ND "))
 #x0 = float(input("enter the initial value : "))
+
 Fi_g=float(input("enter the gate material vol :"))
 
 #intial values 
@@ -39,7 +40,7 @@ Eox=kox*Eo
 tox=2*10**(-9)
 #Fi_g=0.56
 
-Ni=1.18*10**16
+Ni=1.15*10**16
 #Cox=1.668*10**(-2)
 
 
@@ -88,13 +89,16 @@ def newtonRaphson( Vgb, Y ):
     global Vfb,q,Es,Cox,Po,No,St,NA,ND,h
     if derivFunc(Y)!=0:
     	h = (func(Vgb,Y) )/ (derivFunc(Y)) 
+	err = 1;
     	print("h is ",h)
 
-    while abs(h) >= 0.001: 
+    while abs(err) >= 0.001: 
         count=count+1
 	try:
       	    h = func(Vgb,Y)/derivFunc(Y)
-	    Y = Y - h    
+	    Ynew = Y - h
+	    err = Ynew - Y
+	    Y = Y + 0.01*(Ynew-Y)    
         except ZeroDivisionError:
             print("Error! - derivative zero for x = ", Y)
         # x(i+1) = x(i) - f(x) / f'(x) 
@@ -103,6 +107,7 @@ def newtonRaphson( Vgb, Y ):
     #print("The value of the root is : ", 
      #                        "%.4f"% Y)
     print("the no of iterations is ",count) 
+    count=0
     return Y
 
 
@@ -120,8 +125,7 @@ for Vgb in r:
 	gm=(sqrt(2*q*Es*NA))/(Cox)
 	f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  
 	n=0.826+0.026*6
-	x0= min(f,n)	
-	t= Symbol('t')    
+	x0= min(f,n)
 	f=Vfb + t + (sqrt(2*q*Es)/(Cox)) *(sqrt( Po*St*( e**(-t/St )-1) +( NA-ND  )*t + No*St*( e**(t/St )-1) )  ) -Vgb
 	deriv= Derivative(f, t)
 	val=newtonRaphson(Vgb,x0)  
@@ -142,7 +146,6 @@ for Vgb in r:
 	n=0.826+0.026*6
 	x0= min(f,n)
 	#print("x0 value is ",x0)	
-	t= Symbol('t')    
 	f=Vfb + t + (sqrt(2*q*Es)/Cox) *(sqrt( Po*St*( e**(-t/St )-1) +( NA-ND  )*t + No*St*( e**(t/St )-1) )  ) -Vgb
 	deriv= Derivative(f, t)
 	val=newtonRaphson(Vgb,x0)  
@@ -163,7 +166,6 @@ for Vgb in r:
 	n=0.826+0.026*6
 	x0= min(f,n)
 	#print("x0 value is ",x0)	
-	t= Symbol('t')    
 	f=Vfb + t + (sqrt(2*q*Es)/Cox) *(sqrt( Po*St*( e**(-t/St )-1) +( NA-ND  )*t + No*St*( e**(t/St )-1) )  ) -Vgb
 	deriv= Derivative(f, t)
 	val=newtonRaphson(Vgb,x0)  
