@@ -60,8 +60,9 @@ def newtonRaphson( Vgb, Shi_s ,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po):
 
 
 
-def charge_funct(NA,Phi_t,Es,q,Shi_s,Phi_F):
+def charge_funct(NA,Phi_t,Es,q,Shi_s,Phi_F,ND,Po,No):
 	Qc=-(sqrt(2*q*Es*NA))*(sqrt(Phi_t*e**(-Shi_s/Phi_t)+Shi_s-Phi_t+e**(-2*Phi_F/Phi_t)*(Phi_t*e**(Shi_s/Phi_t)-Shi_s-Phi_t)))
+	#Qc=-(sqrt(2*q*Es))*(sqrt(Po*Phi_t*(e**(-Shi_s/Phi_t)-1)+(NA-ND)*Shi_s+No*Phi_t*(e**(Shi_s/Phi_t)-1)))
 	return Qc
 
 

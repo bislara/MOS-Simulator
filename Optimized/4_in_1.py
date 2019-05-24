@@ -1,4 +1,5 @@
 #importing modules to main_code
+import FileDialog 
 import matplotlib.pyplot as plt
 from functions.function import *
 from matplotlib.widgets import Slider,Button  # import the Slider widget
@@ -42,7 +43,8 @@ Y2_list={}
 V2_list={}
 Y3_list={}
 V3_list={}
-
+Cox_list={}
+Cox_val_list={}
 
 count=0
 Y_list[count]=[]
@@ -53,11 +55,14 @@ Y2_list[count]=[]
 V2_list[count]=[]
 Y3_list[count]=[]
 V3_list[count]=[]
+Cox_list[count]=[]
+Cox_val_list[count]=[]
 
 graph_plot={}
 graph_plot1={}
 graph_plot2={}
 graph_plot3={}
+graph_plot4={}
 
 Es=ks*Eo		
 Eox=kox*Eo		
@@ -67,7 +72,7 @@ colours={1:'b',2:'g',3:'r',4:'c',5:'m',6:'y',7:'k'}
 
 
 
-
+plt.title="Different graphs"
 # plotting_graph
 fig,((ax1, ax2), (ax3, ax4))= plt.subplots(2,2,sharey=False)
 plt.subplots_adjust(left=0.05, bottom=0.30,right=0.95,top=0.95)
@@ -76,26 +81,26 @@ plt.subplots_adjust(left=0.05, bottom=0.30,right=0.95,top=0.95)
 ax1.set_xlim(-1,2) 
 ax1.set_ylim(0,1.3) 
 
-ax1.set_xlabel('Vgb value') 
-ax1.set_ylabel('SHI_S value')
+ax1.set_xlabel('Vgb value(in V)') 
+ax1.set_ylabel('SHI_S value(in V)')
 #2
 ax2.set_xlim(0,1.5) 
-ax2.set_ylim(0,-0.05) 
+ax2.set_ylim(0,0.015) 
 
-ax2.set_xlabel('SHI_S value') 
-ax2.set_ylabel('Q value')
+ax2.set_xlabel('SHI_S value(in V)') 
+ax2.set_ylabel('Q value(in C/m^2)')
 #3
 ax3.set_xlim(-1,2) 
-ax3.set_ylim(0,0.05) 
+ax3.set_ylim(0,0.03) 
 
-ax3.set_xlabel('Vgb value') 
-ax3.set_ylabel('Q value')
+ax3.set_xlabel('Vgb value(in V)') 
+ax3.set_ylabel('Q value(in C/m^2)')
 #4
 ax4.set_xlim(-1,1.5) 
-ax4.set_ylim(0,0.035) 
+ax4.set_ylim(0,0.03) 
 
-ax4.set_xlabel('Vgb value') 
-ax4.set_ylabel('dQ/dVgb value')
+ax4.set_xlabel('Vgb value(in V)') 
+ax4.set_ylabel('dQ/dVgb value(in F/m^2)')
 
 
 #2-D variable of graph
@@ -110,6 +115,9 @@ graph_plot2[count],= plt.plot(V2_list[count], Y2_list[count],color ='r',label=""
 
 graph_plot3[count]=[]
 graph_plot3[count],= plt.plot(V3_list[count], Y3_list[count],color ='r',label="")	
+
+graph_plot4[count]=[]
+graph_plot4[count],= plt.plot(Cox_list[count], Cox_val_list[count],color ='r',label="")	
 
 
 plt.legend()
@@ -138,7 +146,10 @@ def setValue(val):
 	Y3_list[count]=[]
 	V3_list[count]=[]
 	graph_plot3[count]=[]
-
+	Cox_list[count]=[]
+	Cox_val_list[count]=[]
+	graph_plot4[count]=[]
+	
 	r=[]
 	Po=NA	
 	No=(Ni**2)/NA
@@ -155,7 +166,7 @@ def setValue(val):
 		f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  
 		x0= min(f,n)	
 		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po) 
-		Qc = (charge_funct(NA,Phi_t,Es,q,val,Shi_F))
+		Qc = (charge_funct(NA,Phi_t,Es,q,val,Shi_F,ND,Po,No))
 		dq_dVgb=deriv_funct(val,Qc,NA,Phi_t,Es,q,Shi_F,Vgb,Vfb,ND,Cox,No,Po)
 		print("the der val is : ",dq_dVgb)
 		
@@ -163,7 +174,7 @@ def setValue(val):
 		Y_list[count].append(val)
 
 		V1_list[count].append(val)
-		Y1_list[count].append(Qc)
+		Y1_list[count].append(abs(Qc))
 
 		V2_list[count].append(Vgb)
 		Y2_list[count].append(abs(Qc))
@@ -171,9 +182,11 @@ def setValue(val):
 		V3_list[count].append(Vgb)
 		Y3_list[count].append(dq_dVgb)
 
-	colour_count=colour_count+1
-	print("V1 is ",V_list,Y_list)
+		Cox_list[count].append(Vgb)
+		Cox_val_list[count].append(Cox)
 
+	colour_count=colour_count+1
+	
 	plt.axes(ax1)	
 	graph_plot[count],= plt.plot(V_list[count], Y_list[count],color =colours[colour_count],label="Curve "+str(count))			
 	plt.legend()
@@ -187,7 +200,9 @@ def setValue(val):
 	plt.legend()
 
 	plt.axes(ax4)	
-	graph_plot3[count],= plt.plot(V3_list[count], Y3_list[count],color =colours[colour_count],label="Curve "+str(count))			
+	graph_plot3[count],= plt.plot(V3_list[count], Y3_list[count],color =colours[colour_count],label="Curve "+str(count))
+	graph_plot4[count],= plt.plot(Cox_list[count], Cox_val_list[count],color =colours[colour_count],linestyle='--')
+			
 	plt.legend()
 
 
@@ -212,6 +227,8 @@ def val_update_tox(val):
 	V2_list[count]=[]
 	Y3_list[count]=[]
 	V3_list[count]=[]
+	Cox_list[count]=[]
+	Cox_val_list[count]=[]
 
 	tox=slider1.val
 	Po=NA
@@ -229,20 +246,22 @@ def val_update_tox(val):
 		f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  	
 		x0= min(f,n)
 		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po) 
-		Qc = (charge_funct(NA,Phi_t,Es,q,val,Shi_F))
+		Qc = (charge_funct(NA,Phi_t,Es,q,val,Shi_F,ND,Po,No))
 		dq_dVgb=deriv_funct(val,Qc,NA,Phi_t,Es,q,Shi_F,Vgb,Vfb,ND,Cox,No,Po)		
 		V_list[count].append(Vgb)
 		Y_list[count].append(val)
 
 		V1_list[count].append(val)
-		Y1_list[count].append(Qc)
+		Y1_list[count].append(abs(Qc))
 
 		V2_list[count].append(Vgb)
 		Y2_list[count].append(abs(Qc))
 
 		V3_list[count].append(Vgb)
 		Y3_list[count].append(dq_dVgb)
-
+		Cox_list[count].append(Vgb)
+		Cox_val_list[count].append(Cox)
+	print("Cox is ",Cox)
 	graph_plot[count].set_ydata(Y_list[count])
 	graph_plot[count].set_xdata(V_list[count])
 	plt.draw          # redraw the plot
@@ -254,6 +273,9 @@ def val_update_tox(val):
 	plt.draw          # redraw the plot
 	graph_plot3[count].set_ydata(Y3_list[count])
 	graph_plot3[count].set_xdata(V3_list[count])
+	graph_plot4[count].set_ydata(Cox_val_list[count])
+	graph_plot4[count].set_xdata(Cox_list[count])
+	
 	plt.draw          # redraw the plot
 
 
@@ -271,6 +293,8 @@ def val_update_NA(val):
 	V2_list[count]=[]
 	Y3_list[count]=[]
 	V3_list[count]=[]
+	Cox_list[count]=[]
+	Cox_val_list[count]=[]
 
 	r=[]
 	NA=(slider2.val)*10**23
@@ -289,19 +313,21 @@ def val_update_NA(val):
 		f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  	
 		x0= min(f,n)
 		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po) 
-		Qc = (charge_funct(NA,Phi_t,Es,q,val,Shi_F))
+		Qc = (charge_funct(NA,Phi_t,Es,q,val,Shi_F,ND,Po,No))
 		dq_dVgb=deriv_funct(val,Qc,NA,Phi_t,Es,q,Shi_F,Vgb,Vfb,ND,Cox,No,Po) 
 		V_list[count].append(Vgb)
 		Y_list[count].append(val)
 
 		V1_list[count].append(val)
-		Y1_list[count].append(Qc)
+		Y1_list[count].append(abs(Qc))
 
 		V2_list[count].append(Vgb)
 		Y2_list[count].append(abs(Qc))
 
 		V3_list[count].append(Vgb)
 		Y3_list[count].append(dq_dVgb)
+		Cox_list[count].append(Vgb)
+		Cox_val_list[count].append(Cox)
 
 	graph_plot[count].set_ydata(Y_list[count])
 	graph_plot[count].set_xdata(V_list[count])
@@ -314,6 +340,8 @@ def val_update_NA(val):
 	plt.draw          # redraw the plot
 	graph_plot3[count].set_ydata(Y3_list[count])
 	graph_plot3[count].set_xdata(V3_list[count])
+	graph_plot4[count].set_ydata(Cox_val_list[count])
+	graph_plot4[count].set_xdata(Cox_list[count])
 	plt.draw          # redraw the plot
 
 
@@ -331,6 +359,8 @@ def val_update_Phi(val):
 	V2_list[count]=[]
 	Y3_list[count]=[]
 	V3_list[count]=[]
+	Cox_list[count]=[]
+	Cox_val_list[count]=[]
 
 	r=[]
 	Phi_m=slider3.val
@@ -349,19 +379,21 @@ def val_update_Phi(val):
 		f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  	
 		x0= min(f,n)
 		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po) 
-		Qc = (charge_funct(NA,Phi_t,Es,q,val,Shi_F)) 
+		Qc = (charge_funct(NA,Phi_t,Es,q,val,Shi_F,ND,Po,No)) 
 		dq_dVgb=deriv_funct(val,Qc,NA,Phi_t,Es,q,Shi_F,Vgb,Vfb,ND,Cox,No,Po)
 		V_list[count].append(Vgb)
 		Y_list[count].append(val)
 
 		V1_list[count].append(val)
-		Y1_list[count].append(Qc)
+		Y1_list[count].append(abs(Qc))
 
 		V2_list[count].append(Vgb)
 		Y2_list[count].append(abs(Qc))
 
 		V3_list[count].append(Vgb)
 		Y3_list[count].append(dq_dVgb)
+		Cox_list[count].append(Vgb)
+		Cox_val_list[count].append(Cox)
 
 	graph_plot[count].set_ydata(Y_list[count])
 	graph_plot[count].set_xdata(V_list[count])
@@ -374,6 +406,8 @@ def val_update_Phi(val):
 	plt.draw          # redraw the plot
 	graph_plot3[count].set_ydata(Y3_list[count])
 	graph_plot3[count].set_xdata(V3_list[count])
+	graph_plot4[count].set_ydata(Cox_val_list[count])
+	graph_plot4[count].set_xdata(Cox_list[count])
 	plt.draw          # redraw the plot
 
 
@@ -392,6 +426,8 @@ def val_update_Qox(val):
 	V2_list[count]=[]
 	Y3_list[count]=[]
 	V3_list[count]=[]
+	Cox_list[count]=[]
+	Cox_val_list[count]=[]
 
 	r=[]
 	Qox=(slider4.val)*10**(-6)
@@ -411,19 +447,21 @@ def val_update_Qox(val):
 		f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  	
 		x0= min(f,n)
 		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po) 
-		Qc = (charge_funct(NA,Phi_t,Es,q,val,Shi_F)) 
+		Qc = (charge_funct(NA,Phi_t,Es,q,val,Shi_F,ND,Po,No)) 
 		dq_dVgb=deriv_funct(val,Qc,NA,Phi_t,Es,q,Shi_F,Vgb,Vfb,ND,Cox,No,Po)
 		V_list[count].append(Vgb)
 		Y_list[count].append(val)
 
 		V1_list[count].append(val)
-		Y1_list[count].append(Qc)
+		Y1_list[count].append(abs(Qc))
 
 		V2_list[count].append(Vgb)
 		Y2_list[count].append(abs(Qc))
 
 		V3_list[count].append(Vgb)
 		Y3_list[count].append(dq_dVgb)
+		Cox_list[count].append(Vgb)
+		Cox_val_list[count].append(Cox)
 
 	graph_plot[count].set_ydata(Y_list[count])
 	graph_plot[count].set_xdata(V_list[count])
@@ -436,8 +474,9 @@ def val_update_Qox(val):
 	plt.draw          # redraw the plot
 	graph_plot3[count].set_ydata(Y3_list[count])
 	graph_plot3[count].set_xdata(V3_list[count])
+	graph_plot4[count].set_ydata(Cox_val_list[count])
+	graph_plot4[count].set_xdata(Cox_list[count])
 	plt.draw          # redraw the plot
-
 
 
 #button_declaration
