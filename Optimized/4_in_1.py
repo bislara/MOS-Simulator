@@ -3,6 +3,9 @@ import FileDialog
 import matplotlib.pyplot as plt
 from functions.function import *
 from matplotlib.widgets import Slider,Button  # import the Slider widget
+import matplotlib.ticker as ticker
+from matplotlib.ticker import NullFormatter, FixedLocator
+import numpy as np
 
 
 print("Welcome !!!")
@@ -77,30 +80,38 @@ plt.title="Different graphs"
 fig,((ax1, ax2), (ax3, ax4))= plt.subplots(2,2,sharey=False)
 plt.subplots_adjust(left=0.05, bottom=0.30,right=0.95,top=0.95)
 
+mu, sigma = 1e-3, 1e-4
+#s = np.random.normal(mu, sigma, 10000)
+
+
 #1
 ax1.set_xlim(-1,2) 
 ax1.set_ylim(0,1.3) 
 
-ax1.set_xlabel('Vgb value(in V)') 
-ax1.set_ylabel('SHI_S value(in V)')
+ax1.set_xlabel('Vgb (in V)') 
+ax1.set_ylabel('SHI_S (in V)')
 #2
-ax2.set_xlim(0,1.5) 
-ax2.set_ylim(0,0.015) 
+ax2.set_xlabel('SHI_S (in V)') 
+ax2.set_ylabel('Q (in C/m^2)')
 
-ax2.set_xlabel('SHI_S value(in V)') 
-ax2.set_ylabel('Q value(in C/m^2)')
+
+ax2.set_xlim(0,1.5) 
+ax2.set_ylim(0,15*10**(-3)) 
+#ax2.yaxis.set_major_formatter(ticker.FormatStrFormatter('%1.2E'))
+
+
 #3
 ax3.set_xlim(-1,2) 
 ax3.set_ylim(0,0.03) 
 
-ax3.set_xlabel('Vgb value(in V)') 
-ax3.set_ylabel('Q value(in C/m^2)')
+ax3.set_xlabel('Vgb (in V)') 
+ax3.set_ylabel('Q (in C/m^2)')
 #4
 ax4.set_xlim(-1,1.5) 
 ax4.set_ylim(0,0.03) 
 
-ax4.set_xlabel('Vgb value(in V)') 
-ax4.set_ylabel('dQ/dVgb value(in F/m^2)')
+ax4.set_xlabel('Vgb (in V)') 
+ax4.set_ylabel('dQ/dVgb (in F/m^2)')
 
 
 #2-D variable of graph
@@ -191,9 +202,10 @@ def setValue(val):
 	graph_plot[count],= plt.plot(V_list[count], Y_list[count],color =colours[colour_count],label="Curve "+str(count))			
 	plt.legend()
 
-	plt.axes(ax2)	
+	plt.axes(ax2)
 	graph_plot1[count],= plt.plot(V1_list[count], Y1_list[count],color =colours[colour_count],label="Curve "+str(count))			
 	plt.legend()
+
 
 	plt.axes(ax3)	
 	graph_plot2[count],= plt.plot(V2_list[count], Y2_list[count],color =colours[colour_count],label="Curve "+str(count))			
