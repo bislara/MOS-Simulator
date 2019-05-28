@@ -11,14 +11,8 @@ print("Welcome !!!")
 global Phi_m,tox,NA,ND,r,count,Qox,Qc,q,Es,Phi_t,Shi_F
 
 
-#user input
-#NA=float(input("Enter the value of NA in per m^3 :"))
-#tox=float(input("Enter the value of oxide thickness in nm :"))
-#Phi_m=float(input("Enter the value of Phi_m :"))
-
-
 #constants initialize
-q=1.6*10**(-19)	        
+q=1.6*10**(-19)	      
 Eo=8.854*10**(-12)	
 ks=11.7			#ks for Si
 kox=3.9			#kox for SiO2
@@ -29,15 +23,14 @@ tox=2*10**(-9)
 NA=5*10**23
 Phi_m=0.56
 ND=10
-Qox=10**(-5)
-Phi_m=0.56
+x0=0
+
 
 #variable declaration
-
 Es=ks*Eo		
 Eox=kox*Eo		
 
-Vgb=1
+Vgb=0.3
 
 No=(Ni**2)/NA
 Po=NA
@@ -50,34 +43,37 @@ gm=(sqrt(2*q*Es*NA))/(Cox)
 f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  
 n=2*Shi_F+Phi_t*6
 x0= min(f,n)
-#d=derivFunc(x0,Vgb,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po)
-x1=func(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po)
-#val=newtonRaphson(Vgb,x0)  
-print("x0 is :",x1,x0)
+print("x0 is :",x0)
+val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po) 
 
 
 # function that returns dz/dt
 def model(z,t):
-   
+    #print(-(sqrt(2*q*Es*NA)/Es)*sqrt(Phi_t*e**(-z/Phi_t)+z-Phi_t+e**((-2*Shi_F)/Phi_t)*(Phi_t*e**(z/Phi_t)-z-Phi_t)))
     dydt = -(sqrt(2*q*Es*NA)/Es)*sqrt(Phi_t*e**(-z/Phi_t)+z-Phi_t+e**((-2*Shi_F)/Phi_t)*(Phi_t*e**(z/Phi_t)-z-Phi_t))
-    #dzdt = [dxdt,dydt]
-    #print(dydt)
     return dydt
 
+
 # time pointss
-t = np.linspace(0,10**10)
+t = np.linspace(0,50*10**(-9),1000)
+
 
 # solve ODE
-z = odeint(model,x0,t)
-#print(z)
+z = odeint(model,val,t)
+for i in z :
+	i[0]=i[0]*(-1)
+#print(z[0])
+
 
 # plot results
-plt.plot(t,z,'b-',label=r'$\frac{dx}{dt}=3 \; \exp(-t)$')
-#plt.plot(t,z[:,1],'r--',label=r'$\frac{dy}{dt}=-y+3$')
-plt.ylabel('response')
-plt.xlabel('time')
-plt.legend(loc='best')
-plt.show()
+plt.plot(t,z,'b-',label='Shi VS y')
+plt.ylim(-1.5,1.5)
+plt.xlim(0,5*10**(-8))
 
+
+plt.ylabel('Shi')
+plt.xlabel('Y')
+plt.legend()
+plt.show()
 
 
