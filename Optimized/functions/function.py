@@ -82,14 +82,6 @@ def deriv_funct(Shi_s,Qc,NA,Phi_t,Es,q,Phi_F,Vgb,Vfb,ND,Cox,No,Po):
 	put=dq_dv.subs({t:Shi_s})
 	return abs(put)
 
-def model(x,t):
-  y = x[0]
-  dy = x[1]  
-  K = 30
-  xdot = [[],[]]
-  xdot[0] = dy
-  xdot[1] = -(0.9+0.7*t)*dy - K * y
-  return xdot
 
 
 
