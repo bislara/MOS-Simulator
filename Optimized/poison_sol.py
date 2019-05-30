@@ -8,6 +8,7 @@ import numpy as np
 print("Welcome !!!")
 #print("Enter all the values in the MKS system")
 
+#global declarations
 global Phi_m,tox,NA,ND,r,count,Qox,Qc,q,Es,Phi_t,Shi_F
 
 
@@ -28,14 +29,7 @@ x0=0
 colour_count=1
 colours={0:'w',1:'b',2:'g',3:'r',4:'c',5:'m',6:'y',7:'k'}
 
-z={}
 count=0
-z[count]=[[],[]]
-yt=[]
-graph_plot={}
-
-y={}
-y[count]=[]
 
 
 #variable declaration
@@ -53,6 +47,17 @@ Vfb=-Phi_m-Shi_F-Qox/Cox
 
 gm=(sqrt(2*q*Es*NA))/(Cox)
 
+
+z={}
+z[count]=[[],[]]
+yt=[]
+graph_plot={}
+
+y={}
+y[count]=[]
+
+
+#function for solving the differential equation
 def model(x,t):
   	y = x[0]
   	dy = x[1]  
@@ -64,13 +69,12 @@ def model(x,t):
   	return xdot
 
 
-# plotting_graph
+# plotting_intial_graph
 fig, ax = plt.subplots()
 plt.subplots_adjust(left=0.15, bottom=0.35,right=0.95)
 
 graph_plot[count]=[]
 graph_plot[count],=plt.plot(yt,y[count],color =colours[colour_count],label="Graph :"+str(count))
-
 
 plt.title('Shi VS y graph') 
 plt.ylim(-1.5,1.5)
@@ -82,12 +86,12 @@ plt.ylabel('Shi value')
 plt.legend()
 
 
-
+#button_on_click function
 def setValue(val):
 	global count,colour_count,colours,Vgb,Vfb,tox,NA,Phi_m,yt
 	count=count+1
 	print("count is ",count)
-	yt = np.linspace(0,50*10**(-9),100)
+	yt = np.linspace(0,500*10**(-9),1000)
 
 	z[count]=[[],[]]
 	graph_plot[count]=[]
@@ -103,7 +107,7 @@ def setValue(val):
 		f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  
 		n=2*Shi_F+Phi_t*6
 		x0= min(f,n)
-		print x0
+		#print x0
 		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po) 
 		d= -(sqrt(2*q*Es*NA)//Es)*sqrt(Phi_t*e**(-val/Phi_t)+val-Phi_t+e**((-2*Shi_F)/Phi_t)*(Phi_t*e**(+val/Phi_t)-val-Phi_t))
 	
@@ -112,12 +116,17 @@ def setValue(val):
 		z[count] = odeint(model,ini,yt)
 		for i in z[count] :
 			i[0]=i[0]*(-1)
-			y[count].append(i[0])
+			if i[0]>-10**(-50) or i[0]< -1.5:
+				y[count].append((0+i_old)/2)
+				i_old=(0+i_old)/2
+			else:
+				y[count].append(i[0])
+				i_old=i[0]			
 		colour_count=colour_count+1
 	
 		plt.axes()
 		plt.title('Shi VS y graph') 
-		plt.ylim(-1.5,1.5)
+		plt.ylim(-2.5,1.5)
 		plt.xlim(0,5*10**(-8))
 		
 		plt.xlabel('y value') 
@@ -125,31 +134,36 @@ def setValue(val):
 
 		graph_plot[count],=plt.plot(yt,y[count],color =colours[colour_count],label="Graph :"+str(count))
 		plt.legend()
-
-
 	else:
 		print("Vgb is less than Vfb")	
 	
 	
-
+#slider val change function
 def val_update_Vgb(val):
 	global Vgb,tox,NA,Phi_m,count,colour_count,Vfb
 
 	Vgb=slider1.val
-	print(Vgb,Vfb)
+	#print(Vgb,Vfb)
 	if Vgb>Vfb and count!=0:
 		f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  
 		n=2*Shi_F+Phi_t*6
 		x0= min(f,n)
-		print x0
+		#print x0
 		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po) 
 		d= -(sqrt(2*q*Es*NA)//Es)*sqrt(Phi_t*e**(-val/Phi_t)+val-Phi_t+e**((-2*Shi_F)/Phi_t)*(Phi_t*e**(+val/Phi_t)-val-Phi_t))
 		y[count]=[]
 		ini=[val,d]
 		z[count] = odeint(model,ini,yt)
+		print(z[count])
 		for i in z[count] :
 			i[0]=i[0]*(-1)
-			y[count].append(i[0])
+			if i[0]>-10**(-50) or i[0]< -1.5:
+				y[count].append((0+i_old)/2)
+				i_old=(0+i_old)/2
+			else:
+				y[count].append(i[0])
+				i_old=i[0]			
+			
 		graph_plot[count].set_ydata(y[count])
 	#graph_plot[count].set_xdata(V_list[count])
 		plt.draw          # redraw the plot
@@ -157,6 +171,7 @@ def val_update_Vgb(val):
 		print("Vgb is less than Vfb")
 
 
+#Tox textbox submit function
 def submit_tox(text):
 	global Vgb,tox,NA,Phi_m,count,colour_count,Vfb
 	tox=float(text)*10**(-9)
@@ -169,22 +184,28 @@ def submit_tox(text):
 		f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  
 		n=2*Shi_F+Phi_t*6
 		x0= min(f,n)
-		print x0
+		##print x0
 		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po) 
-		d= -(sqrt(2*q*Es*NA)//Es)*sqrt(Phi_t*e**(-val/Phi_t)+val-Phi_t+e**((-2*Shi_F)/	Phi_t)*(Phi_t*e**(+val/Phi_t)-val-Phi_t))
+		d= -(sqrt(2*q*Es*NA)//Es)*sqrt(Phi_t*e**(-val/Phi_t)+val-Phi_t+e**((-2*Shi_F)/Phi_t)*(Phi_t*e**(+val/Phi_t)-val-Phi_t))
 		y[count]=[]
 		ini=[val,d]
 		z[count] = odeint(model,ini,yt)
 		for i in z[count] :
 			i[0]=i[0]*(-1)
-			y[count].append(i[0])
+			if i[0]>-10**(-50) or i[0]< -1.5:
+				y[count].append((0+i_old)/2)
+				i_old=(0+i_old)/2
+			else:
+				y[count].append(i[0])
+				i_old=i[0]			
 		graph_plot[count].set_ydata(y[count])
-	#graph_plot[count].set_xdata(V_list[count])
+		#graph_plot[count].set_xdata(V_list[count])
 		plt.draw          # redraw the plot
 	else:
-		print("Vgb is less than Vfb")
+		print("Vgb is less than Vfb")	
 
 
+#textbox NA submit function
 def submit_NA(text):
 	global Vgb,tox,NA,Phi_m,count,colour_count,Vfb
 	NA=float(text)*10**(20)
@@ -209,25 +230,32 @@ def submit_NA(text):
 		z[count] = odeint(model,ini,yt)
 		for i in z[count] :
 			i[0]=i[0]*(-1)
-			y[count].append(i[0])
+			if i[0]>-10**(-50) or i[0]< -1.5:
+				y[count].append((0+i_old)/2)
+				i_old=(0+i_old)/2
+			else:
+				y[count].append(i[0])
+				i_old=i[0]			
 		graph_plot[count].set_ydata(y[count])
 		#graph_plot[count].set_xdata(V_list[count])
 		plt.draw          # redraw the plot
 	else:
 		print("Vgb is less than Vfb")	
 
+
+#Phi_m textbox submit function
 def submit_Phi_m(text):
 	global Vgb,tox,NA,Phi_m,count,colour_count,Vfb
 	Phi_m=float(text)
 
 	Vfb=-Phi_m-Shi_F-Qox/Cox
-	print(Vgb,Vfb)
+	#print(Vgb,Vfb)
 	if Vgb>Vfb and count!=0:
 		gm=(sqrt(2*q*Es*NA))/(Cox)
 		f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  
 		n=2*Shi_F+Phi_t*6
 		x0= min(f,n)
-		print x0
+		#print x0
 		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po) 
 		d= -(sqrt(2*q*Es*NA)//Es)*sqrt(Phi_t*e**(-val/Phi_t)+val-Phi_t+e**((-2*Shi_F)/Phi_t)*(Phi_t*e**(+val/Phi_t)-val-Phi_t))
 		y[count]=[]
@@ -235,12 +263,19 @@ def submit_Phi_m(text):
 		z[count] = odeint(model,ini,yt)
 		for i in z[count] :
 			i[0]=i[0]*(-1)
-			y[count].append(i[0])
+			if i[0]>-10**(-50) or i[0]< -1.5:
+				y[count].append((0+i_old)/2)
+				i_old=(0+i_old)/2
+			else:
+				y[count].append(i[0])
+				i_old=i[0]			
 		graph_plot[count].set_ydata(y[count])
 		#graph_plot[count].set_xdata(V_list[count])
 		plt.draw          # redraw the plot
 	else:
 		print("Vgb is less than Vfb")
+
+
 
 
 #button_declaration
@@ -261,7 +296,7 @@ slider1 = Slider(ax=axSlider1,label='Vgb',valmin=-1,valmax=3,valinit=Vgb,valfmt=
 slider1.on_changed(val_update_Vgb)
 
 
-#Text Box declaration
+#Text Box declaration and on_submit function call
 toxbox = plt.axes([0.2,0.14, 0.4, 0.04 ])
 tox_box = TextBox(toxbox, 'Tox in nm', initial=str(tox*10**9))
 tox_box.on_submit(submit_tox)
@@ -275,7 +310,7 @@ Phi_m_box = TextBox(Phi_mbox, 'Phi_m', initial=str(Phi_m))
 Phi_m_box.on_submit(submit_Phi_m)
 
 
-
+#finally display the graph...
 plt.show()
 
 

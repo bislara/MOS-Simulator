@@ -47,6 +47,7 @@ print("x0 is :",x0)
 val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po) 
 
 
+
 # function that returns dz/dt
 def model(z,t):
     #print(-(sqrt(2*q*Es*NA)/Es)*sqrt(Phi_t*e**(-z/Phi_t)+z-Phi_t+e**((-2*Shi_F)/Phi_t)*(Phi_t*e**(z/Phi_t)-z-Phi_t)))
