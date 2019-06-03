@@ -79,15 +79,15 @@ colours={1:'b',2:'g',3:'r',4:'c',5:'m',6:'y',7:'k'}
 plt.title="Different graphs"
 # plotting_graph
 fig,((ax1, ax2), (ax3, ax4))= plt.subplots(2,2,sharey=False)
-plt.subplots_adjust(left=0.05, bottom=0.30,right=0.95,top=0.95)
+plt.subplots_adjust(left=0.08, bottom=0.30,right=0.98,top=0.95)
 
 mu, sigma = 1e-3, 1e-4
 #s = np.random.normal(mu, sigma, 10000)
 
 
 #1
-ax1.set_xlim(-0.5,2) 
-ax1.set_ylim(-0.5,0.4) 
+#ax1.set_xlim(-0.5,2) 
+#ax1.set_ylim(-0.5,0.4) 
 
 ax1.set_xlabel('Vgb (in V)') 
 ax1.set_ylabel('SHI_S (in V)')
@@ -107,8 +107,8 @@ ax2.set_ylabel('Q (in C/m^2)')
 ax3.set_xlabel('Vgb (in V)') 
 ax3.set_ylabel('Q (in C/m^2)')
 #4
-ax4.set_xlim(-0.5,1.5) 
-ax4.set_ylim(-0.03,0.03) 
+#ax4.set_xlim(-0.5,1.5) 
+#ax4.set_ylim(-0.03,0.03) 
 
 ax4.set_xlabel('Vgb (in V)') 
 ax4.set_ylabel('dQ/dVgb (in F/m^2)')
@@ -164,13 +164,13 @@ def setValue(val):
 	r=[]
 	Po=(Ni**2)/ND	
 	No=ND
-	Shi_F=-Phi_t*log((ND)/(Ni)) 	
-	n=(2*Shi_F-Phi_t*6)	
+	Shi_F=Phi_t*log((ND)/(Ni)) 	
+	n=-(2*Shi_F+Phi_t*6)	
 	Cox=Eox/tox	
-	Vfb=-Phi_m-Shi_F-Qox/Cox	
+	Vfb=+Phi_m+Shi_F-Qox/Cox	
 	gm=(sqrt(2*q*Es*ND))/(Cox)
 	
-	for i in drange(-0.3,1.5,0.05):
+	for i in drange(-0.8,0,0.05):
 		r.append(i)
 	
 	for Vgb in r:
@@ -184,7 +184,7 @@ def setValue(val):
 		#print("the der val is : ",dq_dVgb)
 		
 		V_list[count].append(Vgb)
-		Y_list[count].append(val)
+		Y_list[count].append(abs(val))
 
 		V1_list[count].append(val)
 		Y1_list[count].append((Qc))
@@ -247,23 +247,23 @@ def val_update_tox(val):
 	tox=slider1.val
 	Po=(Ni**2)/ND
 	No=ND
-	Shi_F=-Phi_t*log((ND)/(Ni)) 	
-	n=(2*Shi_F-Phi_t*6)	
+	Shi_F=Phi_t*log((ND)/(Ni)) 	
+	n=-(2*Shi_F+Phi_t*6)	
 	Cox=Eox/tox			
-	Vfb=-Phi_m-Shi_F-Qox/Cox
+	Vfb=+Phi_m+Shi_F+Qox/Cox
 	gm=(sqrt(2*q*Es*ND))/(Cox)
 
-	for i in drange(Vfb+0.01,1.5,0.05):
+	for i in drange(-1,Vfb-0.01,0.05):
 		r.append(i)
 	
    	for Vgb in r:
-		f=-(-gm/2 + sqrt((gm)**2/4 + Vgb - Vfb ))**2 
+		f=-(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2 
 		x0= max(f,n)
 		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po) 
 		Qc = (charge_funct(NA,Phi_t,Es,q,val,Shi_F,ND,Po,No))
 		dq_dVgb=deriv_funct(val,Qc,NA,Phi_t,Es,q,Shi_F,Vgb,Vfb,ND,Cox,No,Po)		
 		V_list[count].append(Vgb)
-		Y_list[count].append(val)
+		Y_list[count].append(abs(val))
 
 		V1_list[count].append(val)
 		Y1_list[count].append((Qc))
@@ -315,15 +315,15 @@ def val_update_ND(val):
 	ND=(slider2.val)*10**23
 	Po=(Ni**2)/ND
 	No=ND
-	Shi_F=-Phi_t*log((ND)/(Ni)) 	
-	n=(2*Shi_F-Phi_t*6)	
+	Shi_F=Phi_t*log((ND)/(Ni)) 	
+	n=-(2*Shi_F+Phi_t*6)	
 	Cox=Eox/tox
-	Vfb=-Phi_m-Shi_F-Qox/Cox
+	Vfb=+Phi_m+Shi_F+Qox/Cox
 	gm=(sqrt(2*q*Es*ND))/(Cox)
    	
-	for i in drange(Vfb+0.01,1.5,0.05):
+	for i in drange(-1,Vfb-0.01,0.05):
 		r.append(i)
-
+	
 	for Vgb in r:
 		f=-(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  	
 		x0= max(f,n)
@@ -331,7 +331,7 @@ def val_update_ND(val):
 		Qc = (charge_funct(NA,Phi_t,Es,q,val,Shi_F,ND,Po,No))
 		dq_dVgb=deriv_funct(val,Qc,NA,Phi_t,Es,q,Shi_F,Vgb,Vfb,ND,Cox,No,Po) 
 		V_list[count].append(Vgb)
-		Y_list[count].append(val)
+		Y_list[count].append(abs(val))
 
 		V1_list[count].append(val)
 		Y1_list[count].append((Qc))
@@ -381,15 +381,15 @@ def val_update_Phi(val):
 	Phi_m=slider3.val
 	Po=(Ni**2)/ND
 	No=ND
-	Shi_F=-Phi_t*log((ND)/(Ni)) 	
-	n=(2*Shi_F-Phi_t*6)	
+	Shi_F=Phi_t*log((ND)/(Ni)) 	
+	n=-(2*Shi_F+Phi_t*6)	
 	Cox=Eox/tox
-	Vfb=-Phi_m-Shi_F-Qox/Cox
+	Vfb=+Phi_m+Shi_F-Qox/Cox
 	gm=(sqrt(2*q*Es*ND))/(Cox)
    	
-	for i in drange(Vfb+0.01,1.5,0.05):
+	for i in drange(-1,Vfb-0.01,0.05):
 		r.append(i)
-
+	
 	for Vgb in r:
 		f=-(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  	
 		x0= max(f,n)
@@ -397,7 +397,7 @@ def val_update_Phi(val):
 		Qc = (charge_funct(NA,Phi_t,Es,q,val,Shi_F,ND,Po,No)) 
 		dq_dVgb=deriv_funct(val,Qc,NA,Phi_t,Es,q,Shi_F,Vgb,Vfb,ND,Cox,No,Po)
 		V_list[count].append(Vgb)
-		Y_list[count].append(val)
+		Y_list[count].append(abs(val))
 
 		V1_list[count].append(val)
 		Y1_list[count].append((Qc))
@@ -448,16 +448,16 @@ def val_update_Qox(val):
 	Qox=(slider4.val)*10**(-6)
 	Po=(Ni**2)/ND
 	No=ND
-	Shi_F=-Phi_t*log((ND)/(Ni)) 	
-	n=(2*Shi_F-Phi_t*6)	
+	Shi_F=Phi_t*log((ND)/(Ni)) 	
+	n=-(2*Shi_F+Phi_t*6)	
 	Cox=Eox/tox
 	print("Cox is ",Qox/Cox)
-	Vfb=-Phi_m-Shi_F-Qox/Cox
+	Vfb=+Phi_m+Shi_F+Qox/Cox
 	gm=(sqrt(2*q*Es*ND))/(Cx)
    	
-	for i in drange(Vfb+0.01,1.5,0.05):
+	for i in drange(-1,Vfb-0.01,0.05):
 		r.append(i)
-
+	
 	for Vgb in r:
 		f=-(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  	
 		x0= max(f,n)
