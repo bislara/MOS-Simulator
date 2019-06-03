@@ -32,20 +32,20 @@ for i in range(-100,100):
 	r.append(i/100.0)
 for Vgb in r: 
         print("gm is ",gm)  
-	f=0.826+ 0.026*6
+	f=-0.826+ 0.026*6
 	Y_list.append(f)
 	V_list.append(Vgb)
 	
 for Vgb in r: 
 	
         print("gm is ",gm)  
-	f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )
+	f=-(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )
 	m=Vfb+f+gm*sqrt(abs(f))
-	n=0.826+0.026*6	
+	n=-(0.826)-0.026*6	
         #if Vgb>m:
 	#	Y_list.append(f)
 	#	V_list.append(Vgb)
-	Y1_list.append(min(f,n))
+	Y1_list.append(max(f,n))
 	V1_list.append(Vgb)
 	
 plt.plot(V1_list, Y1_list,color ='red')

@@ -1,7 +1,7 @@
 #importing modules to main_code
 import FileDialog 
 import matplotlib.pyplot as plt
-from functions.nMOS_funct import *
+from functions.function import *
 from matplotlib.widgets import Slider,Button  # import the Slider widget
 import matplotlib.ticker as ticker
 from matplotlib.ticker import NullFormatter, FixedLocator
@@ -30,9 +30,10 @@ Phi_t=0.0259            #Thermal Voltage Phi_t=k*t/q
 
 tox=2*10**(-9)
 #tox=tox*10**(-9)
-NA=5*10**23
+#NA=5*10**23
 Phi_m=0.56
-ND=0
+ND=5*10**23
+NA=10
 Qox=10**(-5)
 
 
@@ -85,8 +86,8 @@ mu, sigma = 1e-3, 1e-4
 
 
 #1
-ax1.set_xlim(-1,2) 
-ax1.set_ylim(0,1.3) 
+ax1.set_xlim(-0.5,2) 
+ax1.set_ylim(-0.5,0.4) 
 
 ax1.set_xlabel('Vgb (in V)') 
 ax1.set_ylabel('SHI_S (in V)')
@@ -94,21 +95,20 @@ ax1.set_ylabel('SHI_S (in V)')
 ax2.set_xlabel('SHI_S (in V)') 
 ax2.set_ylabel('Q (in C/m^2)')
 
-
-ax2.set_xlim(0,1.5) 
-ax2.set_ylim(0,15*10**(-3)) 
+#ax2.set_xlim(-0.3,0) 
+#ax2.set_ylim(-20*10**(-3),5*10**(-3)) 
 #ax2.yaxis.set_major_formatter(ticker.FormatStrFormatter('%1.2E'))
 
 
 #3
-ax3.set_xlim(-1,2) 
-ax3.set_ylim(0,0.03) 
+#ax3.set_xlim(-0.5,2) 
+#ax3.set_ylim(-0.02,0.03) 
 
 ax3.set_xlabel('Vgb (in V)') 
 ax3.set_ylabel('Q (in C/m^2)')
 #4
-ax4.set_xlim(-1,1.5) 
-ax4.set_ylim(0,0.03) 
+ax4.set_xlim(-0.5,1.5) 
+ax4.set_ylim(-0.03,0.03) 
 
 ax4.set_xlabel('Vgb (in V)') 
 ax4.set_ylabel('dQ/dVgb (in F/m^2)')
@@ -162,33 +162,35 @@ def setValue(val):
 	graph_plot4[count]=[]
 	
 	r=[]
-	Po=NA	
-	No=(Ni**2)/NA
-	Shi_F=Phi_t*log((NA)/(Ni)) 	
-	n=2*Shi_F+Phi_t*6	
+	Po=(Ni**2)/ND	
+	No=ND
+	Shi_F=-Phi_t*log((ND)/(Ni)) 	
+	n=(2*Shi_F-Phi_t*6)	
 	Cox=Eox/tox	
-	Vfb=-Phi_m-Shi_F-Qox/Cox	#ignoring the potential drop across the oxide layer
-	gm=(sqrt(2*q*Es*NA))/(Cox)
+	Vfb=-Phi_m-Shi_F-Qox/Cox	
+	gm=(sqrt(2*q*Es*ND))/(Cox)
 	
-	for i in drange(-0.5,1.5,0.05):
+	for i in drange(-0.3,1.5,0.05):
 		r.append(i)
 	
 	for Vgb in r:
-		f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  
-		x0= min(f,n)	
-		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po) 
+		f=-(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  
+		x0= max(f,n)	
+		print(f,n,x0) 	
+		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po)
+		#print("val is ",val) 
 		Qc = (charge_funct(NA,Phi_t,Es,q,val,Shi_F,ND,Po,No))
 		dq_dVgb=deriv_funct(val,Qc,NA,Phi_t,Es,q,Shi_F,Vgb,Vfb,ND,Cox,No,Po)
-		print("the der val is : ",dq_dVgb)
+		#print("the der val is : ",dq_dVgb)
 		
 		V_list[count].append(Vgb)
 		Y_list[count].append(val)
 
 		V1_list[count].append(val)
-		Y1_list[count].append(abs(Qc))
+		Y1_list[count].append((Qc))
 
 		V2_list[count].append(Vgb)
-		Y2_list[count].append(abs(Qc))
+		Y2_list[count].append((Qc))
 
 		V3_list[count].append(Vgb)
 		Y3_list[count].append(dq_dVgb)
@@ -227,7 +229,7 @@ def setValue(val):
 
 #sliders Update functions of Tox
 def val_update_tox(val):
-    global tox,NA,Phi_m,count,Qox
+    global tox,ND,Phi_m,count,Qox
 	
     if count!=0:
 	r=[]
@@ -243,20 +245,20 @@ def val_update_tox(val):
 	Cox_val_list[count]=[]
 
 	tox=slider1.val
-	Po=NA
-	No=(Ni**2)/NA
-	Shi_F=Phi_t*log((NA)/(Ni)) 	
-	n=2*Shi_F+Phi_t*6	
+	Po=(Ni**2)/ND
+	No=ND
+	Shi_F=-Phi_t*log((ND)/(Ni)) 	
+	n=(2*Shi_F-Phi_t*6)	
 	Cox=Eox/tox			
 	Vfb=-Phi_m-Shi_F-Qox/Cox
-	gm=(sqrt(2*q*Es*NA))/(Cox)
+	gm=(sqrt(2*q*Es*ND))/(Cox)
 
 	for i in drange(Vfb+0.01,1.5,0.05):
 		r.append(i)
-
+	
    	for Vgb in r:
-		f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  	
-		x0= min(f,n)
+		f=-(-gm/2 + sqrt((gm)**2/4 + Vgb - Vfb ))**2 
+		x0= max(f,n)
 		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po) 
 		Qc = (charge_funct(NA,Phi_t,Es,q,val,Shi_F,ND,Po,No))
 		dq_dVgb=deriv_funct(val,Qc,NA,Phi_t,Es,q,Shi_F,Vgb,Vfb,ND,Cox,No,Po)		
@@ -264,16 +266,17 @@ def val_update_tox(val):
 		Y_list[count].append(val)
 
 		V1_list[count].append(val)
-		Y1_list[count].append(abs(Qc))
+		Y1_list[count].append((Qc))
 
 		V2_list[count].append(Vgb)
-		Y2_list[count].append(abs(Qc))
+		Y2_list[count].append((Qc))
 
 		V3_list[count].append(Vgb)
 		Y3_list[count].append(dq_dVgb)
 		Cox_list[count].append(Vgb)
 		Cox_val_list[count].append(Cox)
 	print("Cox is ",Cox)
+	print(Vfb)
 	graph_plot[count].set_ydata(Y_list[count])
 	graph_plot[count].set_xdata(V_list[count])
 	plt.draw          # redraw the plot
@@ -293,8 +296,8 @@ def val_update_tox(val):
 
 
 #sliders Update functions of NA
-def val_update_NA(val):
-    global tox,NA,Phi_m,count,Qox
+def val_update_ND(val):
+    global tox,NA,Phi_m,count,Qox,ND
 
     if count!=0:
 	Y_list[count]=[]
@@ -309,21 +312,21 @@ def val_update_NA(val):
 	Cox_val_list[count]=[]
 
 	r=[]
-	NA=(slider2.val)*10**23
-	Po=NA
-	No=(Ni**2)/NA
-	Shi_F=Phi_t*log((NA)/(Ni)) 	
-	n=2*Shi_F+Phi_t*6		
+	ND=(slider2.val)*10**23
+	Po=(Ni**2)/ND
+	No=ND
+	Shi_F=-Phi_t*log((ND)/(Ni)) 	
+	n=(2*Shi_F-Phi_t*6)	
 	Cox=Eox/tox
 	Vfb=-Phi_m-Shi_F-Qox/Cox
-	gm=(sqrt(2*q*Es*NA))/(Cox)
+	gm=(sqrt(2*q*Es*ND))/(Cox)
    	
 	for i in drange(Vfb+0.01,1.5,0.05):
 		r.append(i)
 
 	for Vgb in r:
-		f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  	
-		x0= min(f,n)
+		f=-(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  	
+		x0= max(f,n)
 		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po) 
 		Qc = (charge_funct(NA,Phi_t,Es,q,val,Shi_F,ND,Po,No))
 		dq_dVgb=deriv_funct(val,Qc,NA,Phi_t,Es,q,Shi_F,Vgb,Vfb,ND,Cox,No,Po) 
@@ -331,10 +334,10 @@ def val_update_NA(val):
 		Y_list[count].append(val)
 
 		V1_list[count].append(val)
-		Y1_list[count].append(abs(Qc))
+		Y1_list[count].append((Qc))
 
 		V2_list[count].append(Vgb)
-		Y2_list[count].append(abs(Qc))
+		Y2_list[count].append((Qc))
 
 		V3_list[count].append(Vgb)
 		Y3_list[count].append(dq_dVgb)
@@ -359,7 +362,7 @@ def val_update_NA(val):
 
 #sliders Update functions of Phi_m
 def val_update_Phi(val):
-    global tox,NA,Phi_m,count,Qox
+    global tox,NA,Phi_m,count,Qox,ND
 
     if count!=0:
 	print("Count inside Phi_m is ",count)
@@ -376,20 +379,20 @@ def val_update_Phi(val):
 
 	r=[]
 	Phi_m=slider3.val
-	Po=NA
-	No=(Ni**2)/NA
-	Shi_F=Phi_t*log((NA)/(Ni)) 	
-	n=2*Shi_F+Phi_t*6		
+	Po=(Ni**2)/ND
+	No=ND
+	Shi_F=-Phi_t*log((ND)/(Ni)) 	
+	n=(2*Shi_F-Phi_t*6)	
 	Cox=Eox/tox
 	Vfb=-Phi_m-Shi_F-Qox/Cox
-	gm=(sqrt(2*q*Es*NA))/(Cox)
+	gm=(sqrt(2*q*Es*ND))/(Cox)
    	
 	for i in drange(Vfb+0.01,1.5,0.05):
 		r.append(i)
 
 	for Vgb in r:
-		f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  	
-		x0= min(f,n)
+		f=-(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  	
+		x0= max(f,n)
 		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po) 
 		Qc = (charge_funct(NA,Phi_t,Es,q,val,Shi_F,ND,Po,No)) 
 		dq_dVgb=deriv_funct(val,Qc,NA,Phi_t,Es,q,Shi_F,Vgb,Vfb,ND,Cox,No,Po)
@@ -397,10 +400,10 @@ def val_update_Phi(val):
 		Y_list[count].append(val)
 
 		V1_list[count].append(val)
-		Y1_list[count].append(abs(Qc))
+		Y1_list[count].append((Qc))
 
 		V2_list[count].append(Vgb)
-		Y2_list[count].append(abs(Qc))
+		Y2_list[count].append((Qc))
 
 		V3_list[count].append(Vgb)
 		Y3_list[count].append(dq_dVgb)
@@ -426,7 +429,7 @@ def val_update_Phi(val):
 
 #sliders Update functions of Qox
 def val_update_Qox(val):
-    global tox,NA,Phi_m,count,Qox
+    global tox,NA,Phi_m,count,Qox,ND
 
     if count!=0:
 	print("Count inside Phi_m is ",count)
@@ -443,21 +446,21 @@ def val_update_Qox(val):
 
 	r=[]
 	Qox=(slider4.val)*10**(-6)
-	Po=NA
-	No=(Ni**2)/NA
-	Shi_F=Phi_t*log((NA)/(Ni)) 	
-	n=2*Shi_F+Phi_t*6		
+	Po=(Ni**2)/ND
+	No=ND
+	Shi_F=-Phi_t*log((ND)/(Ni)) 	
+	n=(2*Shi_F-Phi_t*6)	
 	Cox=Eox/tox
 	print("Cox is ",Qox/Cox)
 	Vfb=-Phi_m-Shi_F-Qox/Cox
-	gm=(sqrt(2*q*Es*NA))/(Cox)
+	gm=(sqrt(2*q*Es*ND))/(Cx)
    	
 	for i in drange(Vfb+0.01,1.5,0.05):
 		r.append(i)
 
 	for Vgb in r:
-		f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  	
-		x0= min(f,n)
+		f=-(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  	
+		x0= max(f,n)
 		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po) 
 		Qc = (charge_funct(NA,Phi_t,Es,q,val,Shi_F,ND,Po,No)) 
 		dq_dVgb=deriv_funct(val,Qc,NA,Phi_t,Es,q,Shi_F,Vgb,Vfb,ND,Cox,No,Po)
@@ -465,10 +468,10 @@ def val_update_Qox(val):
 		Y_list[count].append(val)
 
 		V1_list[count].append(val)
-		Y1_list[count].append(abs(Qc))
+		Y1_list[count].append((Qc))
 
 		V2_list[count].append(Vgb)
-		Y2_list[count].append(abs(Qc))
+		Y2_list[count].append((Qc))
 
 		V3_list[count].append(Vgb)
 		Y3_list[count].append(dq_dVgb)
@@ -506,7 +509,7 @@ slider1 = Slider(ax=axSlider1,label='Tox',valmin=1*10**(-9),valmax=5*10**(-9),va
 
 
 axSlider2= plt.axes([0.1,0.15,0.55,0.02])		#xloc,yloc,width,height
-slider2 = Slider(axSlider2,'NA', valmin=1, valmax=20,valinit=NA/(10**23),valfmt='NA is '+'%1.2f'+ ' in 10**23 m^-3')
+slider2 = Slider(axSlider2,'ND', valmin=1, valmax=20,valinit=ND/(10**23),valfmt='ND is '+'%1.2f'+ ' in 10**23 m^-3')
 
 
 axSlider3= plt.axes([0.1,0.10,0.55,0.02])		#xloc,yloc,width,height
@@ -519,7 +522,7 @@ slider4 = Slider(axSlider4,'Qox', valmin=0.01, valmax=100,valinit=Qox*10**6,valf
 
 #sliders on change function call
 slider1.on_changed(val_update_tox)
-slider2.on_changed(val_update_NA)
+slider2.on_changed(val_update_ND)
 slider3.on_changed(val_update_Phi)
 slider4.on_changed(val_update_Qox)
 

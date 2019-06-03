@@ -9,7 +9,7 @@ print("Welcome !!!")
 #print("Enter all the values in the MKS system")
 
 #global declarations
-global Phi_m,tox,NA,ND,r,count,Qox,Qc,q,Es,Phi_t,Shi_F
+global Phi_m,tox,NA,ND,r,count,Qox,Qc,q,Es,Phi_t,Shi_F,Eg
 
 
 #constants initialize
@@ -25,6 +25,9 @@ NA=5*10**23
 Phi_m=0.56
 ND=10
 x0=0
+Eg=1.1
+Ei=Eg/2
+
 
 colour_count=1
 colours={0:'w',1:'b',2:'g',3:'r',4:'c',5:'m',6:'y',7:'k'}
@@ -51,11 +54,14 @@ gm=(sqrt(2*q*Es*NA))/(Cox)
 z={}
 z[count]=[[],[]]
 yt=[]
+PhiF_list={}
+condut_list={}
 graph_plot={}
+graph_plot2={}
 
 y={}
 y[count]=[]
-
+PhiF_list[count]=[]
 
 #function for solving the differential equation
 def model(x,t):
@@ -76,6 +82,10 @@ plt.subplots_adjust(left=0.15, bottom=0.35,right=0.95)
 graph_plot[count]=[]
 graph_plot[count],=plt.plot(yt,y[count],color =colours[colour_count],label="Graph :"+str(count))
 
+graph_plot2[count]=[]
+graph_plot2[count],=plt.plot(yt,PhiF_list[count],color =colours[colour_count],label="")
+
+
 plt.title('Shi VS y graph') 
 plt.ylim(-1.5,1.5)
 plt.xlim(0,5*10**(-8))
@@ -95,6 +105,8 @@ def setValue(val):
 
 	z[count]=[[],[]]
 	graph_plot[count]=[]
+	graph_plot2[count]=[]
+	
 	No=(Ni**2)/NA
 	Po=NA
 	Cox=Eox/tox
@@ -112,6 +124,7 @@ def setValue(val):
 		d= -(sqrt(2*q*Es*NA)//Es)*sqrt(Phi_t*e**(-val/Phi_t)+val-Phi_t+e**((-2*Shi_F)/Phi_t)*(Phi_t*e**(+val/Phi_t)-val-Phi_t))
 	
 		y[count]=[]
+		PhiF_list[count]=[]
 		ini=[val,d]
 		z[count] = odeint(model,ini,yt)
 		for i in z[count] :
@@ -121,7 +134,8 @@ def setValue(val):
 				i_old=(0+i_old)/2
 			else:
 				y[count].append(i[0])
-				i_old=i[0]			
+				i_old=i[0]
+			PhiF_list[count].append(-Ei-Shi_F)			
 		colour_count=colour_count+1
 	
 		plt.axes()
@@ -132,8 +146,10 @@ def setValue(val):
 		plt.xlabel('y value') 
 		plt.ylabel('Shi value')
 
-		graph_plot[count],=plt.plot(yt,y[count],color =colours[colour_count],label="Graph :"+str(count))
-		plt.legend()
+		graph_plot[count],=plt.plot(yt,y[count],color =colours[colour_count],label="Graph")
+		graph_plot2[count],=plt.plot(yt,PhiF_list[count],color =colours[colour_count],label="Phi_F",linestyle='--')
+		if count==1:
+			plt.legend()
 	else:
 		print("Vgb is less than Vfb")	
 	
@@ -152,9 +168,11 @@ def val_update_Vgb(val):
 		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po) 
 		d= -(sqrt(2*q*Es*NA)//Es)*sqrt(Phi_t*e**(-val/Phi_t)+val-Phi_t+e**((-2*Shi_F)/Phi_t)*(Phi_t*e**(+val/Phi_t)-val-Phi_t))
 		y[count]=[]
+		PhiF_list[count]=[]
+				
 		ini=[val,d]
 		z[count] = odeint(model,ini,yt)
-		print(z[count])
+		#print(z[count])
 		for i in z[count] :
 			i[0]=i[0]*(-1)
 			if i[0]>-10**(-50) or i[0]< -1.5:
@@ -162,11 +180,14 @@ def val_update_Vgb(val):
 				i_old=(0+i_old)/2
 			else:
 				y[count].append(i[0])
-				i_old=i[0]			
-			
+				i_old=i[0]
+			PhiF_list[count].append(-Ei-Shi_F)
 		graph_plot[count].set_ydata(y[count])
 	#graph_plot[count].set_xdata(V_list[count])
 		plt.draw          # redraw the plot
+		graph_plot2[count].set_ydata(PhiF_list[count])
+		plt.draw          # redraw the plot
+
 	else:
 		print("Vgb is less than Vfb")
 
@@ -188,6 +209,8 @@ def submit_tox(text):
 		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po) 
 		d= -(sqrt(2*q*Es*NA)//Es)*sqrt(Phi_t*e**(-val/Phi_t)+val-Phi_t+e**((-2*Shi_F)/Phi_t)*(Phi_t*e**(+val/Phi_t)-val-Phi_t))
 		y[count]=[]
+		PhiF_list[count]=[]
+		
 		ini=[val,d]
 		z[count] = odeint(model,ini,yt)
 		for i in z[count] :
@@ -197,10 +220,14 @@ def submit_tox(text):
 				i_old=(0+i_old)/2
 			else:
 				y[count].append(i[0])
-				i_old=i[0]			
+				i_old=i[0]
+			PhiF_list[count].append(-Ei-Shi_F)		
 		graph_plot[count].set_ydata(y[count])
 		#graph_plot[count].set_xdata(V_list[count])
 		plt.draw          # redraw the plot
+		graph_plot2[count].set_ydata(PhiF_list[count])
+		plt.draw          # redraw the plot
+
 	else:
 		print("Vgb is less than Vfb")	
 
@@ -222,10 +249,12 @@ def submit_NA(text):
 		f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  
 		n=2*Shi_F+Phi_t*6
 		x0= min(f,n)
-		print x0
+		#print x0
 		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po) 
 		d= -(sqrt(2*q*Es*NA)//Es)*sqrt(Phi_t*e**(-val/Phi_t)+val-Phi_t+e**((-2*Shi_F)/Phi_t)*(Phi_t*e**(+val/Phi_t)-val-Phi_t))
 		y[count]=[]
+		PhiF_list[count]=[]
+		
 		ini=[val,d]
 		z[count] = odeint(model,ini,yt)
 		for i in z[count] :
@@ -235,10 +264,14 @@ def submit_NA(text):
 				i_old=(0+i_old)/2
 			else:
 				y[count].append(i[0])
-				i_old=i[0]			
+				i_old=i[0]
+			PhiF_list[count].append(-Ei-Shi_F)			
 		graph_plot[count].set_ydata(y[count])
 		#graph_plot[count].set_xdata(V_list[count])
 		plt.draw          # redraw the plot
+		graph_plot2[count].set_ydata(PhiF_list[count])
+		plt.draw          # redraw the plot
+
 	else:
 		print("Vgb is less than Vfb")	
 
@@ -259,6 +292,8 @@ def submit_Phi_m(text):
 		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po) 
 		d= -(sqrt(2*q*Es*NA)//Es)*sqrt(Phi_t*e**(-val/Phi_t)+val-Phi_t+e**((-2*Shi_F)/Phi_t)*(Phi_t*e**(+val/Phi_t)-val-Phi_t))
 		y[count]=[]
+		PhiF_list[count]=[]
+		
 		ini=[val,d]
 		z[count] = odeint(model,ini,yt)
 		for i in z[count] :
@@ -268,10 +303,14 @@ def submit_Phi_m(text):
 				i_old=(0+i_old)/2
 			else:
 				y[count].append(i[0])
-				i_old=i[0]			
+				i_old=i[0]
+			PhiF_list[count].append(-Ei-Shi_F)			
 		graph_plot[count].set_ydata(y[count])
 		#graph_plot[count].set_xdata(V_list[count])
 		plt.draw          # redraw the plot
+		graph_plot2[count].set_ydata(PhiF_list[count])
+		plt.draw          # redraw the plot
+
 	else:
 		print("Vgb is less than Vfb")
 
