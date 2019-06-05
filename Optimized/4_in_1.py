@@ -31,9 +31,10 @@ Phi_t=0.0259            #Thermal Voltage Phi_t=k*t/q
 tox=2*10**(-9)
 #tox=tox*10**(-9)
 NA=5*10**23
-Phi_m=0.56
+Eg=0.56
 ND=0
 Qox=10**(-5)
+Phi_m=4.1
 
 
 #variable declaration
@@ -167,7 +168,7 @@ def setValue(val):
 	Shi_F=Phi_t*log((NA)/(Ni)) 	
 	n=2*Shi_F+Phi_t*6	
 	Cox=Eox/tox	
-	Vfb=-Phi_m-Shi_F-Qox/Cox	#ignoring the potential drop across the oxide layer
+	Vfb=+Phi_m-4.05-Eg-Shi_F-Qox/Cox	#ignoring the potential drop across the oxide layer
 	gm=(sqrt(2*q*Es*NA))/(Cox)
 	
 	for i in drange(-0.5,1.5,0.05):
@@ -248,7 +249,7 @@ def val_update_tox(val):
 	Shi_F=Phi_t*log((NA)/(Ni)) 	
 	n=2*Shi_F+Phi_t*6	
 	Cox=Eox/tox			
-	Vfb=-Phi_m-Shi_F-Qox/Cox
+	Vfb=+Phi_m-4.05-Eg-Shi_F-Qox/Cox
 	gm=(sqrt(2*q*Es*NA))/(Cox)
 
 	for i in drange(Vfb+0.01,1.5,0.05):
@@ -315,7 +316,7 @@ def val_update_NA(val):
 	Shi_F=Phi_t*log((NA)/(Ni)) 	
 	n=2*Shi_F+Phi_t*6		
 	Cox=Eox/tox
-	Vfb=-Phi_m-Shi_F-Qox/Cox
+	Vfb=+Phi_m-4.05-Eg-Shi_F-Qox/Cox
 	gm=(sqrt(2*q*Es*NA))/(Cox)
    	
 	for i in drange(Vfb+0.01,1.5,0.05):
@@ -381,7 +382,7 @@ def val_update_Phi(val):
 	Shi_F=Phi_t*log((NA)/(Ni)) 	
 	n=2*Shi_F+Phi_t*6		
 	Cox=Eox/tox
-	Vfb=-Phi_m-Shi_F-Qox/Cox
+	Vfb=+Phi_m-4.05-Eg-Shi_F-Qox/Cox
 	gm=(sqrt(2*q*Es*NA))/(Cox)
    	
 	for i in drange(Vfb+0.01,1.5,0.05):
@@ -449,7 +450,7 @@ def val_update_Qox(val):
 	n=2*Shi_F+Phi_t*6		
 	Cox=Eox/tox
 	print("Cox is ",Qox/Cox)
-	Vfb=-Phi_m-Shi_F-Qox/Cox
+	Vfb=+Phi_m-4.05-Eg-Shi_F-Qox/Cox
 	gm=(sqrt(2*q*Es*NA))/(Cox)
    	
 	for i in drange(Vfb+0.01,1.5,0.05):
@@ -510,7 +511,7 @@ slider2 = Slider(axSlider2,'NA', valmin=1, valmax=20,valinit=NA/(10**23),valfmt=
 
 
 axSlider3= plt.axes([0.1,0.10,0.55,0.02])		#xloc,yloc,width,height
-slider3 = Slider(axSlider3,'Phi_m', valmin=0.01, valmax=2,valinit=Phi_m,valfmt='Phi_m is '+'%1.2f',color="red")
+slider3 = Slider(axSlider3,'Phi_m', valmin=4, valmax=4.5,valinit=Phi_m,valfmt='Phi_m is '+'%1.2f',color="red")
 
 
 axSlider4= plt.axes([0.1,0.05,0.55,0.02])		#xloc,yloc,width,height
