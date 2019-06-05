@@ -14,12 +14,6 @@ print("Welcome !!!")
 global Phi_m,tox,NA,ND,r,count,Qox,Qc
 
 
-#user input
-#NA=float(input("Enter the value of NA in per m^3 :"))
-#tox=float(input("Enter the value of oxide thickness in nm :"))
-#Phi_m=float(input("Enter the value of Phi_m :"))
-
-
 #constants initialize
 q=1.6*10**(-19)	        
 Eo=8.854*10**(-12)	
@@ -31,12 +25,12 @@ Phi_t=0.0259            #Thermal Voltage Phi_t=k*t/q
 tox=2*10**(-9)
 #tox=tox*10**(-9)
 #NA=5*10**23
-Phi_m=4.1
-Eg=0.56
+Phi_m=4.1		#for Al
+Eg=0.56			#Eg=EG/2= 1.12/2
 ND=5*10**23
 NA=10
 Qox=10**(-5)
-
+Ea=4.05			#electron affinity of silicon
 
 #variable declaration
 r=[]	
@@ -97,19 +91,19 @@ ax2.set_xlabel('SHI_S (in V)')
 ax2.set_ylabel('Q (in C/m^2)')
 
 #ax2.set_xlim(-0.3,0) 
-#ax2.set_ylim(-20*10**(-3),5*10**(-3)) 
+ax2.set_ylim(0,10*10**(-3)) 
 #ax2.yaxis.set_major_formatter(ticker.FormatStrFormatter('%1.2E'))
 
 
 #3
 #ax3.set_xlim(-0.5,2) 
-#ax3.set_ylim(-0.02,0.03) 
+ax3.set_ylim(0,0.01) 
 
 ax3.set_xlabel('Vgb (in V)') 
 ax3.set_ylabel('Q (in C/m^2)')
 #4
 #ax4.set_xlim(-0.5,1.5) 
-#ax4.set_ylim(-0.03,0.03) 
+ax4.set_ylim(0,0.03) 
 
 ax4.set_xlabel('Vgb (in V)') 
 ax4.set_ylabel('dQ/dVgb (in F/m^2)')
@@ -131,7 +125,6 @@ graph_plot3[count],= plt.plot(V3_list[count], Y3_list[count],color ='r',label=""
 graph_plot4[count]=[]
 graph_plot4[count],= plt.plot(Cox_list[count], Cox_val_list[count],color ='r',label="")	
 
-
 plt.legend()
 
 
@@ -144,8 +137,8 @@ plt.legend()
 def setValue(val):
 	global count,colour_count,colours,Qox
 	count=count+1
-	print("count is ",count)
 	
+	#list initialization
 	Y_list[count]=[]
 	V_list[count]=[]
 	graph_plot[count]=[]
@@ -168,21 +161,20 @@ def setValue(val):
 	Shi_F=Phi_t*log((ND)/(Ni)) 	
 	n=-(2*Shi_F+Phi_t*6)	
 	Cox=Eox/tox	
-	Vfb=-Phi_m+4.05+Eg+Shi_F-Qox/Cox	
+	Vfb=+Phi_m-Ea-Eg+Shi_F-Qox/Cox	
 	gm=(sqrt(2*q*Es*ND))/(Cox)
 	
-	for i in drange(-0.8,0.5,0.05):
+	for i in drange(-1.5,-0.2,0.05):
 		r.append(i)
 	
 	for Vgb in r:
 		f=-(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  
 		x0= max(f,n)	
-		print(f,n,x0) 	
+		#print(Vgb,Vfb,x0) 	
 		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po)
-		#print("val is ",val) 
+		 
 		Qc = (charge_funct(NA,Phi_t,Es,q,val,Shi_F,ND,Po,No))
 		dq_dVgb=deriv_funct(val,Qc,NA,Phi_t,Es,q,Shi_F,Vgb,Vfb,ND,Cox,No,Po)
-		#print("the der val is : ",dq_dVgb)
 		
 		V_list[count].append(Vgb)
 		Y_list[count].append(abs(val))
@@ -233,6 +225,7 @@ def val_update_tox(val):
     global tox,ND,Phi_m,count,Qox
 	
     if count!=0:
+	#list initialization
 	r=[]
 	Y_list[count]=[]
 	V_list[count]=[]
@@ -251,10 +244,10 @@ def val_update_tox(val):
 	Shi_F=Phi_t*log((ND)/(Ni)) 	
 	n=-(2*Shi_F+Phi_t*6)	
 	Cox=Eox/tox			
-	Vfb=-Phi_m+4.05+Eg+Shi_F-Qox/Cox
+	Vfb=+Phi_m-Ea-Eg+Shi_F-Qox/Cox
 	gm=(sqrt(2*q*Es*ND))/(Cox)
 
-	for i in drange(-1,Vfb-0.01,0.05):
+	for i in drange(-1.5,Vfb-0.01,0.05):
 		r.append(i)
 	
    	for Vgb in r:
@@ -276,8 +269,8 @@ def val_update_tox(val):
 		Y3_list[count].append(dq_dVgb)
 		Cox_list[count].append(Vgb)
 		Cox_val_list[count].append(Cox)
-	print("Cox is ",Cox)
-	print(Vfb)
+
+	
 	graph_plot[count].set_ydata(Y_list[count])
 	graph_plot[count].set_xdata(V_list[count])
 	plt.draw          # redraw the plot
@@ -301,6 +294,7 @@ def val_update_ND(val):
     global tox,NA,Phi_m,count,Qox,ND
 
     if count!=0:
+	#list initialization
 	Y_list[count]=[]
 	V_list[count]=[]
 	Y1_list[count]=[]
@@ -319,10 +313,10 @@ def val_update_ND(val):
 	Shi_F=Phi_t*log((ND)/(Ni)) 	
 	n=-(2*Shi_F+Phi_t*6)	
 	Cox=Eox/tox
-	Vfb=-Phi_m+4.05+Eg+Shi_F-Qox/Cox
+	Vfb=+Phi_m-Ea-Eg+Shi_F-Qox/Cox
 	gm=(sqrt(2*q*Es*ND))/(Cox)
    	
-	for i in drange(-1,Vfb-0.01,0.05):
+	for i in drange(-1.5,Vfb-0.01,0.05):
 		r.append(i)
 	
 	for Vgb in r:
@@ -366,7 +360,7 @@ def val_update_Phi(val):
     global tox,NA,Phi_m,count,Qox,ND
 
     if count!=0:
-	print("Count inside Phi_m is ",count)
+	#list initialization
 	Y_list[count]=[]
 	V_list[count]=[]
 	Y1_list[count]=[]
@@ -385,10 +379,10 @@ def val_update_Phi(val):
 	Shi_F=Phi_t*log((ND)/(Ni)) 	
 	n=-(2*Shi_F+Phi_t*6)	
 	Cox=Eox/tox
-	Vfb=-Phi_m+4.05+Eg+Shi_F-Qox/Cox
+	Vfb=+Phi_m-Ea-Eg+Shi_F-Qox/Cox
 	gm=(sqrt(2*q*Es*ND))/(Cox)
    	
-	for i in drange(-1,Vfb-0.01,0.05):
+	for i in drange(-1.5,Vfb-0.01,0.05):
 		r.append(i)
 	
 	for Vgb in r:
@@ -433,7 +427,7 @@ def val_update_Qox(val):
     global tox,NA,Phi_m,count,Qox,ND
 
     if count!=0:
-	print("Count inside Phi_m is ",count)
+	#list initialization
 	Y_list[count]=[]
 	V_list[count]=[]
 	Y1_list[count]=[]
@@ -444,19 +438,20 @@ def val_update_Qox(val):
 	V3_list[count]=[]
 	Cox_list[count]=[]
 	Cox_val_list[count]=[]
-
 	r=[]
-	Qox=(slider4.val)*10**(-6)
+	
+	Qox=(slider4.val)*10**(-6)		#getting slider value
+	
 	Po=(Ni**2)/ND
 	No=ND
 	Shi_F=Phi_t*log((ND)/(Ni)) 	
 	n=-(2*Shi_F+Phi_t*6)	
 	Cox=Eox/tox
-	print("Cox is ",Qox/Cox)
-	Vfb=-Phi_m+4.05+Eg+Shi_F-Qox/Cox
+
+	Vfb=+Phi_m-Ea-Eg+Shi_F-Qox/Cox
 	gm=(sqrt(2*q*Es*ND))/(Cox)
    	
-	for i in drange(-1,Vfb-0.01,0.05):
+	for i in drange(-1.5,Vfb-0.01,0.05):
 		r.append(i)
 	
 	for Vgb in r:
@@ -514,7 +509,7 @@ slider2 = Slider(axSlider2,'ND', valmin=1, valmax=20,valinit=ND/(10**23),valfmt=
 
 
 axSlider3= plt.axes([0.1,0.10,0.55,0.02])		#xloc,yloc,width,height
-slider3 = Slider(axSlider3,'Phi_m', valmin=4, valmax=4.5,valinit=Phi_m,valfmt='Phi_m is '+'%1.2f',color="red")
+slider3 = Slider(axSlider3,'Phi_m', valmin=4.0, valmax=4.6,valinit=Phi_m,valfmt='Phi_m is '+'%1.2f',color="red")
 
 
 axSlider4= plt.axes([0.1,0.05,0.55,0.02])		#xloc,yloc,width,height

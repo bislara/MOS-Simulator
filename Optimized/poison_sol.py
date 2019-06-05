@@ -1,6 +1,6 @@
 #importing modules to main_code
 import matplotlib.pyplot as plt
-from functions.function import *
+from functions.nMOS_funct import *
 from matplotlib.widgets import Slider,Button,TextBox  # import the Slider widget
 from scipy.integrate import odeint
 import numpy as np
@@ -17,21 +17,22 @@ q=1.6*10**(-19)
 Eo=8.854*10**(-12)	
 ks=11.7			#ks for Si
 kox=3.9			#kox for SiO2
-Ni=1.15*10**16		
+Ni=1.15*10**16		#per m^3
 Phi_t=0.0259            #Thermal Voltage Phi_t=k*t/q
 
-tox=2*10**(-9)
-NA=5*10**23
-Phi_m=0.56
+tox=2*10**(-9)		
+NA=5*10**23		
+Phi_m=4.1
+Eg=0.56			#Eg=EG/2
 ND=10
-x0=0
-Eg=1.1
-Ei=Eg/2
+x0=0			#initial value declaration
+Vgb=0.1
+Qox=10**(-5)
+Ea=4.05			#electron affinity of Silicon
 
-
+#for more number of graphs and to distinguish between them 
 colour_count=1
 colours={0:'w',1:'b',2:'g',3:'r',4:'c',5:'m',6:'y',7:'k'}
-
 count=0
 
 
@@ -39,14 +40,12 @@ count=0
 Es=ks*Eo		
 Eox=kox*Eo		
 
-Vgb=0.1
-
 No=(Ni**2)/NA
 Po=NA
 Cox=Eox/tox
-Qox=10**(-5)
+
 Shi_F=Phi_t*log((NA)/(Ni)) 	
-Vfb=-Phi_m-Shi_F-Qox/Cox
+Vfb=+Phi_m-Ea-Eg-Shi_F-Qox/Cox
 
 gm=(sqrt(2*q*Es*NA))/(Cox)
 
@@ -112,8 +111,8 @@ def setValue(val):
 	Cox=Eox/tox
 	Qox=10**(-5)
 	Shi_F=Phi_t*log((NA)/(Ni)) 	
-	Vfb=-Phi_m-Shi_F-Qox/Cox
-
+	Vfb=+Phi_m-Ea-Eg-Shi_F-Qox/Cox
+	print("Vfb is ",Vfb,Phi_m,Shi_F,Eg,Vgb)
 	if Vgb>Vfb and count!=0:
 		gm=(sqrt(2*q*Es*NA))/(Cox)
 		f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  
@@ -135,7 +134,7 @@ def setValue(val):
 			else:
 				y[count].append(i[0])
 				i_old=i[0]
-			PhiF_list[count].append(-Ei-Shi_F)			
+			PhiF_list[count].append(-Eg-Shi_F)			
 		colour_count=colour_count+1
 	
 		plt.axes()
@@ -181,7 +180,7 @@ def val_update_Vgb(val):
 			else:
 				y[count].append(i[0])
 				i_old=i[0]
-			PhiF_list[count].append(-Ei-Shi_F)
+			PhiF_list[count].append(-Eg-Shi_F)
 		graph_plot[count].set_ydata(y[count])
 	#graph_plot[count].set_xdata(V_list[count])
 		plt.draw          # redraw the plot
@@ -197,7 +196,7 @@ def submit_tox(text):
 	global Vgb,tox,NA,Phi_m,count,colour_count,Vfb
 	tox=float(text)*10**(-9)
 	Cox=Eox/tox
-	Vfb=-Phi_m-Shi_F-Qox/Cox
+	Vfb=+Phi_m-Ea-Eg-Shi_F-Qox/Cox
 
 
 	if Vgb>Vfb and count!=0:
@@ -221,7 +220,7 @@ def submit_tox(text):
 			else:
 				y[count].append(i[0])
 				i_old=i[0]
-			PhiF_list[count].append(-Ei-Shi_F)		
+			PhiF_list[count].append(-Eg-Shi_F)		
 		graph_plot[count].set_ydata(y[count])
 		#graph_plot[count].set_xdata(V_list[count])
 		plt.draw          # redraw the plot
@@ -242,7 +241,7 @@ def submit_NA(text):
 	Cox=Eox/tox
 	Qox=10**(-5)
 	Shi_F=Phi_t*log((NA)/(Ni)) 	
-	Vfb=-Phi_m-Shi_F-Qox/Cox
+	Vfb=+Phi_m-Ea-Eg-Shi_F-Qox/Cox
 		
 	if Vgb>Vfb and count!=0:
 		gm=(sqrt(2*q*Es*NA))/(Cox)
@@ -265,7 +264,7 @@ def submit_NA(text):
 			else:
 				y[count].append(i[0])
 				i_old=i[0]
-			PhiF_list[count].append(-Ei-Shi_F)			
+			PhiF_list[count].append(-Eg-Shi_F)			
 		graph_plot[count].set_ydata(y[count])
 		#graph_plot[count].set_xdata(V_list[count])
 		plt.draw          # redraw the plot
@@ -281,7 +280,8 @@ def submit_Phi_m(text):
 	global Vgb,tox,NA,Phi_m,count,colour_count,Vfb
 	Phi_m=float(text)
 
-	Vfb=-Phi_m-Shi_F-Qox/Cox
+	Vfb=+Phi_m-Ea-Eg-Shi_F-Qox/Cox
+	print("Vfb is ",Vfb)
 	#print(Vgb,Vfb)
 	if Vgb>Vfb and count!=0:
 		gm=(sqrt(2*q*Es*NA))/(Cox)
@@ -304,7 +304,7 @@ def submit_Phi_m(text):
 			else:
 				y[count].append(i[0])
 				i_old=i[0]
-			PhiF_list[count].append(-Ei-Shi_F)			
+			PhiF_list[count].append(-Eg-Shi_F)			
 		graph_plot[count].set_ydata(y[count])
 		#graph_plot[count].set_xdata(V_list[count])
 		plt.draw          # redraw the plot
