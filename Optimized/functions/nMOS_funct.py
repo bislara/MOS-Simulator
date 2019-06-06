@@ -2,6 +2,7 @@ from math import *
 from sympy import *
 
 
+#funct for creating steps in for loop
 def drange(start, stop, step):
     while start < stop:
             yield start

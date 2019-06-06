@@ -66,47 +66,58 @@ graph_plot4={}
 Es=ks*Eo		
 Eox=kox*Eo		
 
-colour_count=1
-colours={1:'b',2:'g',3:'r',4:'c',5:'m',6:'y',7:'k'}
+colour_count=0
+colours={1:'b',2:'r',3:'g',4:'m',5:'c',6:'y',7:'k'}
 
 
 
 plt.title="Different graphs"
 # plotting_graph
 fig,((ax1, ax2), (ax3, ax4))= plt.subplots(2,2,sharey=False)
-plt.subplots_adjust(left=0.08, bottom=0.30,right=0.98,top=0.95)
+plt.subplots_adjust(left=0.08, bottom=0.3,right=0.98,top=0.99)
 
 mu, sigma = 1e-3, 1e-4
 #s = np.random.normal(mu, sigma, 10000)
 
 
 #1
-#ax1.set_xlim(-1,0) 
+ax1.set_xlim(-1.6,0.1) 
 #ax1.set_ylim(-0.5,0.4) 
 
 ax1.set_xlabel('Vgb (in V)') 
-ax1.set_ylabel('SHI_S (in V)')
-#2
-ax2.set_xlabel('SHI_S (in V)') 
-ax2.set_ylabel('Q (in C/m^2)')
+ax1.set_ylabel(r'$\psi_S$ (in V)')
 
-#ax2.set_xlim(-0.3,0) 
-ax2.set_ylim(0,10*10**(-3)) 
+ax1.minorticks_on()
+ax1.tick_params(direction="in")
+
+#2
+ax2.set_xlabel(r'$ \psi_s$ (in V)') 
+ax2.set_ylabel('Q (in C/m^2 *10^(-3))')
+
+ax2.set_xlim(-1.2,0.1) 
+ax2.set_ylim(0,10) 
 #ax2.yaxis.set_major_formatter(ticker.FormatStrFormatter('%1.2E'))
+ax2.minorticks_on()
+ax2.tick_params(direction="in")
 
 
 #3
-#ax3.set_xlim(-0.5,2) 
-ax3.set_ylim(0,0.01) 
+ax3.set_xlim(-1.6,0.1) 
+ax3.set_ylim(0,10) 
 
 ax3.set_xlabel('Vgb (in V)') 
-ax3.set_ylabel('Q (in C/m^2)')
+ax3.set_ylabel('Q (in C/m^2 *10^(-3))')
+ax3.minorticks_on()
+ax3.tick_params(direction="in")
+
 #4
-#ax4.set_xlim(-0.5,1.5) 
-ax4.set_ylim(0,0.03) 
+ax4.set_xlim(-2,0) 
+ax4.set_ylim(0,3) 
 
 ax4.set_xlabel('Vgb (in V)') 
-ax4.set_ylabel('dQ/dVgb (in F/m^2)')
+ax4.set_ylabel('dQ/dVgb (in F/m^2 *10^(-2))')
+ax4.minorticks_on()
+ax4.tick_params(direction="in")
 
 
 #2-D variable of graph
@@ -126,11 +137,6 @@ graph_plot4[count]=[]
 graph_plot4[count],= plt.plot(Cox_list[count], Cox_val_list[count],color ='r',label="")	
 
 plt.legend()
-
-
-
-#initial text
-#txt= plt.text(-0.2, -0.2, 'Sliders', fontsize=18)		#xloc,yloc,txt,fontsize
 
 
 #button function for adding plots
@@ -164,7 +170,9 @@ def setValue(val):
 	Vfb=+Phi_m-Ea-Eg+Shi_F-Qox/Cox	
 	gm=(sqrt(2*q*Es*ND))/(Cox)
 	
-	for i in drange(-1.5,-0.2,0.05):
+	
+	# drange funct for creating steps in for loop
+	for i in drange(-1.9,-0.2,0.05):
 		r.append(i)
 	
 	for Vgb in r:
@@ -180,16 +188,16 @@ def setValue(val):
 		Y_list[count].append(abs(val))
 
 		V1_list[count].append(val)
-		Y1_list[count].append((Qc))
+		Y1_list[count].append(Qc*1000)
 
 		V2_list[count].append(Vgb)
-		Y2_list[count].append((Qc))
+		Y2_list[count].append(Qc*1000)
 
 		V3_list[count].append(Vgb)
-		Y3_list[count].append(dq_dVgb)
+		Y3_list[count].append(dq_dVgb*100)
 
 		Cox_list[count].append(Vgb)
-		Cox_val_list[count].append(Cox)
+		Cox_val_list[count].append(Cox*100)
 
 	colour_count=colour_count+1
 	
@@ -201,7 +209,6 @@ def setValue(val):
 	graph_plot1[count],= plt.plot(V1_list[count], Y1_list[count],color =colours[colour_count],label="Curve "+str(count))			
 	plt.legend()
 
-
 	plt.sca(ax3)	
 	graph_plot2[count],= plt.plot(V2_list[count], Y2_list[count],color =colours[colour_count],label="Curve "+str(count))			
 	plt.legend()
@@ -211,12 +218,6 @@ def setValue(val):
 	graph_plot4[count],= plt.plot(Cox_list[count], Cox_val_list[count],color =colours[colour_count],linestyle='--')
 			
 	plt.legend()
-
-
-	#txt.remove()	
-	#txt= plt.text(-0.3, -0.15, 'Slider '+str(count), fontsize=18)	#xloc,yloc,txt,fontsize
-	
-
 
 
 
@@ -238,7 +239,7 @@ def val_update_tox(val):
 	Cox_list[count]=[]
 	Cox_val_list[count]=[]
 
-	tox=slider1.val
+	tox=(slider1.val)*10**(-9)
 	Po=(Ni**2)/ND
 	No=ND
 	Shi_F=Phi_t*log((ND)/(Ni)) 	
@@ -247,7 +248,7 @@ def val_update_tox(val):
 	Vfb=+Phi_m-Ea-Eg+Shi_F-Qox/Cox
 	gm=(sqrt(2*q*Es*ND))/(Cox)
 
-	for i in drange(-1.5,Vfb-0.01,0.05):
+	for i in drange(-1.9,Vfb-0.01,0.05):
 		r.append(i)
 	
    	for Vgb in r:
@@ -260,15 +261,16 @@ def val_update_tox(val):
 		Y_list[count].append(abs(val))
 
 		V1_list[count].append(val)
-		Y1_list[count].append((Qc))
+		Y1_list[count].append((Qc)*1000)
 
 		V2_list[count].append(Vgb)
-		Y2_list[count].append((Qc))
+		Y2_list[count].append((Qc)*1000)
 
 		V3_list[count].append(Vgb)
-		Y3_list[count].append(dq_dVgb)
+		Y3_list[count].append(dq_dVgb*100)
+
 		Cox_list[count].append(Vgb)
-		Cox_val_list[count].append(Cox)
+		Cox_val_list[count].append(Cox*100)
 
 	
 	graph_plot[count].set_ydata(Y_list[count])
@@ -316,7 +318,7 @@ def val_update_ND(val):
 	Vfb=+Phi_m-Ea-Eg+Shi_F-Qox/Cox
 	gm=(sqrt(2*q*Es*ND))/(Cox)
    	
-	for i in drange(-1.5,Vfb-0.01,0.05):
+	for i in drange(-1.9,Vfb-0.01,0.05):
 		r.append(i)
 	
 	for Vgb in r:
@@ -329,15 +331,16 @@ def val_update_ND(val):
 		Y_list[count].append(abs(val))
 
 		V1_list[count].append(val)
-		Y1_list[count].append((Qc))
+		Y1_list[count].append((Qc)*1000)
 
 		V2_list[count].append(Vgb)
-		Y2_list[count].append((Qc))
+		Y2_list[count].append((Qc)*1000)
 
 		V3_list[count].append(Vgb)
-		Y3_list[count].append(dq_dVgb)
+		Y3_list[count].append(dq_dVgb*100)
+
 		Cox_list[count].append(Vgb)
-		Cox_val_list[count].append(Cox)
+		Cox_val_list[count].append(Cox*100)
 
 	graph_plot[count].set_ydata(Y_list[count])
 	graph_plot[count].set_xdata(V_list[count])
@@ -382,7 +385,7 @@ def val_update_Phi(val):
 	Vfb=+Phi_m-Ea-Eg+Shi_F-Qox/Cox
 	gm=(sqrt(2*q*Es*ND))/(Cox)
    	
-	for i in drange(-1.5,Vfb-0.01,0.05):
+	for i in drange(-1.9,Vfb-0.01,0.05):
 		r.append(i)
 	
 	for Vgb in r:
@@ -395,15 +398,16 @@ def val_update_Phi(val):
 		Y_list[count].append(abs(val))
 
 		V1_list[count].append(val)
-		Y1_list[count].append((Qc))
+		Y1_list[count].append((Qc)*1000)
 
 		V2_list[count].append(Vgb)
-		Y2_list[count].append((Qc))
+		Y2_list[count].append((Qc)*1000)
 
 		V3_list[count].append(Vgb)
-		Y3_list[count].append(dq_dVgb)
+		Y3_list[count].append(dq_dVgb*100)
+
 		Cox_list[count].append(Vgb)
-		Cox_val_list[count].append(Cox)
+		Cox_val_list[count].append(Cox*100)
 
 	graph_plot[count].set_ydata(Y_list[count])
 	graph_plot[count].set_xdata(V_list[count])
@@ -464,15 +468,16 @@ def val_update_Qox(val):
 		Y_list[count].append(abs(val))
 
 		V1_list[count].append(val)
-		Y1_list[count].append((Qc))
+		Y1_list[count].append((Qc)*1000)
 
 		V2_list[count].append(Vgb)
-		Y2_list[count].append((Qc))
+		Y2_list[count].append((Qc)*1000)
 
 		V3_list[count].append(Vgb)
-		Y3_list[count].append(dq_dVgb)
+		Y3_list[count].append(dq_dVgb*100)
+
 		Cox_list[count].append(Vgb)
-		Cox_val_list[count].append(Cox)
+		Cox_val_list[count].append(Cox*100)
 
 	graph_plot[count].set_ydata(Y_list[count])
 	graph_plot[count].set_xdata(V_list[count])
@@ -501,7 +506,7 @@ btn.on_clicked(setValue)
 
 #Sliders declaration
 axSlider1= plt.axes([0.1,0.20,0.55,0.02])		#xloc,yloc,width,height
-slider1 = Slider(ax=axSlider1,label='Tox',valmin=1*10**(-9),valmax=5*10**(-9),valinit=tox,valfmt='tox is '+'%1.11f'+ ' in m',color="green")
+slider1 = Slider(ax=axSlider1,label='Tox',valmin=1,valmax=8,valinit=tox*10**(9),valfmt='tox is '+'%1.2f'+ ' in nm',color="green")
 
 
 axSlider2= plt.axes([0.1,0.15,0.55,0.02])		#xloc,yloc,width,height
@@ -509,7 +514,7 @@ slider2 = Slider(axSlider2,'ND', valmin=1, valmax=20,valinit=ND/(10**23),valfmt=
 
 
 axSlider3= plt.axes([0.1,0.10,0.55,0.02])		#xloc,yloc,width,height
-slider3 = Slider(axSlider3,'Phi_m', valmin=4.0, valmax=4.6,valinit=Phi_m,valfmt='Phi_m is '+'%1.2f',color="red")
+slider3 = Slider(axSlider3,r'$\phi_m$', valmin=4, valmax=4.5,valinit=Phi_m,valfmt= r'$\phi_m$ is '+'%1.2f',color="red")
 
 
 axSlider4= plt.axes([0.1,0.05,0.55,0.02])		#xloc,yloc,width,height

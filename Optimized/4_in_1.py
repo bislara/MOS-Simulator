@@ -24,12 +24,17 @@ Phi_t=0.0259            #Thermal Voltage Phi_t=k*t/q2
 tox=2*10**(-9)
 #tox=tox*10**(-9)
 NA=5*10**23
-Eg=0.56
+Eg=0.56			#Eg=EG/2= 1.12/2
 ND=0
 Qox=10**(-5)
-Phi_m=4.1
+Phi_m=4.1		#for Al
 Ea=4.05 		#electron affinity of Silicon
 count=0
+
+#for more number of graphs and to distinguish between them 
+colour_count=0
+colours={1:'b',2:'g',3:'r',4:'c',5:'m',6:'y',7:'k'}
+
 #variable declaration
 r=[]	
 Y_list={}
@@ -42,6 +47,7 @@ Y3_list={}
 V3_list={}
 Cox_list={}
 Cox_val_list={}
+
 
 Y_list[count]=[]
 V_list[count]=[]
@@ -63,19 +69,16 @@ graph_plot4={}
 Es=ks*Eo		
 Eox=kox*Eo		
 
-#for more number of graphs and to distinguish between them 
-colour_count=1
-colours={1:'b',2:'g',3:'r',4:'c',5:'m',6:'y',7:'k'}
-
 
 # plotting_graph
 plt.title="Different graphs"
 
 fig,((ax1, ax2), (ax3, ax4))= plt.subplots(2,2,sharey=False)
-plt.subplots_adjust(left=0.05, bottom=0.30,right=0.95,top=0.95)
+plt.subplots_adjust(left=0.05, bottom=0.30,right=0.98,top=0.95)
 
 mu, sigma = 1e-3, 1e-4
 #s = np.random.normal(mu, sigma, 10000)
+
 
 #labelling and limit of the axes
 #1
@@ -83,13 +86,13 @@ ax1.set_xlim(-1,2)
 ax1.set_ylim(0,1.3) 
 
 ax1.set_xlabel('Vgb (in V)') 
-ax1.set_ylabel(r'$ \psi$ (in V)')
+ax1.set_ylabel(r'$ \psi_s$ (in V)')
 ax1.minorticks_on()
 ax1.tick_params(direction="in")
 
 #2
-ax2.set_xlabel(r'$ \psi$ (in V)') 
-ax2.set_ylabel('Q (in C/m^2 *10^-2)')
+ax2.set_xlabel(r'$ \psi_s$ (in V)') 
+ax2.set_ylabel('Q (in C/m^2 *10^(-2))')
 
 
 ax2.set_xlim(0,1.5) 
@@ -103,15 +106,16 @@ ax3.set_xlim(-1,2)
 ax3.set_ylim(0,3) 
 
 ax3.set_xlabel('Vgb (in V)') 
-ax3.set_ylabel('Q (in C/m^2 *10^-2)')
+ax3.set_ylabel('Q (in C/m^2 *10^(-2))')
 ax3.minorticks_on()
 ax3.tick_params(direction="in")
+
 #4
 ax4.set_xlim(-1,1.5) 
 ax4.set_ylim(0,3) 
 
 ax4.set_xlabel('Vgb (in V)') 
-ax4.set_ylabel('dQ/dVgb (in F/m^2 *10^-2)')
+ax4.set_ylabel('dQ/dVgb (in F/m^2 *10^(-2))')
 ax4.minorticks_on()
 ax4.tick_params(direction="in")
 
@@ -535,7 +539,7 @@ slider2 = Slider(axSlider2,'NA', valmin=1, valmax=20,valinit=NA/(10**23),valfmt=
 
 
 axSlider3= plt.axes([0.1,0.10,0.55,0.02])		#xloc,yloc,width,height
-slider3 = Slider(axSlider3,'Phi_m', valmin=4, valmax=4.5,valinit=Phi_m,valfmt= r'$\phi$ m is '+'%1.2f',color="red")
+slider3 = Slider(axSlider3,r'$\phi_m$', valmin=4, valmax=4.5,valinit=Phi_m,valfmt= r'$\phi_m$ is '+'%1.2f',color="red")
 
 
 axSlider4= plt.axes([0.1,0.05,0.55,0.02])		#xloc,yloc,width,height

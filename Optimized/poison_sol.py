@@ -31,7 +31,7 @@ Qox=10**(-5)
 Ea=4.05			#electron affinity of Silicon
 
 #for more number of graphs and to distinguish between them 
-colour_count=1
+colour_count=0
 colours={0:'w',1:'b',2:'g',3:'r',4:'c',5:'m',6:'y',7:'k'}
 count=0
 
@@ -85,12 +85,15 @@ graph_plot2[count]=[]
 graph_plot2[count],=plt.plot(yt,PhiF_list[count],color =colours[colour_count],label="")
 
 
-plt.title('Shi VS y graph') 
+plt.title(r'$ \psi_S $ VS y graph') 
 plt.ylim(-1.5,1.5)
 plt.xlim(0,5*10**(-8))
+plt.minorticks_on()
+plt.tick_params(direction="in")
+
 
 plt.xlabel('y value') 
-plt.ylabel('Shi value')
+plt.ylabel(r'$ \psi_S $ value')
 
 plt.legend()
 
@@ -329,7 +332,7 @@ btn.on_clicked(setValue)
 
 #Sliders declaration
 axSlider1= plt.axes([0.1,0.20,0.55,0.02])		#xloc,yloc,width,height
-slider1 = Slider(ax=axSlider1,label='Vgb',valmin=-1,valmax=3,valinit=Vgb,valfmt='Vgb is '+'%1.11f'+ ' in V',color="green")
+slider1 = Slider(ax=axSlider1,label='Vgb',valmin=-1,valmax=3,valinit=Vgb,valfmt='Vgb is '+'%1.3f'+ ' in V',color="green")
 
 #sliders on change function call
 slider1.on_changed(val_update_Vgb)
@@ -345,7 +348,7 @@ NA_box = TextBox(NAbox, 'NA in 10**20', initial=str(NA/10.0**20))
 NA_box.on_submit(submit_NA)
 
 Phi_mbox = plt.axes([0.2,0.02, 0.4, 0.04 ])
-Phi_m_box = TextBox(Phi_mbox, 'Phi_m', initial=str(Phi_m))
+Phi_m_box = TextBox(Phi_mbox, r'$ \phi_M $', initial=str(Phi_m))
 Phi_m_box.on_submit(submit_Phi_m)
 
 

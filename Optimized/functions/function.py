@@ -1,11 +1,12 @@
 from math import *
 from sympy import *
 
-
+#funct for creating steps in for loop
 def drange(start, stop, step):
     while start < stop:
             yield start
             start += step
+
 
 #funct to return the value of funct at a particuar value
 def func(Vgb, Shi_s,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po):	    
@@ -81,6 +82,5 @@ def deriv_funct(Shi_s,Qc,NA,Phi_t,Es,q,Phi_F,Vgb,Vfb,ND,Cox,No,Po):
 
 	dq_dv=d/k
 	put=dq_dv.subs({t:(Shi_s)})
-	#print("dq is",put)
 	return abs(put)
 
