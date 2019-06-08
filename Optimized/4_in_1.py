@@ -21,13 +21,13 @@ ks=11.7			#ks for Si
 kox=3.9			#kox for SiO2
 Ni=1.15*10**16		#intrinsic concentration in per m^3
 Phi_t=0.0259            #Thermal Voltage Phi_t=k*t/q2
-tox=2*10**(-9)
+tox=4*10**(-9)
 #tox=tox*10**(-9)
 NA=5*10**23
 Eg=0.56			#Eg=EG/2= 1.12/2
 ND=0
 Qox=10**(-5)
-Phi_m=4.1		#for Al
+Phi_m=3.96668		#for Al
 Ea=4.05 		#electron affinity of Silicon
 count=0
 
@@ -112,7 +112,7 @@ ax3.tick_params(direction="in")
 
 #4
 ax4.set_xlim(-1,1.5) 
-ax4.set_ylim(0,3) 
+ax4.set_ylim(0,1) 
 
 ax4.set_xlabel('Vgb (in V)') 
 ax4.set_ylabel('dQ/dVgb (in F/m^2 *10^(-2))')
@@ -174,7 +174,7 @@ def setValue(val):
 	Shi_F=Phi_t*log((NA)/(Ni)) 	
 	n=2*Shi_F+Phi_t*6	
 	Cox=Eox/tox	
-	Vfb=+Phi_m-Ea-Eg-Shi_F-Qox/Cox	
+	Vfb=+Phi_m-Ea-Eg-Shi_F#-Qox/Cox
 	gm=(sqrt(2*q*Es*NA))/(Cox)
 	
 	#Vgb range
@@ -183,7 +183,7 @@ def setValue(val):
 	
 	
 	for Vgb in r:
-		print("Vfb is ",Vgb,Vfb,gm)
+		
 		f=(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb )**2  
 		x0= min(f,n)		#initial value of NewtonRaphson
 		val=newtonRaphson(Vgb,x0,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po) 
@@ -201,7 +201,7 @@ def setValue(val):
 
 		V3_list[count].append(Vgb)
 		Y3_list[count].append(dq_dVgb*100)
-
+		print(Vgb,dq_dVgb*100,Vfb)
 		Cox_list[count].append(Vgb)
 		Cox_val_list[count].append(Cox*100)
 
@@ -404,7 +404,7 @@ def val_update_Phi(val):
 	Shi_F=Phi_t*log((NA)/(Ni)) 	
 	n=2*Shi_F+Phi_t*6		
 	Cox=Eox/tox
-	Vfb=+Phi_m-Ea-Eg-Shi_F-Qox/Cox
+	Vfb=+Phi_m-Ea-Eg-Shi_F#-Qox/Cox
 	gm=(sqrt(2*q*Es*NA))/(Cox)
    	
 	#Vgb range
@@ -428,7 +428,7 @@ def val_update_Phi(val):
 
 		V3_list[count].append(Vgb)
 		Y3_list[count].append(dq_dVgb*100)
-
+		print(Vgb,dq_dVgb*100,Vfb)
 		Cox_list[count].append(Vgb)
 		Cox_val_list[count].append(Cox*100)
 
@@ -539,7 +539,7 @@ slider2 = Slider(axSlider2,'NA', valmin=1, valmax=20,valinit=NA/(10**23),valfmt=
 
 
 axSlider3= plt.axes([0.1,0.10,0.55,0.02])		#xloc,yloc,width,height
-slider3 = Slider(axSlider3,r'$\phi_m$', valmin=4, valmax=4.5,valinit=Phi_m,valfmt= r'$\phi_m$ is '+'%1.2f',color="red")
+slider3 = Slider(axSlider3,r'$\phi_m$', valmin=3.5, valmax=4.5,valinit=Phi_m,valfmt= r'$\phi_m$ is '+'%1.2f',color="red")
 
 
 axSlider4= plt.axes([0.1,0.05,0.55,0.02])		#xloc,yloc,width,height
@@ -556,3 +556,4 @@ plt.show()
 
 
 print("Thank you for using the tool \n")
+

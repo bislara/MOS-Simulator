@@ -54,9 +54,8 @@ def newtonRaphson( Vgb, Shi_s ,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po):
             print("Error! - derivative zero for x = ", Shi_s)
 
 
-    print("The value of the root is : ",
-                             "%.4f"% Shi_s)
-    print("the no of iterations is ",count)  #no of iterations for each value of vgb
+    #print("The value of the root is : ","%.4f"% Shi_s)
+    #print("the no of iterations is ",count)  #no of iterations for each value of vgb
     return Shi_s
 
 
