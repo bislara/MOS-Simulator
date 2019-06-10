@@ -3,8 +3,6 @@ import FileDialog
 import matplotlib.pyplot as plt
 from functions.nMOS_funct import *
 from matplotlib.widgets import Slider,Button  # import the Slider widget
-import matplotlib.ticker as ticker
-from matplotlib.ticker import NullFormatter, FixedLocator
 import numpy as np
 
 
