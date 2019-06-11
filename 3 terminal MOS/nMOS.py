@@ -25,7 +25,7 @@ NA=5*10**23
 Eg=0.56			#Eg=EG/2= 1.12/2
 ND=0
 Qox=10**(-5)
-Phi_m=3.96668
+Phi_m=4.1
 Vcb=0.5		#for Al
 Ea=4.05 		#electron affinity of Silicon
 count=0
@@ -75,13 +75,10 @@ plt.title="Different graphs"
 fig,((ax1, ax2), (ax3, ax4))= plt.subplots(2,2,sharey=False)
 plt.subplots_adjust(left=0.05, bottom=0.30,right=0.98,top=0.95)
 
-mu, sigma = 1e-3, 1e-4
-#s = np.random.normal(mu, sigma, 10000)
-
 
 #labelling and limit of the axes
 #1
-ax1.set_xlim(-1,2) 
+ax1.set_xlim(-1,2.5) 
 ax1.set_ylim(0,2.5) 
 
 ax1.set_xlabel('Vgb (in V)') 
@@ -96,12 +93,11 @@ ax2.set_ylabel('Q (in C/m^2 *10^(-2))')
 
 ax2.set_xlim(0,2.5) 
 ax2.set_ylim(0,15*10**(-1)) 
-#ax2.yaxis.set_major_formatter(ticker.FormatStrFormatter('%1.2E'))
 ax2.minorticks_on()
 ax2.tick_params(direction="in")
 
 #3
-ax3.set_xlim(-1,2) 
+ax3.set_xlim(-1,2.5) 
 ax3.set_ylim(0,2.5) 
 
 ax3.set_xlabel('Vgb (in V)') 
@@ -110,7 +106,7 @@ ax3.minorticks_on()
 ax3.tick_params(direction="in")
 
 #4
-ax4.set_xlim(-1,1.5) 
+ax4.set_xlim(-1,2.5) 
 ax4.set_ylim(0,2.5) 
 
 ax4.set_xlabel('Vgb (in V)') 
@@ -137,11 +133,6 @@ graph_plot4[count],= plt.plot(Cox_list[count], Cox_val_list[count],color ='r',la
 
 
 plt.legend()
-
-
-
-#initial text
-#txt= plt.text(-0.2, -0.2, 'Sliders', fontsize=18)		#xloc,yloc,txt,fontsize
 
 
 #button function for adding plots
@@ -177,7 +168,7 @@ def setValue(val):
 	gm=(sqrt(2*q*Es*NA))/(Cox)
 	
 	#Vgb range
-	for i in drange(-0.5,1.5,0.05):
+	for i in drange(-0.5,2.5,0.05):
 		r.append(i)
 	
 	
@@ -227,11 +218,6 @@ def setValue(val):
 	plt.legend()
 
 
-	#txt.remove()	
-	#txt= plt.text(-0.3, -0.15, 'Slider '+str(count), fontsize=18)	#xloc,yloc,txt,fontsize
-	
-
-
 def val_update_Vcb(val):
     global tox,NA,Phi_m,count,Qox,Vcb
 	
@@ -260,7 +246,7 @@ def val_update_Vcb(val):
 	gm=(sqrt(2*q*Es*NA))/(Cox)
 
 	#Vgb range
-	for i in drange(Vfb+0.01,1.5,0.05):
+	for i in drange(Vfb+0.01,2.5,0.05):
 		r.append(i)
 
    	for Vgb in r:
@@ -335,7 +321,7 @@ def val_update_tox(val):
 	gm=(sqrt(2*q*Es*NA))/(Cox)
 
 	#Vgb range
-	for i in drange(Vfb+0.01,1.5,0.05):
+	for i in drange(Vfb+0.01,2.5,0.05):
 		r.append(i)
 
    	for Vgb in r:
@@ -380,6 +366,7 @@ def val_update_tox(val):
 
 
 
+
 #sliders Update functions of NA
 def val_update_NA(val):
     global tox,NA,Phi_m,count,Qox,Vcb
@@ -409,7 +396,7 @@ def val_update_NA(val):
 	gm=(sqrt(2*q*Es*NA))/(Cox)
    	
 	#Vgb range
-	for i in drange(Vfb+0.01,1.5,0.05):
+	for i in drange(Vfb+0.01,2.5,0.05):
 		r.append(i)
 
 	for Vgb in r:
@@ -479,7 +466,7 @@ def val_update_Phi(val):
 	gm=(sqrt(2*q*Es*NA))/(Cox)
    	
 	#Vgb range
-	for i in drange(Vfb+0.01,1.5,0.05):
+	for i in drange(Vfb+0.01,2.5,0.05):
 		r.append(i)
 
 	for Vgb in r:
@@ -550,7 +537,7 @@ def val_update_Qox(val):
 	gm=(sqrt(2*q*Es*NA))/(Cox)
    	
 	#Vgb range
-	for i in drange(Vfb+0.01,1.5,0.05):
+	for i in drange(Vfb+0.01,2.5,0.05):
 		r.append(i)
 
 	for Vgb in r:

@@ -7,7 +7,6 @@ import numpy as np
 
 
 print("Welcome !!!")
-#print("Enter all the values in the MKS system")
 
 global Phi_m,tox,NA,ND,r,count,Qox,Qc
 
@@ -25,10 +24,10 @@ ND=5*10**23
 Eg=0.56			#Eg=EG/2= 1.12/2
 NA=10
 Qox=10**(-5)
-Phi_m=3.96668		#for Al
+Phi_m=4.1		#for Al
 Ea=4.05 		#electron affinity of Silicon
 count=0
-Vcb=-0.5
+Vcb=0.4
 
 #for more number of graphs and to distinguish between them 
 colour_count=0
@@ -75,14 +74,11 @@ plt.title="Different graphs"
 fig,((ax1, ax2), (ax3, ax4))= plt.subplots(2,2,sharey=False)
 plt.subplots_adjust(left=0.05, bottom=0.30,right=0.98,top=0.95)
 
-mu, sigma = 1e-3, 1e-4
-#s = np.random.normal(mu, sigma, 10000)
-
 
 #labelling and limit of the axes
 #1
-ax1.set_xlim(-2.1,0.1) 
-ax1.set_ylim(0,1.5) 
+ax1.set_xlim(-2.75,0.1) 
+ax1.set_ylim(0,2.75) 
 
 ax1.set_xlabel('Vgb (in V)') 
 ax1.set_ylabel(r'$\psi_S$ (in V)')
@@ -94,15 +90,14 @@ ax1.tick_params(direction="in")
 ax2.set_xlabel(r'$ \psi_s$ (in V)') 
 ax2.set_ylabel('Q (in C/m^2 *10^(-3))')
 
-ax2.set_xlim(-1.2,0.1) 
+ax2.set_xlim(-2.75,0.1) 
 ax2.set_ylim(0,10) 
-#ax2.yaxis.set_major_formatter(ticker.FormatStrFormatter('%1.2E'))
 ax2.minorticks_on()
 ax2.tick_params(direction="in")
 
 
 #3
-ax3.set_xlim(-2.1,0.1) 
+ax3.set_xlim(-2.75,0.1) 
 ax3.set_ylim(0,10) 
 
 ax3.set_xlabel('Vgb (in V)') 
@@ -111,7 +106,7 @@ ax3.minorticks_on()
 ax3.tick_params(direction="in")
 
 #4
-ax4.set_xlim(-2.2,0) 
+ax4.set_xlim(-2.85,0) 
 ax4.set_ylim(0,3) 
 
 ax4.set_xlabel('Vgb (in V)') 
@@ -136,13 +131,8 @@ graph_plot3[count],= plt.plot(V3_list[count], Y3_list[count],color ='r',label=""
 graph_plot4[count]=[]
 graph_plot4[count],= plt.plot(Cox_list[count], Cox_val_list[count],color ='r',label="")	
 
-
 plt.legend()
 
-
-
-#initial text
-#txt= plt.text(-0.2, -0.2, 'Sliders', fontsize=18)		#xloc,yloc,txt,fontsize
 
 
 #button function for adding plots
@@ -178,7 +168,7 @@ def setValue(val):
 	gm=(sqrt(2*q*Es*ND))/(Cox)
 	
 	# drange funct for creating steps in for loop
-	for i in drange(-1.9,-0.2,0.05):
+	for i in drange(-2.75,-0.2,0.05):
 		r.append(i)
 	
 	for Vgb in r:
@@ -228,11 +218,6 @@ def setValue(val):
 	plt.legend()
 
 
-	#txt.remove()	
-	#txt= plt.text(-0.3, -0.15, 'Slider '+str(count), fontsize=18)	#xloc,yloc,txt,fontsize
-	
-
-
 def val_update_Vcb(val):
     global tox,NA,Phi_m,count,Qox,Vcb
 	
@@ -251,7 +236,7 @@ def val_update_Vcb(val):
 	Cox_list[count]=[]
 	Cox_val_list[count]=[]
 
-	Vcb=-(slider1.val)
+	Vcb=(slider1.val)
 	
 	Po=(Ni**2)/ND	
 	No=ND
@@ -262,7 +247,7 @@ def val_update_Vcb(val):
 	gm=(sqrt(2*q*Es*ND))/(Cox)
 	
 	# drange funct for creating steps in for loop
-	for i in drange(-1.9,Vfb-0.01,0.05):
+	for i in drange(-2.75,Vfb-0.01,0.05):
 		r.append(i)
 	
    	for Vgb in r:
@@ -287,7 +272,6 @@ def val_update_Vcb(val):
 		Cox_list[count].append(Vgb)
 		Cox_val_list[count].append(Cox*100)
 
-	print("Cox is ",Cox)
 
 	#redrawing the graphs for different parameter value
 	graph_plot[count].set_ydata(Y_list[count])
@@ -337,7 +321,7 @@ def val_update_tox(val):
 	gm=(sqrt(2*q*Es*ND))/(Cox)
 		
 	# drange funct for creating steps in for loop
-	for i in drange(-1.9,Vfb-0.01,0.05):
+	for i in drange(-2.75,Vfb-0.01,0.05):
 		r.append(i)
 	
    	for Vgb in r:
@@ -357,11 +341,10 @@ def val_update_tox(val):
 
 		V3_list[count].append(Vgb)
 		Y3_list[count].append(dq_dVgb*100)
-		print(Vgb,dq_dVgb*100,Vfb)
+		
 		Cox_list[count].append(Vgb)
 		Cox_val_list[count].append(Cox*100)
 
-	print("Cox is ",Cox)
 
 	#redrawing the graphs for different parameter value
 	graph_plot[count].set_ydata(Y_list[count])
@@ -386,7 +369,6 @@ def val_update_ND(val):
     global tox,NA,Phi_m,count,Qox,Vcb
 
     if count!=0:
-	
 	#initial list declaration
 	Y_list[count]=[]
 	V_list[count]=[]
@@ -410,7 +392,7 @@ def val_update_ND(val):
 	gm=(sqrt(2*q*Es*ND))/(Cox)
 	
 	# drange funct for creating steps in for loop
-	for i in drange(-1.9,Vfb-0.01,0.05):
+	for i in drange(-2.75,Vfb-0.01,0.05):
 		r.append(i)
 	
 	for Vgb in r:
@@ -430,7 +412,7 @@ def val_update_ND(val):
 
 		V3_list[count].append(Vgb)
 		Y3_list[count].append(dq_dVgb*100)
-		print(Vgb,dq_dVgb*100,Vfb)
+
 		Cox_list[count].append(Vgb)
 		Cox_val_list[count].append(Cox*100)
 
@@ -480,7 +462,7 @@ def val_update_Phi(val):
 	gm=(sqrt(2*q*Es*ND))/(Cox)
 	
 	# drange funct for creating steps in for loop
-	for i in drange(-1.9,Vfb-0.01,0.05):
+	for i in drange(-2.75,Vfb-0.01,0.05):
 		r.append(i)
 	
 	for Vgb in r:
@@ -500,7 +482,7 @@ def val_update_Phi(val):
 
 		V3_list[count].append(Vgb)
 		Y3_list[count].append(dq_dVgb*100)
-		print(Vgb,dq_dVgb*100,Vfb)
+
 		Cox_list[count].append(Vgb)
 		Cox_val_list[count].append(Cox*100)
 
@@ -551,7 +533,7 @@ def val_update_Qox(val):
 	gm=(sqrt(2*q*Es*ND))/(Cox)
 	
 	# drange funct for creating steps in for loop
-	for i in drange(-1.9,Vfb-0.01,0.05):
+	for i in drange(-2.75,Vfb-0.01,0.05):
 		r.append(i)
 	
 	for Vgb in r:
@@ -571,7 +553,7 @@ def val_update_Qox(val):
 
 		V3_list[count].append(Vgb)
 		Y3_list[count].append(dq_dVgb*100)
-		print(Vgb,dq_dVgb*100,Vfb)
+
 		Cox_list[count].append(Vgb)
 		Cox_val_list[count].append(Cox*100)
 
@@ -604,7 +586,7 @@ btn.on_clicked(setValue)
 
 #Sliders declaration
 axSlider1= plt.axes([0.1,0.21,0.55,0.02])		#xloc,yloc,width,height
-slider1 = Slider(axSlider1,'Vcb', valmin=0.01, valmax=0.9,valinit=-Vcb,valfmt='Vcb is '+'-'+'%1.2f'+'in V',color="blue")
+slider1 = Slider(axSlider1,'Vcb', valmin=0.01, valmax=1.5,valinit=Vcb,valfmt='Vcb is '+'-'+'%1.2f'+'in V',color="blue")
 
 
 axSlider2= plt.axes([0.1,0.17,0.55,0.02])		#xloc,yloc,width,height

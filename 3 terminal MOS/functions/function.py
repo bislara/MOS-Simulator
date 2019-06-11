@@ -12,7 +12,7 @@ def drange(start, stop, step):
 def func(Vgb, Shi_s,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po,Vcb):	    
 	try:
       	  p=Vfb + Shi_s - ((sqrt(2*q*Es))/(Cox)) *(sqrt( Po*Phi_t*e**(-Vcb/Phi_t)*( e**(-Shi_s/Phi_t )-1) +( NA-ND  )*Shi_s + No*Phi_t*( e**(Shi_s/Phi_t )-1) )  ) -Vgb	  
-	  print("p is",p)
+	 # print("p is",p)
 	  return p
  	 
     	except ZeroDivisionError:
@@ -30,7 +30,7 @@ def derivFunc( Shi_s,Vgb,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po,Vcb):
     deriv= Derivative(f, t)
 
     k= deriv.doit().subs({t:Shi_s}) #this puts the value of t as Shi_s in the derivative of the main function
-    print("k is ",k) 
+    #print("k is ",k) 
     if k==0:
 	return 1
     else:
