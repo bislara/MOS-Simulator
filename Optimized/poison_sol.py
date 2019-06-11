@@ -6,7 +6,6 @@ from scipy.integrate import odeint
 import numpy as np
 
 print("Welcome !!!")
-#print("Enter all the values in the MKS system")
 
 #global declarations
 global Phi_m,tox,NA,ND,r,count,Qox,Qc,q,Es,Phi_t,Shi_F,Eg
