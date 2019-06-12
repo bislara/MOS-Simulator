@@ -1,5 +1,5 @@
 from subprocess import call
-from matplotlib.widgets import Slider,Button  	# import the Slider widget
+from matplotlib.widgets import Slider,Button,TextBox  	# import the Slider widget
 import numpy as np
 import matplotlib.pyplot as plt
 

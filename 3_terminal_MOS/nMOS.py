@@ -158,7 +158,7 @@ def setValue(val):
 	Po=NA	
 	No=(Ni**2)/NA
 	Shi_F=Phi_t*log((NA)/(Ni)) 	
-	n=2*Shi_F+Phi_t*6+ Vcb	
+	n=2*Shi_F+Phi_t*6+ Vcb		#6*Phi_t for uniform substrates
 	Cox=Eox/tox	
 	Vfb=+Phi_m-Ea-Eg-Shi_F-Qox/Cox
 	gm=(sqrt(2*q*Es*NA))/(Cox)
