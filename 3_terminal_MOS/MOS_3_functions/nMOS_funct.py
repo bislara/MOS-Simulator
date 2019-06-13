@@ -11,7 +11,7 @@ def drange(start, stop, step):
 #funct to return the value of funct at a particuar value
 def func(Vgb, Shi_s,Vfb,NA,ND,Phi_t,q,Es,Cox,No,Po,Vcb):	    
 	try:
-      	  p=Vfb + Shi_s + ((sqrt(2*q*Es))/(Cox)) *(sqrt( Po*Phi_t*( e**(-Shi_s/Phi_t )-1) +( NA-ND  )*Shi_s + No*e**(-Vcb/Phi_t)*Phi_t*( e**(Shi_s/Phi_t )-1) )  ) -Vgb	 
+      	  p=Vfb + Shi_s + ((sqrt(2*q*Es))/(Cox)) *(sqrt( Po*Phi_t*( e**(-Shi_s/Phi_t )-1) +( NA-ND  )*Shi_s + No*e**(-Vcb/Phi_t)*Phi_t*( e**(Shi_s/Phi_t )-1) )  ) -Vgb	  
 	  return p
  	 
     	except ZeroDivisionError:
