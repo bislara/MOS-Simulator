@@ -28,7 +28,7 @@ count=0
 mu=400*10**(-4)
 w=10*10**(-6)
 l=10*10**(-6)
-Vds=0.8
+Vds=-0.8
 Vsb=0
 
 
@@ -96,10 +96,10 @@ def setValue(val):
 	gm=(sqrt(2*q*Es))/Cox
 
 	#Vcb range
-	for i in drange(-2.5,-0.2,0.05):
+	for i in drange(-2.5,-0.5,0.05):
 		r.append(i)
 	
-	
+
 	for Vgs in r:
 		Id=calculate_Id(w,l,mu,Vgs,Vfb,Vds,Cox,gm,Phi_t,Shi_F,x0,Po,No,NA,ND)	    	
 		V_list[count].append(Vgs)
@@ -110,8 +110,8 @@ def setValue(val):
 	#redrawing the graphs for different parameter value
 	plt.axes()
 	plt.title('Id Vs Vgs graph for pMOS with Vsb=0') 
-	plt.ylim(0,3)
-	plt.xlim(-2.65,0)
+	plt.ylim(0,1)
+	plt.xlim(-3,0)
 	plt.minorticks_on()	
 	plt.tick_params(direction="in")
 	
@@ -132,7 +132,7 @@ def val_update_Vds(val):
 	Y_list[count]=[]
 	V_list[count]=[]
 	
-	Vds=(slider1.val)
+	Vds=-(slider1.val)
 	Po=(Ni**2)/ND	
 	No=ND
 	Shi_F=Phi_t*log((ND)/(Ni)) 	
@@ -143,7 +143,7 @@ def val_update_Vds(val):
 	gm=(sqrt(2*q*Es))/Cox
 
 	#Vcb range
-	for i in drange(-2.5,-0.2,0.05):
+	for i in drange(-2.5,-0.5,0.05):
 		r.append(i)
 	
 	
@@ -429,7 +429,7 @@ btn.on_clicked(setValue)
 
 #Sliders declaration
 axSlider1= plt.axes([0.1,0.21,0.55,0.02])		#xloc,yloc,width,height
-slider1 = Slider(axSlider1,'Vds', valmin=-0.01, valmax=2,valinit=Vds,valfmt='Vds is '+'%1.2f'+' in V',color="blue")
+slider1 = Slider(axSlider1,'Vds', valmin=-0.01, valmax=2,valinit=-Vds,valfmt='Vds is '+'%1.2f'+' in V',color="blue")
 
 
 axSlider2= plt.axes([0.1,0.17,0.55,0.02])		#xloc,yloc,width,height

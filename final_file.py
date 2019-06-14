@@ -34,36 +34,50 @@ def setValue7(val):
 
 #buttons_declaration
 
-title2=plt.axes([0.3,0.85, 0.4, 0.1])
+title2=plt.axes([0.3,0.5, 0.4, 0.1])
 title_btn = Button(title2, ' 3 Terminal MOSFET\n Choose one of these ',color='#afeeee',hovercolor = '#afeeee')
 
 
-axButton = plt.axes([0.05,0.7, 0.1, 0.06])		#xloc,yloc,width,heights
+axButton = plt.axes([0.05,0.35, 0.1, 0.06])		#xloc,yloc,width,heights
 btn = Button(axButton, ' nMOS ',hovercolor = 'y')
 	
-axButton2 = plt.axes([0.22,0.7, 0.1, 0.06])		#xloc,yloc,width,heights
+axButton2 = plt.axes([0.22,0.35, 0.1, 0.06])		#xloc,yloc,width,heights
 btn2 = Button(axButton2, ' pMOS ',hovercolor = 'y')
 
-axButton3 = plt.axes([0.4,0.70, 0.25, 0.06])		#xloc,yloc,width,heights
+axButton3 = plt.axes([0.4,0.35, 0.25, 0.06])		#xloc,yloc,width,heights
 btn3 = Button(axButton3, r'$\psi_s$ Vs Vcb of nMOS',hovercolor = 'y')
 
-axButton4 = plt.axes([0.7,0.7, 0.25, 0.06])		#xloc,yloc,width,heights
+axButton4 = plt.axes([0.7,0.35, 0.25, 0.06])		#xloc,yloc,width,heights
 btn4 = Button(axButton4,r'$\psi_s$ Vs Vcb of pMOS',hovercolor = 'y')
 
 
 
 
-title1=plt.axes([0.3,0.5, 0.4, 0.1])
+title1=plt.axes([0.3,0.85, 0.4, 0.1])
 title_btn1 = Button(title1, ' MOSCAP\n Choose one of these ',color='#afeeee',hovercolor = '#afeeee')
 
 
-axButton5 = plt.axes([0.15,0.35, 0.1, 0.06])		#xloc,yloc,width,heights
+axButton5 = plt.axes([0.15,0.7, 0.1, 0.06])		#xloc,yloc,width,heights
 btn5 = Button(axButton5, ' nMOS ',hovercolor = 'y')
 	
-axButton6 = plt.axes([0.35,0.35, 0.1, 0.06])		#xloc,yloc,width,heights
+axButton6 = plt.axes([0.35,0.7, 0.1, 0.06])		#xloc,yloc,width,heights
 btn6 = Button(axButton6, ' pMOS ',hovercolor = 'y')
 
-axButton7 = plt.axes([0.55,0.35, 0.25, 0.06])		#xloc,yloc,width,heights
+axButton7 = plt.axes([0.55,0.7, 0.25, 0.06])		#xloc,yloc,width,heights
+btn7 = Button(axButton7, r'$\psi_s$ Vs y ',hovercolor = 'y')
+
+
+
+title3=plt.axes([0.3,0.15, 0.4, 0.1])
+title_btn3 = Button(title3, ' 4 Terminal MOSFET\n Choose one of these ',color='#afeeee',hovercolor = '#afeeee')
+
+axButton5 = plt.axes([0.15,0.03, 0.1, 0.06])		#xloc,yloc,width,heights
+btn5 = Button(axButton5, ' nMOS ',hovercolor = 'y')
+	
+axButton6 = plt.axes([0.35,0.03, 0.1, 0.06])		#xloc,yloc,width,heights
+btn6 = Button(axButton6, ' pMOS ',hovercolor = 'y')
+
+axButton7 = plt.axes([0.55,0.03, 0.25, 0.06])		#xloc,yloc,width,heights
 btn7 = Button(axButton7, r'$\psi_s$ Vs y ',hovercolor = 'y')
 
 

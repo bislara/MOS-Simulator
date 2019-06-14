@@ -42,20 +42,26 @@ colours={1:'b',2:'g',3:'r',4:'c',5:'m',6:'y',7:'k'}
 r=[]	
 Y_list={}
 V_list={}
+Y1_list={}
+V1_list={}
 
 
 Y_list[count]=[]
 V_list[count]=[]
+Y1_list[count]=[]
+V1_list[count]=[]
 
 graph_plot={}
 graph_plot[count]=[]
+graph_plot1={}
+graph_plot1[count]=[]
 
 Es=ks*Eo		
 Eox=kox*Eo		
 
 # plotting_graph
 
-fig, ax = plt.subplots()
+fig,ax = plt.subplots()
 plt.subplots_adjust(left=0.1, bottom=0.35,right=0.75)
 
 
@@ -67,6 +73,7 @@ plt.tick_params(direction="in")
 
 
 graph_plot[count]= plt.plot(V_list[count], Y_list[count],color ='r',label="")	
+graph_plot1[count]= plt.plot(V1_list[count], Y1_list[count],color ='r',label="")	
 
 
 plt.xlabel('Vds (in V)') 
@@ -112,8 +119,8 @@ def setValue(val):
 	#redrawing the graphs for different parameter value
 	plt.axes()
 	plt.title('Id Vs Vds graph for nMOS with Vdb=0') 
-	plt.ylim(0,3)
-	plt.xlim(0,2.15)
+	plt.ylim(0,0.02)
+	#plt.xlim(0,2.15)
 	plt.minorticks_on()	
 	plt.tick_params(direction="in")
 	
@@ -125,7 +132,7 @@ def setValue(val):
 	plt.legend()
 
 
-def val_update_Vds(val):
+def val_update_Vgs(val):
     global tox,NA,Phi_m,count,Qox,Vgs,w,l,mu
 	
     if count!=0:
@@ -451,7 +458,7 @@ slider5 = Slider(axSlider5,'Qox', valmin=0.01, valmax=100,valinit=Qox*10**6,valf
 
 
 #sliders on change function call
-slider1.on_changed(val_update_Vds)
+slider1.on_changed(val_update_Vgs)
 slider2.on_changed(val_update_tox)
 slider3.on_changed(val_update_NA)
 slider4.on_changed(val_update_Phi)
