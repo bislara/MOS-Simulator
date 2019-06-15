@@ -28,7 +28,7 @@ count=0
 mu=400*10**(-4)
 w=10*10**(-6)
 l=10*10**(-6)
-Vds=1
+Vds=1.2
 Vsb=0
 
 
@@ -66,7 +66,7 @@ plt.subplots_adjust(left=0.05, bottom=0.35,right=0.78)
 
 ax1.set_title('Id Vs Vgs graph for nMOS with Vsb=0') 
 ax1.set_xlim(0,3)
-ax1.set_ylim(0,0.9)
+ax1.set_ylim(0,2.5)
 ax1.minorticks_on()
 ax1.tick_params(direction="in")
 ax1.set_xlabel('Vgs (in V)') 
@@ -76,7 +76,7 @@ ax2.set_title('Id Vs Vgs graph in log scale for nMOS with Vsb=0')
 ax2.set_xlim(0,3)
 #ax2.set_ylim(0.0,1.1)
 ax2.set_xlabel('Vgs (in V)') 
-ax2.set_ylabel('Id in log scale (in mA)')
+ax2.set_ylabel('Id in log scale')
 ax2.set_yscale('log')
 ax2.minorticks_on()
 ax2.tick_params(direction="in")
@@ -510,7 +510,7 @@ btn.on_clicked(setValue)
 
 #Sliders declaration
 axSlider1= plt.axes([0.1,0.21,0.55,0.02])		#xloc,yloc,width,height
-slider1 = Slider(axSlider1,'Vds', valmin=-0.01, valmax=2,valinit=Vds,valfmt='Vds is '+'%1.2f'+' in V',color="blue")
+slider1 = Slider(axSlider1,'Vds', valmin=-0.01, valmax=4,valinit=Vds,valfmt='Vds is '+'%1.2f'+' in V',color="blue")
 
 
 axSlider2= plt.axes([0.1,0.17,0.55,0.02])		#xloc,yloc,width,height

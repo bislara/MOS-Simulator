@@ -22,15 +22,15 @@ Eg=0.56			#Eg=EG/2= 1.12/2
 NA=0
 Qox=10**(-5)
 Phi_m=4.1
-Vgb=1 		
+	
 Ea=4.05 		#electron affinity of Silicon
 count=0
 mu=400*10**(-4)
 w=10*10**(-6)
 l=10*10**(-6)
 #Vds=1
-Vdb=0
-Vgs=0.5
+Vsb=0
+Vgs=-1.2
 
 
 
@@ -97,7 +97,7 @@ def setValue(val):
 	gm=(sqrt(2*q*Es))/Cox
 
 	#Vcb range
-	for i in drange(0.01,2,0.05):
+	for i in drange(-2,0,0.05):
 		r.append(i)
 	
 	
@@ -112,8 +112,8 @@ def setValue(val):
 	#redrawing the graphs for different parameter value
 	plt.axes()
 	plt.title('Id Vs Vds graph for nMOS with Vdb=0') 
-	#plt.ylim(0,3)
-	#plt.xlim(0,2.15)
+	plt.ylim(0,2)
+	plt.xlim(-2.15,0)
 	plt.minorticks_on()	
 	plt.tick_params(direction="in")
 	
@@ -134,7 +134,7 @@ def val_update_Vds(val):
 	Y_list[count]=[]
 	V_list[count]=[]
 	
-	Vgs=(slider1.val)
+	Vgs=-(slider1.val)
 	Po=(Ni**2)/ND	
 	No=ND
 	Shi_F=Phi_t*log((ND)/(Ni)) 	
@@ -145,7 +145,7 @@ def val_update_Vds(val):
 	gm=(sqrt(2*q*Es))/Cox
 
 	#Vcb range
-	for i in drange(0.01,2,0.05):
+	for i in drange(-2,-0,0.05):
 		r.append(i)
 	
 	
@@ -184,7 +184,7 @@ def val_update_tox(val):
 	gm=(sqrt(2*q*Es))/Cox
 
 	#Vcb range
-	for i in drange(0.01,2,0.05):
+	for i in drange(-2,-0,0.05):
 		r.append(i)
 	
 	
@@ -221,7 +221,7 @@ def val_update_ND(val):
 	gm=(sqrt(2*q*Es))/Cox
 
 	#Vcb range
-	for i in drange(0.01,2,0.05):
+	for i in drange(-2,-0,0.05):
 		r.append(i)
 	
 	
@@ -258,7 +258,7 @@ def val_update_Phi(val):
 	gm=(sqrt(2*q*Es))/Cox
 
 	#Vcb range
-	for i in drange(0.01,2,0.05):
+	for i in drange(-2,-0,0.05):
 		r.append(i)
 	
 	
@@ -295,7 +295,7 @@ def val_update_Qox(val):
 	gm=(sqrt(2*q*Es))/Cox
 
 	#Vcb range
-	for i in drange(0.01,2,0.05):
+	for i in drange(-2,-0,0.05):
 		r.append(i)
 	
 	
@@ -332,7 +332,7 @@ def submit_mu(text):
 	gm=(sqrt(2*q*Es))/Cox
 
 	#Vcb range
-	for i in drange(0.01,2,0.05):
+	for i in drange(-2,-0,0.05):
 		r.append(i)
 	
 	
@@ -367,7 +367,7 @@ def submit_w(text):
 	gm=(sqrt(2*q*Es))/Cox
 
 	#Vcb range
-	for i in drange(0.01,2,0.05):
+	for i in drange(-2,-0,0.05):
 		r.append(i)
 	
 	
@@ -402,7 +402,7 @@ def submit_l(text):
 	gm=(sqrt(2*q*Es))/Cox
 
 	#Vcb range
-	for i in drange(0.01,2,0.05):
+	for i in drange(-2,-0,0.05):
 		r.append(i)
 	
 	
@@ -431,7 +431,7 @@ btn.on_clicked(setValue)
 
 #Sliders declaration
 axSlider1= plt.axes([0.1,0.21,0.55,0.02])		#xloc,yloc,width,height
-slider1 = Slider(axSlider1,'Vgs', valmin=-0.01, valmax=2,valinit=Vgs,valfmt='Vgs is '+'%1.2f'+' in V',color="blue")
+slider1 = Slider(axSlider1,'Vgs', valmin=0.4, valmax=3,valinit=-Vgs,valfmt='Vgs is '+'%1.2f'+' in V',color="blue")
 
 
 axSlider2= plt.axes([0.1,0.17,0.55,0.02])		#xloc,yloc,width,height

@@ -66,7 +66,7 @@ plt.subplots_adjust(left=0.1, bottom=0.35,right=0.75)
 
 
 plt.title('Id Vs Vds graph for nMOS with Vdb=0') 
-plt.ylim(0,3)
+plt.ylim(0,2)
 plt.xlim(0,2.15)
 plt.minorticks_on()
 plt.tick_params(direction="in")
@@ -119,8 +119,8 @@ def setValue(val):
 	#redrawing the graphs for different parameter value
 	plt.axes()
 	plt.title('Id Vs Vds graph for nMOS with Vdb=0') 
-	plt.ylim(0,0.02)
-	#plt.xlim(0,2.15)
+	plt.ylim(0,2)
+	plt.xlim(0,2.15)
 	plt.minorticks_on()	
 	plt.tick_params(direction="in")
 	
@@ -438,7 +438,7 @@ btn.on_clicked(setValue)
 
 #Sliders declaration
 axSlider1= plt.axes([0.1,0.21,0.55,0.02])		#xloc,yloc,width,height
-slider1 = Slider(axSlider1,'Vgs', valmin=-0.01, valmax=2,valinit=Vgs,valfmt='Vgs is '+'%1.2f'+' in V',color="blue")
+slider1 = Slider(axSlider1,'Vgs', valmin=0.8, valmax=3,valinit=Vgs,valfmt='Vgs is '+'%1.2f'+' in V',color="blue")
 
 
 axSlider2= plt.axes([0.1,0.17,0.55,0.02])		#xloc,yloc,width,height
