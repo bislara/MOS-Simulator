@@ -45,7 +45,7 @@ def newtonRaphson( w,l,mu,Vgs,Vfb,Vds,Cox,gm,Phi_t,Phi_F,s0,Po,No,NA,ND):
 
     err=1   	
     count=0
-    print("s0 init is ",s0)
+    #print("s0 init is ",s0)
     # x(i+1) = x(i) - f(x) / f'(x)
     while abs(err) >= 0.001:
         count=count+1
@@ -57,8 +57,8 @@ def newtonRaphson( w,l,mu,Vgs,Vfb,Vds,Cox,gm,Phi_t,Phi_F,s0,Po,No,NA,ND):
             print("Error! - derivative zero for x = ", s0)
 
 
-    print("The value of the root is : ","%.4f"% s0)
-    print("the no of iterations is ",count)  #no of iterations for each value of Vgs
+    #print("The value of the root is : ","%.4f"% s0)
+    #print("the no of iterations is ",count)  #no of iterations for each value of Vgs
     return s0
 
 
@@ -97,7 +97,7 @@ def newtonRaphson2( w,l,mu,Vgs,Vfb,Vds,Cox,gm,Phi_t,Phi_F,sL,Po,No,NA,ND):
 
     err=1   	
     count=0
-    print("sL init is ",sL)
+    #print("sL init is ",sL)
     # x(i+1) = x(i) - f(x) / f'(x)
     while abs(err) >= 0.001:
         count=count+1
@@ -109,8 +109,8 @@ def newtonRaphson2( w,l,mu,Vgs,Vfb,Vds,Cox,gm,Phi_t,Phi_F,sL,Po,No,NA,ND):
             print("Error! - derivative zero for x = ", sL)
 
     
-    print("The value of the root is : ","%.4f"% sL)
-    print("the no of iterations is ",count)  #no of iterations for each value of Vgs
+    #print("The value of the root is : ","%.4f"% sL)
+    #print("the no of iterations is ",count)  #no of iterations for each value of Vgs
     return sL
 
 

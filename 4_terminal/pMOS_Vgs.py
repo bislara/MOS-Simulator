@@ -182,7 +182,7 @@ def val_update_tox(val):
 	gm=(sqrt(2*q*Es))/Cox
 
 	#Vcb range
-	for i in drange(-2.5,-0.1,0.05):
+	for i in drange(-3,-0.1,0.05):
 		r.append(i)
 	
 	
@@ -219,7 +219,7 @@ def val_update_ND(val):
 	gm=(sqrt(2*q*Es))/Cox
 
 	#Vcb range
-	for i in drange(-2.5,-0.1,0.05):
+	for i in drange(-3,-0.1,0.05):
 		r.append(i)
 	
 	
@@ -256,7 +256,7 @@ def val_update_Phi(val):
 	gm=(sqrt(2*q*Es))/Cox
 
 	#Vcb range
-	for i in drange(-2.5,-0.1,0.05):
+	for i in drange(-3,-0.1,0.05):
 		r.append(i)
 	
 	
@@ -293,7 +293,7 @@ def val_update_Qox(val):
 	gm=(sqrt(2*q*Es))/Cox
 
 	#Vcb range
-	for i in drange(-2.5,-0.1,0.05):
+	for i in drange(-3,-0.1,0.05):
 		r.append(i)
 	
 	
@@ -330,7 +330,7 @@ def submit_mu(text):
 	gm=(sqrt(2*q*Es))/Cox
 
 	#Vcb range
-	for i in drange(-2.5,-0.1,0.05):
+	for i in drange(-3,-0.1,0.05):
 		r.append(i)
 	
 	
@@ -365,7 +365,7 @@ def submit_w(text):
 	gm=(sqrt(2*q*Es))/Cox
 
 	#Vcb range
-	for i in drange(-2.5,-0.1,0.05):
+	for i in drange(-3,-0.1,0.05):
 		r.append(i)
 	
 	
@@ -400,7 +400,7 @@ def submit_l(text):
 	gm=(sqrt(2*q*Es))/Cox
 
 	#Vcb range
-	for i in drange(-2.5,-0.1,0.05):
+	for i in drange(-3,-0.1,0.05):
 		r.append(i)
 	
 	

@@ -8,7 +8,6 @@ def drange(start, stop, step):
             start += step
 
 
-
 #funct to return the value of funct at a particuar value
 def func(w,l,mu,Vgs,Vfb,Vds,Cox,gm,Phi_t,Phi_F,s0,Po,No,NA,ND):	    
 	try:
@@ -45,20 +44,20 @@ def newtonRaphson( w,l,mu,Vgs,Vfb,Vds,Cox,gm,Phi_t,Phi_F,s0,Po,No,NA,ND):
 
     err=1   	
     count=0
-    print("s0 init is ",s0)
+    #print("s0 init is ",s0)
     # x(i+1) = x(i) - f(x) / f'(x)
     while abs(err) >= 0.01:
         count=count+1
 	try:
       	    err = (func(w,l,mu,Vgs,Vfb,Vds,Cox,gm,Phi_t,Phi_F,s0,Po,No,NA,ND))/(derivFunc(w,l,mu,Vgs,Vfb,Vds,Cox,gm,Phi_t,Phi_F,s0,Po,No,NA,ND))
 	    s0 = s0 - err
- 	    print("err is ",err)
+ 	   # print("err is ",err)
         except ZeroDivisionError:
             print("Error! - derivative zero for x = ", s0)
 
 
-    print("The value of the root is : ","%.4f"% s0,Vgs)
-    print("the no of iterations is ",count)  #no of iterations for each value of Vgs
+    #print("The value of the root is : ","%.4f"% s0,Vgs)
+    #print("the no of iterations is ",count)  #no of iterations for each value of Vgs
     return s0
 
 
@@ -99,7 +98,7 @@ def newtonRaphson2( w,l,mu,Vgs,Vfb,Vds,Cox,gm,Phi_t,Phi_F,sL,Po,No,NA,ND):
 
     err=1   	
     count=0
-    print("sL init is ",sL)
+    #print("sL init is ",sL)
     # x(i+1) = x(i) - f(x) / f'(x)
     while abs(err) >= 0.01:
         count=count+1
@@ -111,8 +110,8 @@ def newtonRaphson2( w,l,mu,Vgs,Vfb,Vds,Cox,gm,Phi_t,Phi_F,sL,Po,No,NA,ND):
             print("Error! - derivative zero for x = ", sL)
 
     
-    print("The value of the root is : ","%.4f"% sL)
-    print("the no of iterations is ",count)  #no of iterations for each value of Vgs
+    #print("The value of the root is : ","%.4f"% sL)
+    #print("the no of iterations is ",count)  #no of iterations for each value of Vgs
     return sL
 
 
@@ -130,7 +129,7 @@ def calculate_Id(w,l,mu,Vgs,Vfb,Vds,Cox,gm,Phi_t,Phi_F,x0,Po,No,NA,ND):
 	Id1=(w/l)*mu*Cox*((Vgs-Vfb)*(Shi_sL-Shi_s0)-0.5*(Shi_sL**2-Shi_s0**2)-(2.0/3)*gm*(Shi_sL**(3.0/2)-Shi_s0**(3.0/2)))
 	Id2=(w/l)*mu*Cox*(Phi_t*(Shi_sL-Shi_s0)+Phi_t*gm*(Shi_sL**0.5-Shi_s0**0.5))
 	Id=Id1+Id2
-	print("Id1 and Id2  is ",Vgs,Id1,Id2)
+	#print("Id1 and Id2  is ",Vgs,Id1,Id2)
 	return Id*1000
 	
 

@@ -118,14 +118,14 @@ def setValue(val):
 	
 	
 	for Vgs in r:
-		print("x0 is ",x0)
+		#print("x0 is ",x0)
 		Id=calculate_Id(w,l,mu,Vgs,Vfb,Vds,Cox,gm,Phi_t,Shi_F,x0,Po,No,NA,ND)	    	
 		V_list[count].append(Vgs)
 		Y_list[count].append(Id)
 	    	
 		V1_list[count].append(Vgs)
 		Y1_list[count].append((Id/1000.0))
-
+		print(Vgs,Id)
 	colour_count=colour_count+1
 	
 	#redrawing the graphs for different parameter value
@@ -168,14 +168,14 @@ def val_update_Vds(val):
 	
 	
 	for Vgs in r:
-		print("x0 is ",x0	)
+		#print("x0 is ",x0	)
 		Id=calculate_Id(w,l,mu,Vgs,Vfb,Vds,Cox,gm,Phi_t,Shi_F,x0,Po,No,NA,ND)	 	
 		V_list[count].append(Vgs)
 		Y_list[count].append(Id)
 	    	
 		V1_list[count].append(Vgs)
 		Y1_list[count].append((Id/1000.0))
-	    
+	    	print(Vgs,Id)
 	
 	graph_plot[count].set_ydata(Y_list[count])
 	graph_plot[count].set_xdata(V_list[count])
@@ -222,7 +222,7 @@ def val_update_tox(val):
 	
 		V1_list[count].append(Vgs)
 		Y1_list[count].append(Id/1000.0)
-	    
+		print(Vgs,Id)    
 	
 	graph_plot[count].set_ydata(Y_list[count])
 	graph_plot[count].set_xdata(V_list[count])
@@ -267,7 +267,7 @@ def val_update_NA(val):
 	    
 		V1_list[count].append(Vgs)
 		Y1_list[count].append(Id/1000.0)
-	    
+	    	print(Vgs,Id)
 	
 	graph_plot[count].set_ydata(Y_list[count])
 	graph_plot[count].set_xdata(V_list[count])
@@ -312,7 +312,7 @@ def val_update_Phi(val):
 	    
 		V1_list[count].append(Vgs)
 		Y1_list[count].append(Id/1000.0)
-	    
+	    	print(Vgs,Id)
 	
 	graph_plot[count].set_ydata(Y_list[count])
 	graph_plot[count].set_xdata(V_list[count])
@@ -537,7 +537,6 @@ slider4.on_changed(val_update_Phi)
 slider5.on_changed(val_update_Qox)
 
 
-
 #Text Box declaration and on_submit function call
 
 Lbox = plt.axes([0.8,0.45, 0.17, 0.04 ])
@@ -554,8 +553,6 @@ MUbox = plt.axes([0.8,0.75, 0.17, 0.04 ])
 plt.text(0.05, 0.5, r'$\mu $ in cm^2/(V.s)'+'\n')
 mu_box = TextBox(MUbox, '', initial=str(mu*10**4))
 mu_box.on_submit(submit_mu)
-
-
 
 
 plt.show()

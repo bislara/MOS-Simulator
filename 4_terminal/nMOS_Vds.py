@@ -110,7 +110,7 @@ def setValue(val):
 	
 	for Vds in r:
 		Id=calculate_Id(w,l,mu,Vgs,Vfb,Vds,Cox,gm,Phi_t,Shi_F,x0,Po,No,NA,ND)	
-		print("Id is ",Id)    	
+		#print("Id is ",Id)    	
 		V_list[count].append(Vds)
 		Y_list[count].append(Id)
 	    
@@ -160,7 +160,7 @@ def val_update_Vgs(val):
 		Id=calculate_Id(w,l,mu,Vgs,Vfb,Vds,Cox,gm,Phi_t,Shi_F,x0,Po,No,NA,ND)	 	
 		V_list[count].append(Vds)
 		Y_list[count].append(Id)
-	    
+	    	print(Vds,Id)
 	
 	graph_plot[count].set_ydata(Y_list[count])
 	graph_plot[count].set_xdata(V_list[count])
@@ -199,7 +199,7 @@ def val_update_tox(val):
 		Id=calculate_Id(w,l,mu,Vgs,Vfb,Vds,Cox,gm,Phi_t,Shi_F,x0,Po,No,NA,ND)	 	
 		V_list[count].append(Vds)
 		Y_list[count].append(Id)
-	    
+	    	print(Vds,Id)
 	
 	graph_plot[count].set_ydata(Y_list[count])
 	graph_plot[count].set_xdata(V_list[count])
@@ -236,7 +236,7 @@ def val_update_NA(val):
 		Id=calculate_Id(w,l,mu,Vgs,Vfb,Vds,Cox,gm,Phi_t,Shi_F,x0,Po,No,NA,ND)	 	
 		V_list[count].append(Vds)
 		Y_list[count].append(Id)
-	    
+	    	print(Vds,Id)
 	
 	graph_plot[count].set_ydata(Y_list[count])
 	graph_plot[count].set_xdata(V_list[count])
@@ -347,8 +347,8 @@ def submit_mu(text):
 		Id=calculate_Id(w,l,mu,Vgs,Vfb,Vds,Cox,gm,Phi_t,Shi_F,x0,Po,No,NA,ND)	 	
 		V_list[count].append(Vds)
 		Y_list[count].append(Id)
-	    
-	print("mu is ",mu)
+	    	print(Vds,Id)
+	#print("mu is ",mu)
 	graph_plot[count].set_ydata(Y_list[count])
 	graph_plot[count].set_xdata(V_list[count])
 	plt.draw          # redraw the plot
@@ -383,7 +383,7 @@ def submit_w(text):
 		V_list[count].append(Vds)
 		Y_list[count].append(Id)
 	    
-	print("mu is ",mu)
+	#print("mu is ",mu)
 	graph_plot[count].set_ydata(Y_list[count])
 	graph_plot[count].set_xdata(V_list[count])
 	plt.draw          # redraw the plot
@@ -418,7 +418,7 @@ def submit_l(text):
 		V_list[count].append(Vds)
 		Y_list[count].append(Id)
 	    
-	print("mu is ",mu)
+	#print("mu is ",mu)
 	graph_plot[count].set_ydata(Y_list[count])
 	graph_plot[count].set_xdata(V_list[count])
 	plt.draw          # redraw the plot

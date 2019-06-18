@@ -17,7 +17,7 @@ kox=3.9			#kox for SiO2
 Ni=1.15*10**16		#intrinsic concentration in per m^3
 Phi_t=0.0259            #Thermal Voltage Phi_t=k*t/q2
 tox=2*10**(-9)
-ND=5*10**23
+ND=5*10**21
 Eg=0.56			#Eg=EG/2= 1.12/2
 NA=0
 Qox=10**(-5)
@@ -30,7 +30,7 @@ w=10*10**(-6)
 l=10*10**(-6)
 #Vds=1
 Vsb=0
-Vgs=-1.2
+Vgs=-1.4
 
 
 
@@ -59,7 +59,7 @@ fig, ax = plt.subplots()
 plt.subplots_adjust(left=0.1, bottom=0.35,right=0.75)
 
 
-plt.title('Id Vs Vds graph for nMOS with Vdb=0') 
+plt.title('Id Vs Vds graph for pMOS with Vdb=0') 
 plt.ylim(0,3)
 plt.xlim(0,2.15)
 plt.minorticks_on()

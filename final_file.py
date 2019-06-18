@@ -31,6 +31,18 @@ def setValue6(val):
 def setValue7(val):
 	call(['python','moscap/poison_sol.py'])
 
+def setValue8(val):
+	call(['python','4_terminal/nMOS_Vgs.py'])
+
+def setValue9(val):
+	call(['python','4_terminal/nMOS_Vds.py'])
+
+def setValue10(val):
+	call(['python','4_terminal/pMOS_Vgs.py'])
+
+def setValue11(val):
+	call(['python','4_terminal/pMOS_Vds.py'])
+
 
 #buttons_declaration
 
@@ -71,15 +83,17 @@ btn7 = Button(axButton7, r'$\psi_s$ Vs y ',hovercolor = 'y')
 title3=plt.axes([0.3,0.15, 0.4, 0.1])
 title_btn3 = Button(title3, ' 4 Terminal MOSFET\n Choose one of these ',color='#afeeee',hovercolor = '#afeeee')
 
-axButton5 = plt.axes([0.15,0.03, 0.1, 0.06])		#xloc,yloc,width,heights
-btn5 = Button(axButton5, ' nMOS ',hovercolor = 'y')
+axButton8 = plt.axes([0.02,0.03, 0.2, 0.06])		#xloc,yloc,width,heights
+btn8 = Button(axButton8, ' nMOS Id Vs Vgs ',hovercolor = 'y')
 	
-axButton6 = plt.axes([0.35,0.03, 0.1, 0.06])		#xloc,yloc,width,heights
-btn6 = Button(axButton6, ' pMOS ',hovercolor = 'y')
+axButton9 = plt.axes([0.26,0.03, 0.2, 0.06])		#xloc,yloc,width,heights
+btn9 = Button(axButton9, ' nMOS Id Vs Vds ',hovercolor = 'y')
 
-axButton7 = plt.axes([0.55,0.03, 0.25, 0.06])		#xloc,yloc,width,heights
-btn7 = Button(axButton7, r'$\psi_s$ Vs y ',hovercolor = 'y')
+axButton10 = plt.axes([0.5,0.03, 0.2, 0.06])		#xloc,yloc,width,heights
+btn10 = Button(axButton10, ' pMOS Id Vs Vgs ',hovercolor = 'y')
 
+axButton11 = plt.axes([0.74,0.03, 0.2, 0.06])		#xloc,yloc,width,heights
+btn11 = Button(axButton11, ' pMOS Id Vs Vds ',hovercolor = 'y')
 
 
 #button on click callback function
@@ -90,6 +104,10 @@ btn4.on_clicked(setValue4)
 btn5.on_clicked(setValue5)
 btn6.on_clicked(setValue6)
 btn7.on_clicked(setValue7)
+btn8.on_clicked(setValue8)
+btn9.on_clicked(setValue9)
+btn10.on_clicked(setValue10)
+btn11.on_clicked(setValue11)
 
 
 plt.show()

@@ -572,6 +572,7 @@ def val_update_Qox(val):
 	plt.draw          # redraw the plot
 
 
+
 #button_declaration
 axButton = plt.axes([0.83,0.10, 0.06, 0.06])		#xloc,yloc,width,heights
 btn = Button(axButton, ' ADD ')
