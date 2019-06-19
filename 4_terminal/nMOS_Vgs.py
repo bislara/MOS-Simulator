@@ -1,6 +1,6 @@
 #importing modules to main_code
 import matplotlib.pyplot as plt
-from MOS_4_functions.nMOS_funct_Vgs import *	# importing the custom functions
+from MOS_4_functions.nMOS.nMOS_funct_Vgs import *	# importing the custom functions
 from matplotlib.widgets import Slider,Button,TextBox  	# import the Slider widget
 import numpy as np
 

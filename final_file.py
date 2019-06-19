@@ -3,6 +3,30 @@ from matplotlib.widgets import Slider,Button,TextBox  	# import the Slider widge
 import numpy as np
 import matplotlib.pyplot as plt
 
+
+#importing the files
+from MOS_4_functions.pMOS_funct_Vds import *	# importing the custom functions
+from MOS_4_functions.pMOS_funct_Vds import *	# importing the custom functions
+from MOS_4_functions.pMOS_funct_Vds import *	# importing the custom functions
+from MOS_4_functions.pMOS_funct_Vds import *	# importing the custom functions
+from MOS_4_functions.pMOS_funct_Vds import *	# importing the custom functions
+from MOS_4_functions.pMOS_funct_Vds import *	# importing the custom functions
+from MOS_4_functions.pMOS_funct_Vds import *	# importing the custom functions
+from MOS_4_functions.pMOS_funct_Vds import *	# importing the custom functions
+from MOS_4_functions.pMOS_funct_Vds import *	# importing the custom functions
+from MOS_4_functions.pMOS_funct_Vds import *	# importing the custom functions
+from MOS_4_functions.pMOS_funct_Vds import *	# importing the custom functions
+from MOS_4_functions.pMOS_funct_Vds import *	# importing the custom functions
+from MOS_4_functions.pMOS_funct_Vds import *	# importing the custom functions
+from MOS_4_functions.pMOS_funct_Vds import *	# importing the custom functions
+from MOS_4_functions.pMOS_funct_Vds import *	# importing the custom functions
+from MOS_4_functions.pMOS_funct_Vds import *	# importing the custom functions
+from MOS_4_functions.pMOS_funct_Vds import *	# importing the custom functions
+from MOS_4_functions.pMOS_funct_Vds import *	# importing the custom functions
+
+
+
+
 print("This is an interactive tool for the simulation of MOS")
 #plt.title("Choose which one to plot")
 
