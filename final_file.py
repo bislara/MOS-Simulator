@@ -1,9 +1,14 @@
+
+from math import *
+from sympy import *
+
 from subprocess import call
 from matplotlib.widgets import Slider,Button,TextBox  	# import the Slider widget
 import numpy as np
 import matplotlib.pyplot as plt
 
 
+'''
 #importing the files
 from MOS_4_functions.pMOS_funct_Vds import *	# importing the custom functions
 from MOS_4_functions.pMOS_funct_Vds import *	# importing the custom functions
@@ -23,7 +28,7 @@ from MOS_4_functions.pMOS_funct_Vds import *	# importing the custom functions
 from MOS_4_functions.pMOS_funct_Vds import *	# importing the custom functions
 from MOS_4_functions.pMOS_funct_Vds import *	# importing the custom functions
 from MOS_4_functions.pMOS_funct_Vds import *	# importing the custom functions
-
+'''
 
 
 
@@ -43,7 +48,7 @@ def setValue3(val):
 	call(['python','3_terminal_MOS/SHi_s-Vs-Vcb.py'])
 
 def setValue4(val):
-	call(['python','3_terminal_MOS/Shi_s-Vs-Vcb(2).py'])
+	call(['python','3_terminal_MOS/pMOS_ShiS.py'])
 
 
 def setValue5(val):
