@@ -65,7 +65,7 @@ graph_plot[count] = plt.plot(V_list[count], Y_list[count], color='r', label="")
 plt.xlabel('Vcb value')
 plt.ylabel(r'$ \psi_S $ value')
 
-plt.legend()
+# plt.legend()
 
 
 # button function for adding plots
@@ -352,17 +352,17 @@ btn.on_clicked(setValue)
 # Sliders declaration
 axSlider1 = plt.axes([0.1, 0.21, 0.55, 0.02])  # xloc,yloc,width,height
 slider1 = Slider(axSlider1, 'Vgb', valmin=1, valmax=2.5, valinit=-
-                 Vgb, valfmt='Vgb is '+'-'+'%1.2f'+'in V', color="blue")
+                 Vgb, valfmt='Vgb is '+'-'+'%1.2f'+' V', color="blue")
 
 
 axSlider2 = plt.axes([0.1, 0.17, 0.55, 0.02])  # xloc,yloc,width,height
 slider2 = Slider(ax=axSlider2, label='Tox', valmin=1, valmax=8,
-                 valinit=tox*10**(9), valfmt='tox is '+'%1.2f' + ' in nm', color="green")
+                 valinit=tox*10**(9), valfmt='tox is '+'%1.2f' + ' nm', color="green")
 
 
 axSlider3 = plt.axes([0.1, 0.13, 0.55, 0.02])  # xloc,yloc,width,height
-slider3 = Slider(axSlider3, 'ND', valmin=1, valmax=20, valinit=ND /
-                 (10**23), valfmt='ND is '+'%1.2f' + ' in 10**23 m^-3')
+slider3 = Slider(axSlider3, 'ND', valmin=1, valmax=100, valinit=ND /
+                 (10**22), valfmt='ND is '+'%1.2f' + ' *10**22 m^-3')
 
 
 axSlider4 = plt.axes([0.1, 0.09, 0.55, 0.02])  # xloc,yloc,width,height
@@ -371,8 +371,8 @@ slider4 = Slider(axSlider4, r'$\phi_m$', valmin=3.5, valmax=4.5,
 
 
 axSlider5 = plt.axes([0.1, 0.04, 0.55, 0.02])  # xloc,yloc,width,height
-slider5 = Slider(axSlider5, 'Qox', valmin=0.01, valmax=100, valinit=Qox *
-                 10**6, valfmt='Qox is '+'%1.2f'+'*10^(-6)', color="yellow")
+slider5 = Slider(axSlider5, 'Qox', valmin=1, valmax=1000, valinit=Qox *
+                 10**6, valfmt='Qox is '+'%1.2f'+'*10^(-6)' +' C/m^2', color="yellow")
 
 
 # sliders on change function call

@@ -80,14 +80,14 @@ plt.subplots_adjust(left=0.05, bottom=0.30, right=0.98, top=0.95)
 ax1.set_xlim(-1, 2.5)
 ax1.set_ylim(0, 2.5)
 
-ax1.set_xlabel('Vgb (in V)')
-ax1.set_ylabel(r'$ \psi_s$ (in V)')
+ax1.set_xlabel('Vgb (V)')
+ax1.set_ylabel(r'$ \psi_s$ (V)')
 ax1.minorticks_on()
 ax1.tick_params(direction="in")
 
 # 2
-ax2.set_xlabel(r'$ \psi_s$ (in V)')
-ax2.set_ylabel('Q (in C/m^2 *10^(-2))')
+ax2.set_xlabel(r'$ \psi_s$ (V)')
+ax2.set_ylabel('Q (C/m^2 *10^(-2))')
 
 
 ax2.set_xlim(0, 2.5)
@@ -99,8 +99,8 @@ ax2.tick_params(direction="in")
 ax3.set_xlim(-1, 2.5)
 ax3.set_ylim(0, 2.5)
 
-ax3.set_xlabel('Vgb (in V)')
-ax3.set_ylabel('Q (in C/m^2 *10^(-2))')
+ax3.set_xlabel('Vgb (V)')
+ax3.set_ylabel('Q (C/m^2 *10^(-2))')
 ax3.minorticks_on()
 ax3.tick_params(direction="in")
 
@@ -108,8 +108,8 @@ ax3.tick_params(direction="in")
 ax4.set_xlim(-1, 2.5)
 ax4.set_ylim(0, 2.5)
 
-ax4.set_xlabel('Vgb (in V)')
-ax4.set_ylabel('dQ/dVgb (in F/m^2 *10^(-2))')
+ax4.set_xlabel('Vgb (V)')
+ax4.set_ylabel('dQ/dVgb (F/m^2 *10^(-2))')
 ax4.minorticks_on()
 ax4.tick_params(direction="in")
 
@@ -136,7 +136,7 @@ graph_plot4[count], = plt.plot(
     Cox_list[count], Cox_val_list[count], color='r', label="")
 
 
-plt.legend()
+# plt.legend()
 
 
 # button function for adding plots
@@ -391,7 +391,7 @@ def val_update_NA(val):
         Cox_val_list[count] = []
 
         r = []
-        NA = (slider3.val)*10**23
+        NA = (slider3.val)*10**22
         Po = NA
         No = (Ni**2)/NA
         Shi_F = Phi_t*log((NA)/(Ni))
@@ -600,27 +600,27 @@ btn.on_clicked(setValue)
 # Sliders declaration
 axSlider1 = plt.axes([0.1, 0.21, 0.55, 0.02])  # xloc,yloc,width,height
 slider1 = Slider(axSlider1, 'Vcb', valmin=0.01, valmax=2,
-                 valinit=Vcb, valfmt='Vcb is '+'%1.2f'+'in V', color="blue")
+                 valinit=Vcb, valfmt='Vcb is '+'%1.2f'+' V', color="blue")
 
 
 axSlider2 = plt.axes([0.1, 0.17, 0.55, 0.02])  # xloc,yloc,width,height
 slider2 = Slider(ax=axSlider2, label='Tox', valmin=1, valmax=8,
-                 valinit=tox*10**(9), valfmt='tox is '+'%1.2f' + ' in nm', color="green")
+                 valinit=tox*10**(9), valfmt='tox is '+'%1.2f' + ' nm', color="green")
 
 
 axSlider3 = plt.axes([0.1, 0.13, 0.55, 0.02])  # xloc,yloc,width,height
-slider3 = Slider(axSlider3, 'NA', valmin=1, valmax=20, valinit=NA /
-                 (10**23), valfmt='NA is '+'%1.2f' + ' in 10**23 m^-3')
+slider3 = Slider(axSlider3, 'NA', valmin=1, valmax=100, valinit=NA /
+                 (10**22), valfmt='NA is '+'%1.2f' + ' *10**22 m^-3')
 
 
 axSlider4 = plt.axes([0.1, 0.09, 0.55, 0.02])  # xloc,yloc,width,height
 slider4 = Slider(axSlider4, r'$\phi_m$', valmin=3.5, valmax=4.5,
-                 valinit=Phi_m, valfmt=r'$\phi_m$ is '+'%1.2f', color="red")
+                 valinit=Phi_m, valfmt=r'$\phi_m$ is '+'%1.2f'+ ' eV', color="red")
 
 
 axSlider5 = plt.axes([0.1, 0.04, 0.55, 0.02])  # xloc,yloc,width,height
-slider5 = Slider(axSlider5, 'Qox', valmin=0.01, valmax=100, valinit=Qox *
-                 10**6, valfmt='Qox is '+'%1.2f'+'*10^(-6)', color="yellow")
+slider5 = Slider(axSlider5, 'Qox', valmin=1, valmax=1000, valinit=Qox *
+                 10**6, valfmt='Qox is '+'%1.2f'+'*10^(-6)' + ' C/m^2', color="yellow")
 
 
 # sliders on change function call

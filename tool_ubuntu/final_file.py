@@ -84,18 +84,18 @@ btn4 = Button(axButton4, r'$\psi_s$ Vs Vcb of pMOS', hovercolor='y')
 
 
 title1 = plt.axes([0.3, 0.85, 0.4, 0.1])
-title_btn1 = Button(title1, ' MOSCAP\n Choose one of these ',
+title_btn1 = Button(title1, ' MOS CAP\n Choose one of these ',
                     color='#afeeee', hovercolor='#afeeee')
 
 
 axButton5 = plt.axes([0.15, 0.7, 0.1, 0.06])  # xloc,yloc,width,heights
-btn5 = Button(axButton5, ' nMOS ', hovercolor='y')
+btn5 = Button(axButton5, ' n type ', hovercolor='y')
 
 axButton6 = plt.axes([0.35, 0.7, 0.1, 0.06])  # xloc,yloc,width,heights
-btn6 = Button(axButton6, ' pMOS ', hovercolor='y')
+btn6 = Button(axButton6, ' p type ', hovercolor='y')
 
 axButton7 = plt.axes([0.55, 0.7, 0.25, 0.06])  # xloc,yloc,width,heights
-btn7 = Button(axButton7, r'$\psi_s$ Vs y ', hovercolor='y')
+btn7 = Button(axButton7, r'$\psi $ Vs y ', hovercolor='y')
 
 
 title3 = plt.axes([0.3, 0.15, 0.4, 0.1])
