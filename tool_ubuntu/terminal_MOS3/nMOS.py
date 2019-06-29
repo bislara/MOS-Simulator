@@ -6,11 +6,11 @@ import matplotlib.pyplot as plt
 from MOS_3_functions.nMOS_funct import *  # importing the custom function
 from matplotlib.widgets import Slider, Button  	# import the Slider widget
 import numpy as np
-
+import csv
 
 print("Welcome !!!")
 
-global Phi_m, tox, NA, ND, r, count, Qox, Qc
+global Phi_m, tox, NA, ND, r, count, Qox, Qc,csv_count
 
 
 # constants initialize
@@ -33,6 +33,7 @@ count = 0
 # for more number of graphs and to distinguish between them
 colour_count = 0
 colours = {1: 'b', 2: 'g', 3: 'r', 4: 'c', 5: 'm', 6: 'y', 7: 'k'}
+csv_count=0
 
 # variable declaration
 r = []
@@ -46,6 +47,7 @@ Y3_list = {}
 V3_list = {}
 Cox_list = {}
 Cox_val_list = {}
+csv_list = {}
 
 
 Y_list[count] = []
@@ -588,13 +590,101 @@ def val_update_Qox(val):
         plt.draw          # redraw the plot
 
 
+# funct to save the data points in csv file
+def setData(val):
+    global tox, NA, Phi_m, Qox, csv_count, count
+    # initial calculations
+    csv_list[csv_count] = []
+    r = []
+    Po = NA
+    No = (Ni**2)/NA
+    Shi_F = Phi_t*log((NA)/(Ni))
+    n = 2*Shi_F+Phi_t*6 + Vcb
+    Cox = Eox/tox
+    Vfb = +Phi_m-Ea-Eg-Shi_F-Qox/Cox
+    gm = (sqrt(2*q*Es*NA))/(Cox)
+
+    # Vgb range
+    for i in drange(Vfb+0.01, 2.5, 0.05):
+            r.append(i)
+
+    list_no = 0
+    if csv_count == 0:
+        csv_list[csv_count].append([])
+        csv_list[csv_count][list_no]=['Vcb ='+str(Vcb),'Tox ='+str(tox),'NA ='+str(NA),'Phi_m ='+str(Phi_m),'Qox ='+str(Qox)]
+        list_no += 1
+        csv_list[csv_count].append([])
+        csv_list[csv_count][list_no] = ['Vgb ('+str(csv_count)+')', 'Shi_s ('+str(
+            csv_count)+')', 'Qc ('+str(csv_count)+')', 'dq/dVgb ('+str(csv_count)+')']
+        list_no += 1
+        for Vgb in r:
+            csv_list[csv_count].append([])
+            f = (-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb)**2
+            x0 = min(f, n)  # initial value of NewtonRaphson
+            val = newtonRaphson(Vgb, x0, Vfb, NA, ND, Phi_t,
+                                q, Es, Cox, No, Po, Vcb)
+            Qc = (charge_funct(NA, Phi_t, Es, q, val, Shi_F, ND, Po, No, Vcb))
+            dq_dVgb = deriv_funct(val, Qc, NA, Phi_t, Es,
+                                  q, Shi_F, Vgb, Vfb, ND, Cox, No, Po, Vcb)
+            csv_list[csv_count][list_no].append(Vgb)
+            csv_list[csv_count][list_no].append(val)
+            csv_list[csv_count][list_no].append(Qc)
+            csv_list[csv_count][list_no].append(dq_dVgb)
+            list_no += 1
+
+        with open('./Dataset/3terminal/nMOS.csv', 'w') as csvFile:
+            writer = csv.writer(csvFile)
+            writer.writerow([])
+            writer.writerows(csv_list[csv_count])
+        print("Written 1st time")
+        csv_count += 1
+
+    elif csv_count != 0:
+        list_no = 0
+        csv_list[csv_count].append([])
+        csv_list[csv_count][list_no]=['Vcb ='+str(Vcb),'Tox ='+str(tox),'NA ='+str(NA),'Phi_m ='+str(Phi_m),'Qox ='+str(Qox)]
+        list_no += 1
+        csv_list[csv_count].append([])
+        csv_list[csv_count][list_no] = ['Vgb ('+str(csv_count)+')', 'Shi_s ('+str(
+            csv_count)+')', 'Qc ('+str(csv_count)+')', 'dq/dVgb ('+str(csv_count)+')']
+        list_no += 1
+
+        for Vgb in r:
+            csv_list[csv_count].append([])
+            f = (-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb)**2
+            x0 = min(f, n)  # initial value of NewtonRaphson
+            val = newtonRaphson(Vgb, x0, Vfb, NA, ND, Phi_t,
+                                q, Es, Cox, No, Po, Vcb)
+            Qc = (charge_funct(NA, Phi_t, Es, q, val, Shi_F, ND, Po, No, Vcb))
+            dq_dVgb = deriv_funct(val, Qc, NA, Phi_t, Es,
+                                  q, Shi_F, Vgb, Vfb, ND, Cox, No, Po, Vcb)
+            csv_list[csv_count][list_no].append(Vgb)
+            csv_list[csv_count][list_no].append(val)
+            csv_list[csv_count][list_no].append(Qc)
+            csv_list[csv_count][list_no].append(dq_dVgb)
+            list_no += 1
+
+        with open('./Dataset/3terminal/nMOS.csv', 'a') as csvFile:
+            writer = csv.writer(csvFile)
+            writer.writerow([])
+            writer.writerows(csv_list[csv_count])
+        print("saved data for "+str(csv_count)+" times")
+        csv_count += 1
+
+    else:
+        print("Sorry couldn't save the data")
+
+
 # button_declaration
-axButton = plt.axes([0.83, 0.10, 0.06, 0.06])  # xloc,yloc,width,heights
+axButton = plt.axes([0.83, 0.15, 0.06, 0.06])  # xloc,yloc,width,heights
 btn = Button(axButton, ' ADD ')
 
+axButton1 = plt.axes([0.83, 0.05, 0.08, 0.06])  # xloc,yloc,width,heights
+btn1 = Button(axButton1, ' Save Data ')
 
 # button on click callback function
 btn.on_clicked(setValue)
+btn1.on_clicked(setData)
 
 
 # Sliders declaration
@@ -615,7 +705,7 @@ slider3 = Slider(axSlider3, 'NA', valmin=1, valmax=100, valinit=NA /
 
 axSlider4 = plt.axes([0.1, 0.09, 0.55, 0.02])  # xloc,yloc,width,height
 slider4 = Slider(axSlider4, r'$\phi_m$', valmin=3.5, valmax=4.5,
-                 valinit=Phi_m, valfmt=r'$\phi_m$ is '+'%1.2f'+ ' eV', color="red")
+                 valinit=Phi_m, valfmt=r'$\phi_m$ is '+'%1.2f' + ' eV', color="red")
 
 
 axSlider5 = plt.axes([0.1, 0.04, 0.55, 0.02])  # xloc,yloc,width,height

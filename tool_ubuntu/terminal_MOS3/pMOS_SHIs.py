@@ -6,8 +6,9 @@ import matplotlib.pyplot as plt
 from MOS_3_functions.function import *
 from matplotlib.widgets import Slider, Button  # import the Slider widget
 import numpy as np
+import csv
 
-global Phi_m, tox, NA, ND, r, count, Qox, Qc
+global Phi_m, tox, NA, ND, r, count, Qox, Qc, csv_count
 
 print("Welcome !!!")
 
@@ -32,11 +33,13 @@ Vgb = -1.5
 # for more number of graphs and to distinguish between them
 colour_count = 0
 colours = {1: 'b', 2: 'g', 3: 'r', 4: 'c', 5: 'm', 6: 'y', 7: 'k'}
+csv_count = 0
 
 # variable declaration
 r = []
 Y_list = {}
 V_list = {}
+csv_list = {}
 
 Y_list[count] = []
 V_list[count] = []
@@ -260,7 +263,6 @@ def val_update_Phi(val):
 
     if count != 0:
         # initial list declaration
-        r = []
         Y_list[count] = []
         V_list[count] = []
         Phi_m = slider4.val
@@ -340,13 +342,94 @@ def val_update_Qox(val):
         plt.draw          # redraw the plot
 
 
+def setData(val):
+    global tox, NA, Phi_m, Qox, csv_count, count
+    # initial calculations
+    r=[]
+    csv_list[csv_count] = []
+    Po = (Ni**2)/ND
+    No = ND
+    Shi_F = Phi_t*log((ND)/(Ni))
+
+    Cox = Eox/tox
+    Vfb = +Phi_m-Ea-Eg+Shi_F-Qox/Cox
+    gm = (sqrt(2*q*Es*ND))/(Cox)
+    f = -(-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb)**2
+
+    # Vcb range
+    for i in drange(0.01, 1.75, 0.05):
+        r.append(i)
+
+    list_no = 0
+    if csv_count == 0:
+        csv_list[csv_count].append([])
+        csv_list[csv_count][list_no] = [
+            'Vgb ='+str(Vgb), 'Tox ='+str(tox), 'ND ='+str(ND), 'Phi_m ='+str(Phi_m), 'Qox ='+str(Qox)]
+        list_no += 1
+        csv_list[csv_count].append([])
+        csv_list[csv_count][list_no] = ['Vcb ('+str(csv_count)+')', 'Shi_s ('+str(
+            csv_count)+')']
+        list_no += 1
+        for Vcb in r:
+            if abs(Vgb) > abs(Vfb):
+                csv_list[csv_count].append([])
+                n = -(2*Shi_F+Phi_t*6 + Vcb)
+                x0 = max(f, n)  # initial value of NewtonRaphson
+                val = newtonRaphson(Vgb, x0, Vfb, NA, ND,
+                                    Phi_t, q, Es, Cox, No, Po, Vcb)
+                csv_list[csv_count][list_no].append(Vcb)
+                csv_list[csv_count][list_no].append(val)
+                list_no += 1
+
+        with open('./Dataset/3terminal/pMOS_Shis_Vs_Vcb.csv', 'w') as csvFile:
+            writer = csv.writer(csvFile)
+            writer.writerow([])
+            writer.writerows(csv_list[csv_count])
+        print("Written 1st time")
+        csv_count += 1
+
+    elif csv_count != 0:
+        list_no = 0
+        csv_list[csv_count].append([])
+        csv_list[csv_count][list_no] = [
+            'Vgb ='+str(Vgb), 'Tox ='+str(tox), 'ND ='+str(ND), 'Phi_m ='+str(Phi_m), 'Qox ='+str(Qox)]
+        list_no += 1
+        csv_list[csv_count].append([])
+        csv_list[csv_count][list_no] = ['Vcb ('+str(csv_count)+')', 'Shi_s ('+str(
+            csv_count)+')']
+        list_no += 1
+        for Vcb in r:
+            if abs(Vgb) > abs(Vfb):
+                csv_list[csv_count].append([])
+                n = -(2*Shi_F+Phi_t*6 + Vcb)
+                x0 = max(f, n)  # initial value of NewtonRaphson
+                val = newtonRaphson(Vgb, x0, Vfb, NA, ND,
+                                    Phi_t, q, Es, Cox, No, Po, Vcb)
+                csv_list[csv_count][list_no].append(Vcb)
+                csv_list[csv_count][list_no].append(val)
+                list_no += 1
+
+        with open('./Dataset/3terminal/pMOS_Shis_Vs_Vcb.csv', 'a') as csvFile:
+            writer = csv.writer(csvFile)
+            writer.writerow([])
+            writer.writerows(csv_list[csv_count])
+        print("saved data for "+str(csv_count)+" times")
+        csv_count += 1
+
+    else:
+        print("Sorry couldn't save the data")
+
+
 # button_declaration
-axButton = plt.axes([0.83, 0.10, 0.06, 0.06])  # xloc,yloc,width,heights
+axButton = plt.axes([0.83, 0.15, 0.06, 0.06])  # xloc,yloc,width,heights
 btn = Button(axButton, ' ADD ')
 
+axButton1 = plt.axes([0.83, 0.05, 0.08, 0.06])  # xloc,yloc,width,heights
+btn1 = Button(axButton1, ' Save Data ')
 
 # button on click callback function
 btn.on_clicked(setValue)
+btn1.on_clicked(setData)
 
 
 # Sliders declaration
@@ -372,7 +455,7 @@ slider4 = Slider(axSlider4, r'$\phi_m$', valmin=3.5, valmax=4.5,
 
 axSlider5 = plt.axes([0.1, 0.04, 0.55, 0.02])  # xloc,yloc,width,height
 slider5 = Slider(axSlider5, 'Qox', valmin=1, valmax=1000, valinit=Qox *
-                 10**6, valfmt='Qox is '+'%1.2f'+'*10^(-6)' +' C/m^2', color="yellow")
+                 10**6, valfmt='Qox is '+'%1.2f'+'*10^(-6)' + ' C/m^2', color="yellow")
 
 
 # sliders on change function call

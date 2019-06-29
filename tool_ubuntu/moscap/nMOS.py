@@ -6,12 +6,12 @@ import matplotlib.pyplot as plt
 from functions.nMOS_funct import *
 from matplotlib.widgets import Slider, Button  # import the Slider widget
 import numpy as np
-
+import csv
 
 print("Welcome !!!")
-#print("Enter all the values in the MKS system")
+# print("Enter all the values in the MKS system")
 
-global Phi_m, tox, NA, ND, r, count, Qox, Qc
+global Phi_m, tox, NA, ND, r, count, Qox, Qc, csv_count
 
 
 # constants initialize
@@ -21,7 +21,7 @@ ks = 11.7  # ks for Si
 kox = 3.9  # kox for SiO2
 Ni = 1.15*10**16  # intrinsic concentration in per m^3
 Phi_t = 0.0259  # Thermal Voltage Phi_t=k*t/q2
-tox = 4*10**(-9)
+tox = 2*10**(-9)
 # tox=tox*10**(-9)
 NA = 5*10**23
 Eg = 0.56  # Eg=EG/2= 1.12/2
@@ -34,6 +34,7 @@ count = 0
 # for more number of graphs and to distinguish between them
 colour_count = 0
 colours = {1: 'b', 2: 'g', 3: 'r', 4: 'c', 5: 'm', 6: 'y', 7: 'k'}
+csv_count = 0
 
 # variable declaration
 r = []
@@ -47,7 +48,7 @@ Y3_list = {}
 V3_list = {}
 Cox_list = {}
 Cox_val_list = {}
-
+csv_list = {}
 
 Y_list[count] = []
 V_list[count] = []
@@ -75,7 +76,7 @@ fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, sharey=False)
 plt.subplots_adjust(left=0.05, bottom=0.30, right=0.98, top=0.95)
 
 mu, sigma = 1e-3, 1e-4
-#s = np.random.normal(mu, sigma, 10000)
+# s = np.random.normal(mu, sigma, 10000)
 
 
 # labelling and limit of the axes
@@ -527,13 +528,100 @@ def val_update_Qox(val):
         plt.draw          # redraw the plot
 
 
+# funct to save the data points in csv file
+def setData(val):
+    global tox, NA, Phi_m, Qox, csv_count, count
+    # initial calculations
+    csv_list[csv_count]=[]
+    r = []
+    Po = NA
+    No = (Ni**2)/NA
+    Shi_F = Phi_t*log((NA)/(Ni))
+    n = 2*Shi_F+Phi_t*6
+    Cox = Eox/tox
+    Vfb = +Phi_m-Ea-Eg-Shi_F  # -Qox/Cox
+    gm = (sqrt(2*q*Es*NA))/(Cox)
+
+    # Vgb range
+    for i in drange(-0.5, 1.5, 0.05):
+        r.append(i)
+
+    
+    list_no=0
+    if csv_count == 0:
+        csv_list[csv_count].append([])
+        csv_list[csv_count][list_no]=['Tox ='+str(tox),'NA ='+str(NA),'Phi_m ='+str(Phi_m),'Qox ='+str(Qox)]
+        list_no+=1
+        csv_list[csv_count].append([])
+        csv_list[csv_count][list_no]=['Vgb ('+str(csv_count)+')','Shi_s ('+str(csv_count)+')','Qc ('+str(csv_count)+')','dq/dVgb ('+str(csv_count)+')']
+        list_no+=1
+        for Vgb in r:
+            csv_list[csv_count].append([])
+            f = (-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb)**2
+            x0 = min(f, n)  # initial value of NewtonRaphson
+            val = newtonRaphson(Vgb, x0, Vfb, NA, ND, Phi_t, q, Es, Cox, No, Po)
+            Qc = (charge_funct(NA, Phi_t, Es, q, val, Shi_F, ND, Po, No))
+            dq_dVgb = deriv_funct(val, Qc, NA, Phi_t, Es, q,
+                                Shi_F, Vgb, Vfb, ND, Cox, No, Po)
+            csv_list[csv_count][list_no].append(Vgb)
+            csv_list[csv_count][list_no].append(val)
+            csv_list[csv_count][list_no].append(Qc)
+            csv_list[csv_count][list_no].append(dq_dVgb)
+            list_no+=1
+        
+        with open('./Dataset/moscap/nMOS.csv', 'w') as csvFile:
+            writer = csv.writer(csvFile)
+            writer.writerow([])
+            writer.writerows(csv_list[csv_count])
+        print("Written 1st time")
+        csv_count+=1
+        
+        
+    elif csv_count != 0:
+        list_no=0
+        csv_list[csv_count].append([])
+        csv_list[csv_count][list_no]=['Tox ='+str(tox),'NA ='+str(NA),'Phi_m ='+str(Phi_m),'Qox ='+str(Qox)]
+        list_no+=1
+        csv_list[csv_count].append([])
+        csv_list[csv_count][list_no]=['Vgb ('+str(csv_count)+')','Shi_s ('+str(csv_count)+')','Qc ('+str(csv_count)+')','dq/dVgb ('+str(csv_count)+')']
+        list_no+=1
+        
+        for Vgb in r:
+            csv_list[csv_count].append([])
+            f = (-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb)**2
+            x0 = min(f, n)  # initial value of NewtonRaphson
+            val = newtonRaphson(Vgb, x0, Vfb, NA, ND, Phi_t, q, Es, Cox, No, Po)
+            Qc = (charge_funct(NA, Phi_t, Es, q, val, Shi_F, ND, Po, No))
+            dq_dVgb = deriv_funct(val, Qc, NA, Phi_t, Es, q,
+                                Shi_F, Vgb, Vfb, ND, Cox, No, Po)
+            csv_list[csv_count][list_no].append(Vgb)
+            csv_list[csv_count][list_no].append(val)
+            csv_list[csv_count][list_no].append(Qc)
+            csv_list[csv_count][list_no].append(dq_dVgb)
+            list_no+=1
+        
+        with open('./Dataset/moscap/nMOS.csv', 'a') as csvFile:
+            writer = csv.writer(csvFile)
+            writer.writerow([])
+            writer.writerows(csv_list[csv_count])
+        print("saved data for "+str(csv_count)+" times")
+        csv_count+=1
+        
+        
+    else:
+        print("Sorry couldn't save the data")
+
+
 # button_declaration
-axButton = plt.axes([0.83, 0.10, 0.06, 0.06])  # xloc,yloc,width,heights
+axButton = plt.axes([0.83, 0.15, 0.06, 0.06])  # xloc,yloc,width,heights
 btn = Button(axButton, ' ADD ')
 
+axButton1 = plt.axes([0.83, 0.05, 0.08, 0.06])  # xloc,yloc,width,heights
+btn1 = Button(axButton1, ' Save Data ')
 
 # button on click callback function
 btn.on_clicked(setValue)
+btn1.on_clicked(setData)
 
 
 # Sliders declaration
@@ -549,7 +637,7 @@ slider2 = Slider(axSlider2, 'NA', valmin=1, valmax=100, valinit=NA /
 
 axSlider3 = plt.axes([0.1, 0.10, 0.55, 0.02])  # xloc,yloc,width,height
 slider3 = Slider(axSlider3, r'$\phi_m$', valmin=3.5, valmax=4.5,
-                 valinit=Phi_m, valfmt=r'$\phi_m$ is '+'%1.2f' +' eV' , color="red")
+                 valinit=Phi_m, valfmt=r'$\phi_m$ is '+'%1.2f' + ' eV', color="red")
 
 
 axSlider4 = plt.axes([0.1, 0.05, 0.55, 0.02])  # xloc,yloc,width,height
