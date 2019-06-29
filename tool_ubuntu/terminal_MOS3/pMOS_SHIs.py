@@ -52,7 +52,7 @@ fig, ax = plt.subplots()
 plt.subplots_adjust(left=0.15, bottom=0.35, right=0.95)
 
 
-plt.title(r'$ \psi_S $ Vs Vcb graph for nMOS')
+plt.title(r'$ \psi_S $ Vs Vcb graph for pMOS')
 plt.ylim(0, 3)
 plt.xlim(-1.75, 0)
 plt.minorticks_on()

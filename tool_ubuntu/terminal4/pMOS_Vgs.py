@@ -72,7 +72,7 @@ graph_plot[count] = plt.plot(V_list[count], Y_list[count], color='r', label="")
 plt.xlabel('Vgs (V)')
 plt.ylabel('Id (mA)')
 
-plt.legend()
+# plt.legend()
 
 
 # button function for adding plots
@@ -94,7 +94,7 @@ def setValue(val):
 
     Cox = Eox/tox
     Vfb = +Phi_m-Ea-Eg+Shi_F-Qox/Cox
-    gm = (sqrt(2*q*Es))/Cox
+    gm = (sqrt(2*q*Es*ND))/Cox
 
     # Vcb range
     for i in drange(-3, -0.1, 0.05):
@@ -142,7 +142,7 @@ def val_update_Vds(val):
 
         Cox = Eox/tox
         Vfb = +Phi_m-Ea-Eg+Shi_F-Qox/Cox
-        gm = (sqrt(2*q*Es))/Cox
+        gm = (sqrt(2*q*Es*ND))/Cox
 
         # Vcb range
         for i in drange(-3, -0.1, 0.05):
@@ -177,7 +177,7 @@ def val_update_tox(val):
 
         Cox = Eox/tox
         Vfb = +Phi_m-Ea-Eg+Shi_F-Qox/Cox
-        gm = (sqrt(2*q*Es))/Cox
+        gm = (sqrt(2*q*Es*ND))/Cox
 
         # Vcb range
         for i in drange(-3, -0.1, 0.05):
@@ -212,7 +212,7 @@ def val_update_ND(val):
 
         Cox = Eox/tox
         Vfb = +Phi_m-Ea-Eg+Shi_F-Qox/Cox
-        gm = (sqrt(2*q*Es))/Cox
+        gm = (sqrt(2*q*Es*ND))/Cox
 
         # Vcb range
         for i in drange(-3, -0.1, 0.05):
@@ -247,7 +247,7 @@ def val_update_Phi(val):
 
         Cox = Eox/tox
         Vfb = +Phi_m-Ea-Eg+Shi_F-Qox/Cox
-        gm = (sqrt(2*q*Es))/Cox
+        gm = (sqrt(2*q*Es*ND))/Cox
 
         # Vcb range
         for i in drange(-3, -0.1, 0.05):
@@ -282,7 +282,7 @@ def val_update_Qox(val):
 
         Cox = Eox/tox
         Vfb = +Phi_m-Ea-Eg+Shi_F-Qox/Cox
-        gm = (sqrt(2*q*Es))/Cox
+        gm = (sqrt(2*q*Es*ND))/Cox
 
         # Vcb range
         for i in drange(-3, -0.1, 0.05):
@@ -316,7 +316,7 @@ def submit_mu(text):
 
         Cox = Eox/tox
         Vfb = +Phi_m-Ea-Eg+Shi_F-Qox/Cox
-        gm = (sqrt(2*q*Es))/Cox
+        gm = (sqrt(2*q*Es*ND))/Cox
 
         # Vcb range
         for i in drange(-3, -0.1, 0.05):
@@ -351,7 +351,7 @@ def submit_w(text):
 
         Cox = Eox/tox
         Vfb = +Phi_m-Ea-Eg+Shi_F-Qox/Cox
-        gm = (sqrt(2*q*Es))/Cox
+        gm = (sqrt(2*q*Es*ND))/Cox
 
         # Vcb range
         for i in drange(-3, -0.1, 0.05):
@@ -386,7 +386,7 @@ def submit_l(text):
 
         Cox = Eox/tox
         Vfb = +Phi_m-Ea-Eg+Shi_F-Qox/Cox
-        gm = (sqrt(2*q*Es))/Cox
+        gm = (sqrt(2*q*Es*ND))/Cox
 
         # Vcb range
         for i in drange(-3, -0.1, 0.05):

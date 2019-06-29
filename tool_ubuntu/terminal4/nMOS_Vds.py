@@ -81,7 +81,7 @@ graph_plot1[count] = plt.plot(
 plt.xlabel('Vds (V)')
 plt.ylabel('Id (mA)')
 
-plt.legend()
+# plt.legend()
 
 
 # button function for adding plots
@@ -103,7 +103,7 @@ def setValue(val):
 
     Cox = Eox/tox
     Vfb = +Phi_m-Ea-Eg-Shi_F-Qox/Cox
-    gm = (sqrt(2*q*Es))/Cox
+    gm = (sqrt(2*q*Es*NA))/Cox
 
     # Vcb range
     for i in drange(0.01, 2, 0.05):
@@ -152,7 +152,7 @@ def val_update_Vgs(val):
 
         Cox = Eox/tox
         Vfb = +Phi_m-Ea-Eg-Shi_F-Qox/Cox
-        gm = (sqrt(2*q*Es))/Cox
+        gm = (sqrt(2*q*Es*NA))/Cox
 
         # Vcb range
         for i in drange(0.01, 2, 0.05):
@@ -188,7 +188,7 @@ def val_update_tox(val):
 
         Cox = Eox/tox
         Vfb = +Phi_m-Ea-Eg-Shi_F-Qox/Cox
-        gm = (sqrt(2*q*Es))/Cox
+        gm = (sqrt(2*q*Es*NA))/Cox
 
         # Vcb range
         for i in drange(0.01, 2, 0.05):
@@ -224,7 +224,7 @@ def val_update_NA(val):
 
         Cox = Eox/tox
         Vfb = +Phi_m-Ea-Eg-Shi_F-Qox/Cox
-        gm = (sqrt(2*q*Es))/Cox
+        gm = (sqrt(2*q*Es*NA))/Cox
 
         # Vcb range
         for i in drange(0.01, 2, 0.05):
@@ -260,7 +260,7 @@ def val_update_Phi(val):
 
         Cox = Eox/tox
         Vfb = +Phi_m-Ea-Eg-Shi_F-Qox/Cox
-        gm = (sqrt(2*q*Es))/Cox
+        gm = (sqrt(2*q*Es*NA))/Cox
 
         # Vcb range
         for i in drange(0.01, 2, 0.05):
@@ -295,7 +295,7 @@ def val_update_Qox(val):
 
         Cox = Eox/tox
         Vfb = +Phi_m-Ea-Eg-Shi_F-Qox/Cox
-        gm = (sqrt(2*q*Es))/Cox
+        gm = (sqrt(2*q*Es*NA))/Cox
 
         # Vcb range
         for i in drange(0.01, 2, 0.05):
@@ -329,7 +329,7 @@ def submit_mu(text):
 
         Cox = Eox/tox
         Vfb = +Phi_m-Ea-Eg-Shi_F-Qox/Cox
-        gm = (sqrt(2*q*Es))/Cox
+        gm = (sqrt(2*q*Es*NA))/Cox
 
         # Vcb range
         for i in drange(0.01, 2, 0.05):
@@ -364,7 +364,7 @@ def submit_w(text):
 
         Cox = Eox/tox
         Vfb = +Phi_m-Ea-Eg-Shi_F-Qox/Cox
-        gm = (sqrt(2*q*Es))/Cox
+        gm = (sqrt(2*q*Es*NA))/Cox
 
         # Vcb range
         for i in drange(0.01, 2, 0.05):
@@ -399,7 +399,7 @@ def submit_l(text):
 
         Cox = Eox/tox
         Vfb = +Phi_m-Ea-Eg-Shi_F-Qox/Cox
-        gm = (sqrt(2*q*Es))/Cox
+        gm = (sqrt(2*q*Es*NA))/Cox
 
         # Vcb range
         for i in drange(0.01, 2, 0.05):

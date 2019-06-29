@@ -1,9 +1,14 @@
 from math import *
 from sympy import *
 
+global q,Es
+q = 1.6*10**(-19)
+Eo = 8.854*10**(-12)
+ks = 11.7  # ks for Si
+Es = ks*Eo
+
+
 # funct for creating steps in for loop
-
-
 def drange(start, stop, step):
     while start < stop:
         yield start
@@ -13,7 +18,7 @@ def drange(start, stop, step):
 # funct to return the value of funct at a particuar value
 def func(w, l, mu, Vgs, Vfb, Vds, Cox, gm, Phi_t, Phi_F, s0, Po, No, NA, ND):
     try:
-        p = Vgs-Vfb+gm*(sqrt(Po*Phi_t*(e**(-s0/Phi_t)-1) +
+        p = Vgs-Vfb+((sqrt(2*q*Es))/(Cox))*(sqrt(Po*Phi_t*(e**(-s0/Phi_t)-1) +
                              (NA-ND)*s0 + No*Phi_t*(e**(s0/Phi_t)-1)))-s0
         #p=Vgs-Vfb+gm*(sqrt( -s0+Phi_t*e**(-(s0-2*Phi_F)/Phi_t) ))-s0
         return p
@@ -27,7 +32,7 @@ def derivFunc(w, l, mu, Vgs, Vfb, Vds, Cox, gm, Phi_t, Phi_F, s0, Po, No, NA, ND
     # main function with variable t
     t = Symbol('t')
     #f=Vgs-Vfb+gm*(sqrt( -t+Phi_t*e**(-(t-2*Phi_F)/Phi_t) ))-t
-    f = Vgs-Vfb+gm*(sqrt(Po*Phi_t*(e**(-t/Phi_t)-1) + (NA-ND)
+    f = Vgs-Vfb+((sqrt(2*q*Es))/(Cox))*(sqrt(Po*Phi_t*(e**(-t/Phi_t)-1) + (NA-ND)
                          * t + No*Phi_t*(e**(t/Phi_t)-1)))-t
     deriv = Derivative(f, t)
 
@@ -68,7 +73,7 @@ def newtonRaphson(w, l, mu, Vgs, Vfb, Vds, Cox, gm, Phi_t, Phi_F, s0, Po, No, NA
 def func2(w, l, mu, Vgs, Vfb, Vds, Cox, gm, Phi_t, Phi_F, sL, Po, No, NA, ND):
     try:
         #p=Vgs-Vfb+gm*(sqrt( -sL+Phi_t*e**(-(sL-2*Phi_F-Vds)/Phi_t) ))-sL
-        p = Vgs-Vfb+gm*(sqrt(Po*e**(-Vds/Phi_t)*Phi_t*(e**(-sL/Phi_t) -
+        p = Vgs-Vfb+((sqrt(2*q*Es))/(Cox))*(sqrt(Po*e**(-Vds/Phi_t)*Phi_t*(e**(-sL/Phi_t) -
                                                        1) + (NA-ND)*sL + No*Phi_t*(e**(sL/Phi_t)-1)))-sL
         return p
 
@@ -81,7 +86,7 @@ def func2(w, l, mu, Vgs, Vfb, Vds, Cox, gm, Phi_t, Phi_F, sL, Po, No, NA, ND):
 def derivFunc2(w, l, mu, Vgs, Vfb, Vds, Cox, gm, Phi_t, Phi_F, sL, Po, No, NA, ND):
     # main function with variable t
     t = Symbol('t')
-    f = Vgs-Vfb+gm*(sqrt(Po*e**(-Vds/Phi_t)*Phi_t *
+    f = Vgs-Vfb+((sqrt(2*q*Es))/(Cox))*(sqrt(Po*e**(-Vds/Phi_t)*Phi_t *
                          (e**(-t/Phi_t)-1) + (NA-ND)*t + No*Phi_t*(e**(t/Phi_t)-1)))-t
     #f=Vgs-Vfb+gm*(sqrt( -t+Phi_t*e**(-(t-2*Phi_F-Vds)/Phi_t) ))-t
     deriv = Derivative(f, t)
@@ -130,8 +135,6 @@ def calculate_Id(w, l, mu, Vgs, Vfb, Vds, Cox, gm, Phi_t, Phi_F, x0, Po, No, NA,
                             Cox, gm, Phi_t, Phi_F, s0, Po, No, NA, ND))
     Shi_sL = (newtonRaphson2(w, l, mu, Vgs, Vfb, Vds,
                              Cox, gm, Phi_t, Phi_F, sL, Po, No, NA, ND))
-    # Shi_s0=s0
-    # Shi_sL=sL
 
     Id1 = (w/l)*mu*Cox*((Vgs-Vfb)*(Shi_sL-Shi_s0)-0.5*(Shi_sL**2 -
                                                        Shi_s0**2)-(2.0/3)*gm*(Shi_sL**(3.0/2)-Shi_s0**(3.0/2)))
