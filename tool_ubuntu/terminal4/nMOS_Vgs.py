@@ -515,7 +515,7 @@ def setData(val):
             'Vds ='+str(Vds), 'Tox ='+str(tox), 'NA ='+str(NA), 'Phi_m ='+str(Phi_m), 'Qox ='+str(Qox), 'mu ='+str(mu), 'l ='+str(l), 'w ='+str(w)]
         list_no += 1
         csv_list[csv_count].append([])
-        csv_list[csv_count][list_no] = ['Vcb ('+str(csv_count)+')', 'Shi_s ('+str(
+        csv_list[csv_count][list_no] = ['Vgs ('+str(csv_count)+')', 'Shi_s ('+str(
             csv_count)+')']
         list_no += 1
         for Vgs in r:
@@ -540,7 +540,7 @@ def setData(val):
             'Vds ='+str(Vds), 'Tox ='+str(tox), 'NA ='+str(NA), 'Phi_m ='+str(Phi_m), 'Qox ='+str(Qox), 'mu ='+str(mu), 'l ='+str(l), 'w ='+str(w)]
         list_no += 1
         csv_list[csv_count].append([])
-        csv_list[csv_count][list_no] = ['Vcb ('+str(csv_count)+')', 'Shi_s ('+str(
+        csv_list[csv_count][list_no] = ['Vgs ('+str(csv_count)+')', 'Shi_s ('+str(
             csv_count)+')']
         list_no += 1
         for Vgs in r:
