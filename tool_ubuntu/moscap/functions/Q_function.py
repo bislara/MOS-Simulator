@@ -5,7 +5,7 @@ from sympy import *
 # funct to return the value of funct at a particuar value
 def func(Vgb, Shi_s, Vfb, NA, ND, Phi_t, q, Es, Cox, No, Po):
     try:
-        p = -(sqrt(2*q*Es)) * (sqrt(Po*Phi_t*(e**(-Shi_s/Phi_t)-1) +
+        p = Vfb + Shi_s + ((sqrt(2*q*Es))/(Cox)) * (sqrt(Po*Phi_t*(e**(-Shi_s/Phi_t)-1) +
                                     (NA-ND)*Shi_s + No*Phi_t*(e**(Shi_s/Phi_t)-1))) - Vgb
         print("p is ", p)
         return p
@@ -19,7 +19,7 @@ def func(Vgb, Shi_s, Vfb, NA, ND, Phi_t, q, Es, Cox, No, Po):
 def derivFunc(Shi_s, Vgb, Vfb, NA, ND, Phi_t, q, Es, Cox, No, Po):
     # main function with variable t
     t = Symbol('t')
-    f = -(sqrt(2*q*Es))*(sqrt(Po*Phi_t*(e**(-t/Phi_t)-1) +
+    f = Vfb + Shi_s + ((sqrt(2*q*Es))/(Cox))*(sqrt(Po*Phi_t*(e**(-t/Phi_t)-1) +
                               (NA-ND)*t + No*Phi_t*(e**(t/Phi_t)-1))) - Vgb
 
     deriv = Derivative(f, t)

@@ -632,7 +632,7 @@ def setData(val):
             csv_list[csv_count][list_no].append(dq_dVgb)
             list_no += 1
 
-        with open('./Dataset/3terminal/nMOS.csv', 'w') as csvFile:
+        with open('Datasets/nMOS.csv', 'w') as csvFile:
             writer = csv.writer(csvFile)
             writer.writerow([])
             writer.writerows(csv_list[csv_count])
@@ -664,7 +664,7 @@ def setData(val):
             csv_list[csv_count][list_no].append(dq_dVgb)
             list_no += 1
 
-        with open('./Dataset/3terminal/nMOS.csv', 'a') as csvFile:
+        with open('Datasets/nMOS.csv', 'a') as csvFile:
             writer = csv.writer(csvFile)
             writer.writerow([])
             writer.writerows(csv_list[csv_count])
@@ -680,7 +680,7 @@ axButton = plt.axes([0.83, 0.15, 0.06, 0.06])  # xloc,yloc,width,heights
 btn = Button(axButton, ' ADD ')
 
 axButton1 = plt.axes([0.83, 0.05, 0.08, 0.06])  # xloc,yloc,width,heights
-btn1 = Button(axButton1, ' Save Data ')
+btn1 = Button(axButton1, ' Save Data ',hovercolor='r')
 
 # button on click callback function
 btn.on_clicked(setValue)

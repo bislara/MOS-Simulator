@@ -7,11 +7,12 @@ from functions.nMOS_funct import *
 from matplotlib.widgets import Slider, Button, TextBox  # import the Slider widget
 from scipy.integrate import odeint
 import numpy as np
+import csv
 
 print("Welcome !!!")
 
 #global declarations
-global Phi_m, tox, NA, ND, r, count, Qox, Qc, q, Es, Phi_t, Shi_F, Eg
+global Phi_m, tox, NA, ND, r, count, Qox, Qc, q, Es, Phi_t, Shi_F, Eg, csv_count
 
 
 # constants initialize
@@ -36,7 +37,7 @@ Ea = 4.05  # electron affinity of Silicon
 colour_count = 0
 colours = {0: 'w', 1: 'b', 2: 'g', 3: 'r', 4: 'c', 5: 'm', 6: 'y', 7: 'k'}
 count = 0
-
+csv_count = 0
 
 # variable declaration
 Es = ks*Eo
@@ -59,13 +60,13 @@ PhiF_list = {}
 condut_list = {}
 graph_plot = {}
 graph_plot2 = {}
+csv_list = {}
 
 y = {}
 y[count] = []
 PhiF_list[count] = []
 
 # function for solving the differential equation
-
 
 def model(x, t):
     y = x[0]
@@ -101,7 +102,7 @@ plt.tick_params(direction="in")
 plt.xlabel('y value')
 plt.ylabel(r'$ \psi $ value')
 
-#plt.legend()
+# plt.legend()
 
 
 # button_on_click function
@@ -122,6 +123,7 @@ def setValue(val):
     Shi_F = Phi_t*log((NA)/(Ni))
     Vfb = +Phi_m-Ea-Eg-Shi_F-Qox/Cox
     print("Vfb is ", Vfb, Phi_m, Shi_F, Eg, Vgb)
+
     if Vgb > Vfb and count != 0:
         gm = (sqrt(2*q*Es*NA))/(Cox)
         f = (-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb)**2
@@ -330,12 +332,101 @@ def submit_Phi_m(text):
         print("Vgb is less than Vfb")
 
 
+# # funct to save the data points in csv file
+# def setData(val):
+#     global tox, ND, Phi_m, Qox, csv_count, count, Vgb
+#     # initial calculations
+#     csv_list[csv_count] = []
+#     yt = np.linspace(0, 500*10**(-9), 1000)
+#     print(yt)
+#     r = []
+#     No = (Ni**2)/NA
+#     Po = NA
+#     Cox = Eox/tox
+#     Qox = 10**(-5)
+#     Shi_F = Phi_t*log((NA)/(Ni))
+#     Vfb = +Phi_m-Ea-Eg-Shi_F-Qox/Cox
+
+#     list_no = 0
+#     if csv_count == 0 and Vgb > Vfb:
+#         csv_list[csv_count].append([])
+#         csv_list[csv_count][list_no] = [
+#             'Vgb ='+str(Vgb),'Tox ='+str(tox), 'NA ='+str(NA), 'Phi_m ='+str(Phi_m)]
+#         list_no += 1
+#         csv_list[csv_count].append([])
+#         csv_list[csv_count][list_no] = ['y ('+str(csv_count)+')', 'Shi ('+str(
+#             csv_count)+')']
+#         list_no += 1
+#         gm = (sqrt(2*q*Es*NA))/(Cox)
+#         f = (-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb)**2
+#         n = 2*Shi_F+Phi_t*6
+#         x0 = min(f, n)
+#         # print x0
+#         val = newtonRaphson(Vgb, x0, Vfb, NA, ND, Phi_t, q, Es, Cox, No, Po)
+#         d = -(sqrt(2*q*Es*NA)//Es)*sqrt(Phi_t*e**(-val/Phi_t)+val -
+#                                         Phi_t+e**((-2*Shi_F)/Phi_t)*(Phi_t*e**(+val/Phi_t)-val-Phi_t))
+
+#         ini = [val, d]
+#         z[count] = odeint(model, ini, yt)
+#         for j in len(yt):
+#             csv_list[csv_count][list_no].append(yt[j])
+#             csv_list[csv_count][list_no].append(z[count][j])    
+#             list_no += 1
+
+        
+#         with open('./Dataset/moscap/Shi_Vs_y.csv', 'w') as csvFile:
+#             writer = csv.writer(csvFile)
+#             writer.writerow([])
+#             writer.writerows(csv_list[csv_count])
+#         print("Written 1st time")
+#         csv_count += 1
+
+#     elif csv_count != 0 and Vgb>Vfb:
+#         list_no = 0
+#         csv_list[csv_count].append([])
+#         csv_list[csv_count][list_no] = [
+#             'Vgb ='+str(Vgb),'Tox ='+str(tox), 'NA ='+str(NA), 'Phi_m ='+str(Phi_m)]
+#         list_no += 1
+#         csv_list[csv_count].append([])
+#         csv_list[csv_count][list_no] = ['y ('+str(csv_count)+')', 'Shi ('+str(
+#             csv_count)+')']
+#         list_no += 1
+#         gm = (sqrt(2*q*Es*NA))/(Cox)
+#         f = (-gm/2 + sqrt((gm)**2)/4 + Vgb - Vfb)**2
+#         n = 2*Shi_F+Phi_t*6
+#         x0 = min(f, n)
+#         # print x0
+#         val = newtonRaphson(Vgb, x0, Vfb, NA, ND, Phi_t, q, Es, Cox, No, Po)
+#         d = -(sqrt(2*q*Es*NA)//Es)*sqrt(Phi_t*e**(-val/Phi_t)+val -
+#                                         Phi_t+e**((-2*Shi_F)/Phi_t)*(Phi_t*e**(+val/Phi_t)-val-Phi_t))
+
+#         ini = [val, d]
+#         z[count] = odeint(model, ini, yt)
+#         for j in len(yt):
+#             csv_list[csv_count][list_no].append(yt[j])
+#             csv_list[csv_count][list_no].append(z[count][j])    
+#             list_no += 1
+
+#         with open('./Dataset/moscap/Shi_Vs_y.csv', 'a') as csvFile:
+#             writer = csv.writer(csvFile)
+#             writer.writerow([])
+#             writer.writerows(csv_list[csv_count])
+#         print("saved data for "+str(csv_count)+" times")
+#         csv_count += 1
+
+#     else:
+#         print("Sorry couldn't save the data")
+
 # button_declaration
-axButton = plt.axes([0.7, 0.07, 0.06, 0.06])  # xloc,yloc,width,heights
+axButton = plt.axes([0.83, 0.15, 0.06, 0.06])  # xloc,yloc,width,heights
 btn = Button(axButton, ' ADD ')
+
+# axButton1 = plt.axes([0.83, 0.05, 0.08, 0.06])  # xloc,yloc,width,heights
+# btn1 = Button(axButton1, ' Save Data ')
 
 # button on click callback function
 btn.on_clicked(setValue)
+# btn1.on_clicked(setData)
 
 
 # Sliders declaration
