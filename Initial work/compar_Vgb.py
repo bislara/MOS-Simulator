@@ -9,7 +9,7 @@ h=5
 global Vgb,Vfb,q,Es,Cox,Po,No,St,NA,ND
 
 
- #intial values 
+#intial values 
 x0=0
 Vgb=-1
 Vfb=-1
@@ -29,7 +29,7 @@ Ni=1.18*10**16
 #Cox=1.668*10**(-2)
 
 
- #ni=1.26*10**13=sqrt(No*Po)
+#ni=1.26*10**13=sqrt(No*Po)
 #PHI(f)=0.59266= PHI(t)*ln(NA/ni)
 #2*PHI(f)= 1.1852
 
@@ -39,9 +39,9 @@ V_list=[]
 i=0
 r=[]
 
- #Vfb=PHI(ms) + Q'o/C'ox
+#Vfb=PHI(ms) + Q'o/C'ox
 
- #funct to return the value of funct at a particuar value
+#funct to return the value of funct at a particuar value
 def func(Vgb, Y ): 
     global Vfb,q,Es,Cox,Po,No,St,NA,ND
     #print("I am inside func  " , Y)
@@ -53,7 +53,7 @@ def func(Vgb, Y ):
           print("Error!!!!!!!!!!!", Y)
     	  return 0    
 
- #funct to find derivative in a particular value
+#funct to find derivative in a particular value
 def derivFunc( Y ): 
     k= deriv.doit().subs({t:Y})
    # print("I am inside deriv func  ", k)
@@ -62,8 +62,8 @@ def derivFunc( Y ):
     else:  
 	return k
 
-
- # Function to find the root 
+  
+# Function to find the root 
 def newtonRaphson( Vgb, Y ): 
     global count
     global Vfb,q,Es,Cox,Po,No,St,NA,ND,h
@@ -79,18 +79,19 @@ def newtonRaphson( Vgb, Y ):
         except ZeroDivisionError:
             print("Error! - derivative zero for x = ", Y)
         # x(i+1) = x(i) - f(x) / f'(x) 
-
-
-     #print("The value of the root is : ", 
+         
+      
+    #print("The value of the root is : ", 
      #                        "%.4f"% Y)
-    print("the no of iterations is ",count) 
+    print("the no of iterations is ",count)
+    count=0 
     return Y
 
 
-for i in range(0,15):
-	r.append(i/10.0)
+for i in range(0,150):
+	r.append(i/100.0)
 
- #loop for newton Raphson method and using diff intial value for diff Vgb
+#loop for newton Raphson method and using diff intial value for diff Vgb
 for Vgb in r:
 	NA=5*10**23
 	No=(Ni**2)/NA
@@ -119,7 +120,7 @@ with open('Dataset/Final_Dataset.csv','r') as csvfile:
         y2.append(row[1])
 
 
- # plotting_graph
+# plotting_graph
 plt.ylim(0.6,1.2) 
 plt.xlim(0,1.5) 
 
@@ -134,9 +135,10 @@ plt.plot(x2,y2,color ='b', label='from excel!')
 plt.xlabel('Vgb value') 
 plt.ylabel('SHI value')
 
- # show a legend on the plot 
+# show a legend on the plot 
 plt.legend() 
 
 plt.title('Vgb VS SHI graph') 
-
+  
 plt.show()   
+
